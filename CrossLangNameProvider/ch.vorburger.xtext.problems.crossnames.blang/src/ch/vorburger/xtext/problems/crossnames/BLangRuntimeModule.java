@@ -3,6 +3,7 @@
  */
 package ch.vorburger.xtext.problems.crossnames;
 
+import ch.vorburger.xtext.problems.crossnames.naming.BLangNameConverter;
 import ch.vorburger.xtext.problems.crossnames.naming.BLangNameProvider;
 
 /**
@@ -12,6 +13,10 @@ public class BLangRuntimeModule extends ch.vorburger.xtext.problems.crossnames.A
 
     public Class<? extends org.eclipse.xtext.naming.IQualifiedNameProvider> bindIQualifiedNameProvider() {
         return BLangNameProvider.class;
+    }
+
+    public Class<? extends org.eclipse.xtext.naming.IQualifiedNameConverter> bindIQualifiedNameConverter() {
+        return BLangNameConverter.class;
     }
 
 }

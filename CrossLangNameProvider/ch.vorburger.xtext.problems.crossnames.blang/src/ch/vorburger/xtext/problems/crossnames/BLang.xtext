@@ -5,4 +5,4 @@ import "platform:/resource/ch.vorburger.xtext.problems.crossnames.alang/src-gen/
 
 generate bLang "http://www.vorburger.ch/xtext/problems/crossnames/BLang"
 
-ModelB: "ModelB for ModelA:" modelA=[ModelA] "," localNonUniqueName=ID ("; nextB=" nextB=[ModelB])?;
+ModelB: "ModelB for ModelA:" modelA=[ModelA] "." localNonUniqueName=ID ("; nextB=" nextB=[ModelB])?;
