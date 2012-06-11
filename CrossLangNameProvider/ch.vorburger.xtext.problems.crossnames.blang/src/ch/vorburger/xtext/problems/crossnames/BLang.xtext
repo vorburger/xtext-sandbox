@@ -1,0 +1,8 @@
+grammar ch.vorburger.xtext.problems.crossnames.BLang with org.eclipse.xtext.common.Terminals
+
+// Bug? This doesn't work (despite the warning & quick fix in the next line): import "http://www.vorburger.ch/xtext/problems/crossnames/ALang"
+import "platform:/resource/ch.vorburger.xtext.problems.crossnames.alang/src-gen/ch/vorburger/xtext/problems/crossnames/ALang.ecore" 
+
+generate bLang "http://www.vorburger.ch/xtext/problems/crossnames/BLang"
+
+ModelB: "ModelB for ModelA:" modelA=[ModelA] "," localNonUniqueName=ID ("; nextB=" nextB=[ModelB])?;

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.vorburger.xtext.problems.crossnames.blang.tests
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0
+Bundle-SymbolicName: ch.vorburger.xtext.problems.crossnames.blang.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: ch.vorburger.xtext.problems.crossnames.blang,
+ ch.vorburger.xtext.problems.crossnames.blang.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.xtext,
+ org.eclipse.xtext.junit4,
+ org.eclipse.xtext.ui.junit,
+ org.junit4,
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.eclipselabs.xtext.utils.unittesting;bundle-version="0.9.3"
+Import-Package: org.apache.log4j,
+ org.apache.commons.logging
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

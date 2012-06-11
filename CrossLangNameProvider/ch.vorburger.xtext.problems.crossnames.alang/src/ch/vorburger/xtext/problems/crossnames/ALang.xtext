@@ -1,0 +1,5 @@
+grammar ch.vorburger.xtext.problems.crossnames.ALang with org.eclipse.xtext.common.Terminals
+
+generate aLang "http://www.vorburger.ch/xtext/problems/crossnames/ALang"
+
+ModelA: "ModelA name:" name=ID;

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+    <extension
+            point="org.eclipse.ui.editors">
+        <editor
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            default="true"
+            extensions="blang"
+            id="ch.vorburger.xtext.problems.crossnames.BLang"
+            name="BLang Editor">
+        </editor>
+    </extension>
+    <extension
+        point="org.eclipse.ui.handlers">
+        <handler
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+            commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
+            <activeWhen>
+                <reference
+                    definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+        <handler
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+            commandId="ch.vorburger.xtext.problems.crossnames.BLang.validate">
+         <activeWhen>
+            <reference
+                    definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+            </reference>
+         </activeWhen>
+      </handler>
+    </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition id="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+            <and>
+                <reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+                <with variable="activeEditor">
+                    <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+                        value="ch.vorburger.xtext.problems.crossnames.BLang" 
+                        forcePluginActivation="true"/>
+                </with>        
+            </and>
+        </definition>
+    </extension>
+    <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang"
+            name="BLang">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+        </page>
+        <page
+            category="ch.vorburger.xtext.problems.crossnames.BLang"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang.coloring"
+            name="Syntax Coloring">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+        </page>
+        <page
+            category="ch.vorburger.xtext.problems.crossnames.BLang"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang.templates"
+            name="Templates">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang"
+            name="BLang">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"
+            label="BLang"/>
+    </extension>
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Trigger expensive validation"
+            id="ch.vorburger.xtext.problems.crossnames.BLang.validate"
+            name="Validate">
+      </command>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+             <command
+                 commandId="ch.vorburger.xtext.problems.crossnames.BLang.validate"
+                 style="push"
+                 tooltip="Trigger expensive validation">
+            <visibleWhen checkEnabled="false">
+                <reference
+                    definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+                </reference>
+            </visibleWhen>
+         </command>  
+         </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+				<visibleWhen checkEnabled="false">
+                	<reference definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+                	</reference>
+            	</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	    <handler
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+            commandId="org.eclipse.xtext.ui.editor.FindReferences">
+            <activeWhen>
+                <reference
+                    definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+    </extension>   
+
+<!-- adding resource factories -->
+
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="blang">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+        <resourceServiceProvider
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+            uriExtension="blang">
+        </resourceServiceProvider>
+    </extension>
+
+
+
+   <extension
+         point="org.eclipse.xtext.builder.participant">
+      <participant
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
+      </participant>
+   </extension>
+   <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            category="ch.vorburger.xtext.problems.crossnames.BLang"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang.compiler.preferencePage"
+            name="Compiler">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            category="ch.vorburger.xtext.problems.crossnames.BLang"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="ch.vorburger.xtext.problems.crossnames.BLang.compiler.propertyPage"
+            name="Compiler">
+            <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+
+	<!-- Quick Outline -->
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler 
+			class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+			<activeWhen>
+				<reference
+					definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Open the quick outline."
+			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+			name="Quick Outline">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.open">
+			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+				style="push"
+				tooltip="Open Quick Outline">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+   <!-- quickfix marker resolution generator -->
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator">
+      </markerResolutionGenerator>
+   </extension>
+   	<!-- Rename Refactoring -->
+	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.IRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+    <extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+         <command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference
+                     definitionId="ch.vorburger.xtext.problems.crossnames.BLang.Editor.opened">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+	    <page
+	        category="ch.vorburger.xtext.problems.crossnames.BLang"
+	        class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+	        id="ch.vorburger.xtext.problems.crossnames.BLang.refactoring"
+	        name="Refactoring">
+	        <keywordReference id="ch.vorburger.xtext.problems.crossnames.ui.keyword_BLang"/>
+	    </page>
+	</extension>
+
+  <extension point="org.eclipse.compare.contentViewers">
+    <viewer id="ch.vorburger.xtext.problems.crossnames.BLang.compare.contentViewers"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="blang">
+    </viewer>
+  </extension>
+  <extension point="org.eclipse.compare.contentMergeViewers">
+    <viewer id="ch.vorburger.xtext.problems.crossnames.BLang.compare.contentMergeViewers"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="blang" label="BLang Compare">
+     </viewer>
+  </extension>
+  <extension point="org.eclipse.ui.editors.documentProviders">
+    <provider id="ch.vorburger.xtext.problems.crossnames.BLang.editors.documentProviders"
+            class="ch.vorburger.xtext.problems.crossnames.ui.BLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+            extensions="blang">
+    </provider>
+  </extension>
+
+</plugin>
