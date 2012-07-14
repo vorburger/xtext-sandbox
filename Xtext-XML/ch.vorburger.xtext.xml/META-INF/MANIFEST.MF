@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vorburger.ch Xtext XML
+Bundle-SymbolicName: ch.vorburger.xtext.xml
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.vorburger.xtext.xml.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.xtext;bundle-version="2.3.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: ch.vorburger.xtext.xml

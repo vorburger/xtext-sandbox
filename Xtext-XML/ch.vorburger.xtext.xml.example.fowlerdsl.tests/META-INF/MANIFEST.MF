@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for example.fowlerdsl with ch.vorburger.xtext.xml
+Bundle-SymbolicName: ch.vorburger.xtext.xml.example.fowlerdsl.tests
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.xtext.example.fowlerdsl,
+ org.eclipse.xtext.junit4,
+ org.junit;bundle-version="4.10.0",
+ org.eclipse.xtext.example.fowlerdsl.ui,
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.eclipse.xtend.lib,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.xtext.example.fowlerdsl
+Import-Package: org.junit.runner;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.hamcrest.core

@@ -1,0 +1,38 @@
+@Ecore(nsURI="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine")
+@GenModel(editDirectory="/org.eclipse.xtext.example.fowlerdsl.edit/src", editorDirectory="/org.eclipse.xtext.example.fowlerdsl.editor/src",
+forceOverwrite="true", updateClasspath="false", complianceLevel="5.0", editorPluginID="org.eclipse.xtext.example.fowlerdsl.editor",
+runtimeVersion="2.5")
+package org.eclipse.xtext.example.fowlerdsl.statemachine
+
+class Statemachine
+{
+	contains resolving Event [] events
+	refers Event [] resetEvents
+	contains resolving Command [] commands
+	contains resolving State [] states
+}
+
+class Event
+{
+	String name
+	String code
+}
+
+class Command
+{
+	String name
+	String code
+}
+
+class State
+{
+	String name
+	refers Command [] actions
+	contains resolving Transition [] transitions
+}
+
+class Transition
+{
+	refers Event event
+	refers State state
+}
