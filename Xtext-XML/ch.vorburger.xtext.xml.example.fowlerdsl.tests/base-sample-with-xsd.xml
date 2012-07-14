@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statemachine:Statemachine xmlns:statemachine="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine"
+    xsi:schemaLocation="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine ../org.eclipse.xtext.example.fowlerdsl/src/org/eclipse/xtext/example/fowlerdsl/aha/Statemachine.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    resetEvents="name:/event1#">
+  <events name="event1" code="CodeOfEvent1"/>
+  <events name="event2" code="CodeOfEvent2"/>
+  <commands name="command1" code="CodeOfCommand1"/>
+  <commands name="command2" code="CodeOfCommand2"/>
+  <states name="state1" actions="name:/command1# name:/command2#">
+    <transitions event="name:/event1#" state="name:/state1#"/>
+    <transitions event="name:/event2#" state="name:/state2#"/>
+  </states>
+  <states name="state2"/>
+</statemachine:Statemachine>

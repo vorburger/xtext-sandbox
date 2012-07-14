@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:statemachine="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ecore:nsPrefix="statemachine" ecore:package="org.eclipse.xtext.example.fowlerdsl.statemachine" targetNamespace="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine">
+  <xsd:import namespace="http://www.eclipse.org/emf/2002/Ecore" schemaLocation="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.xsd"/>
+  <xsd:element ecore:ignore="true" name="Statemachine" type="statemachine:Statemachine"/>
+  <xsd:element ecore:ignore="true" name="Event" type="statemachine:Event"/>
+  <xsd:element ecore:ignore="true" name="Command" type="statemachine:Command"/>
+  <xsd:element ecore:ignore="true" name="State" type="statemachine:State"/>
+  <xsd:element ecore:ignore="true" name="Transition" type="statemachine:Transition"/>
+  <xsd:complexType name="Statemachine">
+    <xsd:sequence>
+      <xsd:element ecore:resolveProxies="true" maxOccurs="unbounded" minOccurs="0" name="events" type="statemachine:Event"/>
+      <xsd:element ecore:resolveProxies="true" maxOccurs="unbounded" minOccurs="0" name="commands" type="statemachine:Command"/>
+      <xsd:element ecore:resolveProxies="true" maxOccurs="unbounded" minOccurs="0" name="states" type="statemachine:State"/>
+    </xsd:sequence>
+    <xsd:attribute ecore:reference="statemachine:Event" name="resetEvents">
+      <xsd:simpleType>
+        <xsd:list itemType="xsd:anyURI"/>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Event">
+    <xsd:attribute name="name" type="ecore:EString"/>
+    <xsd:attribute name="code" type="ecore:EString"/>
+  </xsd:complexType>
+  <xsd:complexType name="Command">
+    <xsd:attribute name="name" type="ecore:EString"/>
+    <xsd:attribute name="code" type="ecore:EString"/>
+  </xsd:complexType>
+  <xsd:complexType name="State">
+    <xsd:sequence>
+      <xsd:element ecore:resolveProxies="true" maxOccurs="unbounded" minOccurs="0" name="transitions" type="statemachine:Transition"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="ecore:EString"/>
+    <xsd:attribute ecore:reference="statemachine:Command" name="actions">
+      <xsd:simpleType>
+        <xsd:list itemType="xsd:anyURI"/>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="Transition">
+    <xsd:attribute ecore:reference="statemachine:Event" name="event" type="xsd:anyURI"/>
+    <xsd:attribute ecore:reference="statemachine:State" name="state" type="xsd:anyURI"/>
+  </xsd:complexType>
+</xsd:schema>
