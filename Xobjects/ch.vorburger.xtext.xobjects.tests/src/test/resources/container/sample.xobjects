@@ -1,0 +1,7 @@
+Widget {
+	name: MainPanel
+	subWidgets: [
+		Label { name: label1 },
+		Button { name: button1 }
+	]
+}

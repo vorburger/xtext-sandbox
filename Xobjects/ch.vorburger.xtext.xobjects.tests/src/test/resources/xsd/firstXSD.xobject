@@ -1,0 +1,7 @@
+// This uses a XML Schema (XSD) as Model - not necc. gen. by EMF!
+
+xsd:ns:org.example.library.Book {
+// OR: xsd:schemaLocation:../library.xsd
+	title: "Core Java Data Objects"
+	pages: 1234
+}

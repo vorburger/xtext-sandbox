@@ -1,0 +1,26 @@
+import org.example.library.*
+
+Library {
+	name: "My Library"
+	books: [
+		{
+		title: "Core Java Data Objects"
+		pages: 1234
+		authors: [ "Michael Vorburger" ]
+		}
+
+		{
+		title: "EMF: Eclipse Modeling Framework (2nd Edition)"
+		pages: 744
+		authors: [ "Ed Merks", "Dave Steinberg", "Frank Budinsky", "Marcelo Paternostro" ]
+		}
+
+	]
+	authors: [
+		{ name: "Michael Vorburger" }
+		{ name: "Ed Merks" }
+		{ name: "Frank Budinsky" }
+		{ name: "Dave Steinberg" }
+		{ name: "Marcelo Paternostro" }
+	]
+}

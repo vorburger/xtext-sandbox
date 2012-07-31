@@ -1,0 +1,7 @@
+// Type is optional!!  EClass will be "inferred" on-the-fly:
+{
+	title: Core Java Data Objects
+	pages: 1234
+}
+
+// NOTE however that this does NOT magically "match" the org.example.library.Book, but create a dynamic EClass named something like $inferType.xobject

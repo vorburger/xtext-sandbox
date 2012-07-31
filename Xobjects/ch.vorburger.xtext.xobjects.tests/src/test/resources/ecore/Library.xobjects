@@ -1,0 +1,17 @@
+EClass {
+	name: Library
+	properties: [
+		{ name: books, type: Book, kind: containment, opposite: library }
+		{ name: authors, type: Writer, kind: containment, opposite: library }
+	]
+}
+
+EClass {
+	name: Book
+	properties: [ ... ]
+}
+
+EClass {
+	name: Writer
+	properties: [ ... ]
+}

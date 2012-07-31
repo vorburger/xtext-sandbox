@@ -1,0 +1,5 @@
+// This uses a Java Bean as Model - this may be any Java Bean-compliant Class - not necc. gen. by EMF!
+java:org.example.library.Book {
+	title: "Core Java Data Objects"
+	pages: 1234
+}

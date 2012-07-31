@@ -1,0 +1,14 @@
+class Widget {
+	String name
+	Integer xPos
+	Integer yPos
+	contains Widget[] subWidgets
+}
+
+class Label extends Widget {
+	String text
+}
+
+class Button extends Widget {
+	String text
+}

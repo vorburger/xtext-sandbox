@@ -1,0 +1,23 @@
+class XObject {
+	contains Property[] properties
+}
+
+class abstract Property {
+	String name
+}
+
+class StringProperty extends Property {
+	String value
+}
+
+class IntegerProperty extends Property {
+	Integer value
+}
+
+class ObjectProperty extends Property {
+	XObject value
+}
+
+class XObjects {
+	contains XObject[] objects
+}

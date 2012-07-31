@@ -1,0 +1,9 @@
+// package is optional - by default the gen. Java (if any - it's NOT neccessary!) is in the default package 
+
+// keyword "object" is actually optional!
+object org.example.library.Book {
+	title: "Core Java Data Objects" // without quotes would be valid as valid - NL (CR[LF]) would be interpreted as delimiter
+	pages: 1234
+	// NOTE Both classic-EMF resource location based as well as Xtext Scope Index based cross references are supported
+	authors: [ author1.xobject, "Keiron McCammon" ]
+}
