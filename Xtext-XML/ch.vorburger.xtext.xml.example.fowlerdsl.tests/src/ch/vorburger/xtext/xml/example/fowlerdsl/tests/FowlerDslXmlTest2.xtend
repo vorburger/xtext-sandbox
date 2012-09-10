@@ -49,6 +49,7 @@ class FowlerDslXmlTest2 {
 		val resourceSet = resourceSetProvider.get();
 		val model = sampleStatemachineText.parse(resourceSet)
 		model.assertNoErrors
+		assertEquals("sample1", model.name)
 		assertEquals("event1", model.events.get(0).name)
 		
 		val modelForXML = nameURISwapper.cloneAndReplaceAllReferencesByNameURIProxies(model);
@@ -85,6 +86,8 @@ class FowlerDslXmlTest2 {
 	
 	def String sampleStatemachineText() {
 		'''
+			name: sample1
+
 			events
 				event1 CodeOfEvent1
 				event2 CodeOfEvent2

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statemachine:Statemachine xmlns:statemachine="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine"
-    resetEvents="name:/event1#">
+	name="sample1" 
+    resetEvents="name:/sample1.event1#">
   <events name="event1" code="CodeOfEvent1"/>
   <events name="event2" code="CodeOfEvent2"/>
   <commands name="command1" code="CodeOfCommand1"/>
   <commands name="command2" code="CodeOfCommand2"/>
-  <states name="state1" actions="name:/command1# name:/command2#">
-    <transitions event="name:/event1#" state="name:/state1#"/>
-    <transitions event="name:/event2#" state="name:/state2#"/>
+  <states name="state1" actions="name:/sample1.command1# name:/sample1.command2#">
+    <transitions event="name:/sample1.event1#" state="name:/sample1.state1#"/>
+    <transitions event="name:/sample1.event2#" state="name:/sample1.state2#"/>
   </states>
   <states name="state2"/>
 </statemachine:Statemachine>

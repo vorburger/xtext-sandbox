@@ -1,4 +1,4 @@
-events event1 CodeOfEvent1 event2 CodeOfEvent2 end resetEvents event1 end
-commands command1 CodeOfCommand1 command2 CodeOfCommand2 end state state1
-actions { command1 command2 } event1 => state1 event2 => state2 end state
-state2 end
+name: sample1 events event1 CodeOfEvent1 event2 CodeOfEvent2 end resetEvents
+event1 end commands command1 CodeOfCommand1 command2 CodeOfCommand2 end state
+state1 actions { command1 command2 } event1 => state1 event2 => state2 end
+state state2 end
