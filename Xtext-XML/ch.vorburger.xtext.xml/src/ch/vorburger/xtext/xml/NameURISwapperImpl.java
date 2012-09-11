@@ -145,11 +145,15 @@ public class NameURISwapperImpl implements NameURISwapper {
         public EObject replaceReference(EObject eObject, EReference eReference, EObject crossReference) {
             final URI uri = EcoreUtil.getURI(crossReference);
             if (NAME_SCHEME.equals(uri.scheme())) {
-                // path() ignored the '#' which we added above
+                // path() ignores the '#' which we added above
                 final String crossRefString = uri.path().substring(1);
                 final QualifiedName name = nameConverter.toQualifiedName(crossRefString);
+                
                 final IScope scope = scopeProvider.getScope(eObject, eReference);
                 final IEObjectDescription objectDescription = scope.getSingleElement(name);
+                if (objectDescription == null)
+                	throw new IllegalArgumentException("IScope cannot resolve QualifiedName '" + crossRefString + "'");
+                
                 final EObject newObjectOrProxy = objectDescription.getEObjectOrProxy();
                 return newObjectOrProxy;
             } else {

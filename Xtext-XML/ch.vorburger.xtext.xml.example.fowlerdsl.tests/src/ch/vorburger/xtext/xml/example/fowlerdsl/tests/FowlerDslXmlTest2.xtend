@@ -9,8 +9,6 @@
 package ch.vorburger.xtext.xml.example.fowlerdsl.tests
 
 import com.google.inject.Inject
-import com.google.inject.Provider
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.example.fowlerdsl.StatemachineInjectorProvider
 import org.eclipse.xtext.example.fowlerdsl.statemachine.Statemachine
 import org.eclipse.xtext.junit4.InjectWith
@@ -40,14 +38,12 @@ class FowlerDslXmlTest2 {
 	@Inject extension ParseHelper<Statemachine>
 	@Inject extension ValidationTestHelper
 	
-	@Inject Provider<ResourceSet> resourceSetProvider;
 	@Inject NameURISwapper nameURISwapper;
 	@Inject EIO eio;
 	
 	@Test
 	def void testWriteFowlerDslAsXML() {
-		val resourceSet = resourceSetProvider.get();
-		val model = sampleStatemachineText.parse(resourceSet)
+		val model = sampleStatemachineText.parse
 		model.assertNoErrors
 		assertEquals("sample1", model.name)
 		assertEquals("event1", model.events.get(0).name)
@@ -71,6 +67,27 @@ class FowlerDslXmlTest2 {
 		// Make sure that it was really cloned (to be safe), so XML Resource still contains XML model
         assertTrue(xmlModel.eResource.getContents().contains(xmlModel));
 	}
+
+	@Test
+	def void testReadFowlerDslAsXMLWithNonExistingCrossRefWriteDSL() {
+		// We load a *.statemachine here, without needing its result
+		// so that it's in the ResourceSet and that cross refs work
+		eio.load(URI::createFileURI("new-sample.statemachine"))
+		
+		val xmlModel = eio.load(URI::createFileURI("new-sample-badcrossref.xml"))
+		nameURISwapper.replaceAllNameURIProxiesByReferences(xmlModel)
+		eio.cloneAndSave(URI::createFileURI("new-sample-badcrossref.statemachine"), xmlModel);
+
+		val newSampleStatemachine = loadFile("new-sample-badcrossref.statemachine")
+		assertEquals(sampleBadCrossRefStatemachineText.collapseWhitespace, newSampleStatemachine)		
+	}
+	def String sampleBadCrossRefStatemachineText() { 
+		'''
+			name: sampleBadCrossRef
+			friends: sample1
+		'''
+	}
+
 	
     def void assertFileEquals(String expectedFilePath, String actualFilePath) throws IOException {
         assertEquals(loadFile(expectedFilePath), loadFile(actualFilePath));
