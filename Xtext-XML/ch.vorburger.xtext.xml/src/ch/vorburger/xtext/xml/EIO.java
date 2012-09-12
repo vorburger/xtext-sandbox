@@ -49,7 +49,7 @@ public class EIO {
         Resource resource = resourceSet.createResource(uri);
         if (resource == null)
             throw new IOException("EMF resourceSet.getResource() => null, probably no matching resource factory is registered, for URI: " + uri.toString());
-        EObject clonedObject = object; // TODO give up? EcoreUtil3.cloneWithProxiesIfContained(object);
+        EObject clonedObject = EcoreUtil3.cloneWithProxiesIfContained(object);
         resource.getContents().add(clonedObject);
         // Don't Validate, but Format (which is the exact opposite of the default save options) :
         Map<?, ?> saveOptions = SaveOptions.newBuilder().noValidation().format().getOptions().toOptionsMap();

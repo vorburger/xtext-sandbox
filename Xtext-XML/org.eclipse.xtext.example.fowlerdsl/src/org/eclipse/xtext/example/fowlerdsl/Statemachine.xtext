@@ -6,7 +6,7 @@ Statemachine :
      {Statemachine}
      
     'name:' name=ID
-    ('friends:' befriendedStatemachines += [Statemachine])?
+    ('friends:' (befriendedStatemachines += [Statemachine])+ )?
      
 	('events' 
 		events+=Event+ 

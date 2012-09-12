@@ -84,7 +84,7 @@ class FowlerDslXmlTest2 {
 	def String sampleBadCrossRefStatemachineText() { 
 		'''
 			name: sampleBadCrossRef
-			friends: nonexistant
+			friends: nonexistant sample1
 		'''
 	}
 

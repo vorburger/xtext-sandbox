@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statemachine:Statemachine xmlns:statemachine="http://www.eclipse.org/xtext/example/fowlerdsl/Statemachine"
     name="sampleBadCrossRef"
-    befriendedStatemachines="name:/nonexistant#"
+    befriendedStatemachines="name:/nonexistant# name:/sample1#"
  >
- <!-- TODO befriendedStatemachines="name:/sample1# name:/nonexistant#" -->
 </statemachine:Statemachine>
