@@ -64,7 +64,6 @@ public class EIO {
         if (resource == null)
             throw new IOException("EMF resourceSet.getResource() => null, probably no matching resource factory is registered, for URI: " + uri.toString());
         
-        // TODO Move this to a separate helper method, don't force on load..
         if (!resource.getErrors().isEmpty()) {
             Diagnostic diagnostic = EcoreUtil.computeDiagnostic(resource, false /* do not includeWarnings */);
             throw new DiagnosticExceptionWithURIAndToString(diagnostic, uri);

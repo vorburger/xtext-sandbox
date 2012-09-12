@@ -13,13 +13,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
@@ -58,10 +57,6 @@ public class NameURISwapperImpl implements NameURISwapper {
     @Override
 	public void replaceAllNameURIProxiesByReferences(EObject rootObject) {
         replaceReferences(rootObject, new NameURIByXTextReferenceReplacer());
-        
-        // TODO move temporary hack - if this works, it would have to be done at all "levels", not just the root!
-//    	final Adapter node = new FakeCompositeNode("??_ROOT_???");
-//    	rootObject.eAdapters().add(node);
     }
 
     protected <T extends EObject> void replaceReferences(T rootObject, ReferenceReplacer r) {
@@ -158,8 +153,11 @@ public class NameURISwapperImpl implements NameURISwapper {
                 if (objectDescription != null) {
                     return objectDescription.getEObjectOrProxy();
                 } else {
-//                	final Adapter node = new FakeCompositeNode(crossRefString);
-//					crossReference.eAdapters().add(node);
+					// If we can't find Name in Scope then the referenced Object
+					// may not exist in the Workspace yet (or has not yet been
+					// indexed by the Builder).  We leave the name:/ URI Proxy
+                	// as is - and have the NameURISupportingCrossReferenceSerializer
+                	// deal with it!
                 	return crossReference;
                 }
                 

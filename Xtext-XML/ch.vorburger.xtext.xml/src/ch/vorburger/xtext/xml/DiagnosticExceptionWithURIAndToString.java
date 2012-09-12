@@ -20,8 +20,9 @@ import org.eclipse.emf.common.util.URI;
  * @author Michael Vorburger
  */
 public class DiagnosticExceptionWithURIAndToString extends DiagnosticException {
-
-    private final URI uri;
+	private static final long serialVersionUID = 1L;
+	
+	private final URI uri;
 
     public DiagnosticExceptionWithURIAndToString(Diagnostic diagnostic, URI uri) {
         super(diagnostic);
