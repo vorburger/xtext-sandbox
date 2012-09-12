@@ -38,7 +38,8 @@ import com.google.inject.Inject;
  */
 public class NameURISwapperImpl implements NameURISwapper {
 	
-    // intentionally protected - there should be no need for this prefix to be visible outside.  You might want to use the isNameScheme() helper  
+    // intentionally protected - there should be no need for this prefix to be visible outside.
+	// Please use the getNameFromProxy() helper to access the content of name:/ URI Proxies.
     private static final String NAME_SCHEME = "name";
     
     private @Inject IQualifiedNameProvider nameProvider;
@@ -167,10 +168,13 @@ public class NameURISwapperImpl implements NameURISwapper {
         }
     }
     
-    static public boolean isNameScheme(URI proxyURI) {
-        if (proxyURI != null)
-            return NAME_SCHEME.equals(proxyURI.scheme());
-        else
-            return false;
+    static public String getNameFromProxy(EObject proxy) {
+    	if (proxy.eIsProxy()) {
+    		final URI proxyURI = EcoreUtil.getURI(proxy);
+    		if (NAME_SCHEME.equals(proxyURI.scheme())) {
+    			return proxyURI.path().substring(1); 
+    		}
+    	}
+        return null;
     }
 }

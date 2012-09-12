@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * Util which deals with name:/Something URI Proxies.
  * This is used to transform EMF XML containing name-based cross references into real Xtext objects, and vice versa.  
  *
+ * @see NameURISwapperImpl#getNameFromProxy(EObject) to access the content of name:/ URI Proxies
+ *
  * @author Michael Vorburger
  */
 public interface NameURISwapper {

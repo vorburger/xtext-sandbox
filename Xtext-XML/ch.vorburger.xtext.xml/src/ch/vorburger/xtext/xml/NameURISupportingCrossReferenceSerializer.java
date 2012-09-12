@@ -8,9 +8,7 @@
 
 package ch.vorburger.xtext.xml;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.CrossReference;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.diagnostic.ISerializationDiagnostic.Acceptor;
@@ -26,15 +24,12 @@ public class NameURISupportingCrossReferenceSerializer extends CrossReferenceSer
 
 	@Override
 	public String serializeCrossRef(EObject semanticObject, CrossReference crossref, EObject target, INode node, Acceptor errors) {
-		// TODO Some refactoring + Share as much as possible of this code with NameURISwapperImpl
-		if (target.eIsProxy()) {
-			final URI uri = EcoreUtil.getURI(target);			
-			if (NameURISwapperImpl.isNameScheme(uri)) {
-				return uri.path().substring(1); // TODO Share this code with NameURISwapperImpl
-			}
-        }
-
-		return super.serializeCrossRef(semanticObject, crossref, target, node, errors);
+		String namedRef = NameURISwapperImpl.getNameFromProxy(target);
+		if (namedRef != null) {
+			return namedRef;
+		} else {
+			return super.serializeCrossRef(semanticObject, crossref, target, node, errors);
+		}
 	}
 
 }
