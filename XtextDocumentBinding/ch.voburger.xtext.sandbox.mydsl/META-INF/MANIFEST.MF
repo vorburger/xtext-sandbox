@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.voburger.xtext.sandbox.mydsl
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: ch.voburger.xtext.sandbox.mydsl; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: ch.voburger.xtext.sandbox.mydsl,
+ ch.voburger.xtext.sandbox.mydsl.services,
+ ch.voburger.xtext.sandbox.mydsl.myDsl,
+ ch.voburger.xtext.sandbox.mydsl.myDsl.impl,
+ ch.voburger.xtext.sandbox.mydsl.myDsl.util,
+ ch.voburger.xtext.sandbox.mydsl.serializer,
+ ch.voburger.xtext.sandbox.mydsl.parser.antlr,
+ ch.voburger.xtext.sandbox.mydsl.parser.antlr.internal,
+ ch.voburger.xtext.sandbox.mydsl.validation,
+ ch.voburger.xtext.sandbox.mydsl.scoping,
+ ch.voburger.xtext.sandbox.mydsl.generator,
+ ch.voburger.xtext.sandbox.mydsl.formatting
+

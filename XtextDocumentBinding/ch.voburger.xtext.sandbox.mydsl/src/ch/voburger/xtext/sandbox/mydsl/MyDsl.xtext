@@ -1,0 +1,9 @@
+grammar ch.voburger.xtext.sandbox.mydsl.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.voburger.ch/xtext/sandbox/mydsl/MyDsl"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
