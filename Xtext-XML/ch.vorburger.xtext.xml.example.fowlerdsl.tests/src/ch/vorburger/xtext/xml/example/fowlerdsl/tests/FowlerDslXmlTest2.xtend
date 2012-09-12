@@ -72,7 +72,7 @@ class FowlerDslXmlTest2 {
 	def void testReadFowlerDslAsXMLWithNonExistingCrossRefWriteDSL() {
 		// We load a *.statemachine here, without needing its result
 		// so that it's in the ResourceSet and that cross refs work
-		eio.load(URI::createFileURI("new-sample.statemachine"))
+		// TODO eio.load(URI::createFileURI("new-sample.statemachine"))
 		
 		val xmlModel = eio.load(URI::createFileURI("new-sample-badcrossref.xml"))
 		nameURISwapper.replaceAllNameURIProxiesByReferences(xmlModel)
@@ -84,7 +84,7 @@ class FowlerDslXmlTest2 {
 	def String sampleBadCrossRefStatemachineText() { 
 		'''
 			name: sampleBadCrossRef
-			friends: sample1
+			friends: nonexistant
 		'''
 	}
 

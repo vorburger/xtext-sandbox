@@ -3,16 +3,24 @@
  */
 package org.eclipse.xtext.example.fowlerdsl;
 
+import org.eclipse.xtext.serializer.tokens.ICrossReferenceSerializer;
+
+import ch.vorburger.xtext.xml.NameURISupportingCrossReferenceSerializer;
 import ch.vorburger.xtext.xml.NameURISwapper;
 import ch.vorburger.xtext.xml.NameURISwapperImpl;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
+@SuppressWarnings("restriction")
 public class StatemachineRuntimeModule extends org.eclipse.xtext.example.fowlerdsl.AbstractStatemachineRuntimeModule {
 
 	public Class<? extends NameURISwapper> bindNameURISwapper() {
 		return NameURISwapperImpl.class;
+	}
+	
+	public Class<? extends ICrossReferenceSerializer> bindCrossReferenceSerializer() {
+		return NameURISupportingCrossReferenceSerializer.class;
 	}
 	
 }

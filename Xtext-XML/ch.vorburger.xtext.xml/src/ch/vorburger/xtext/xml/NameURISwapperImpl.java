@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -40,7 +41,7 @@ public class NameURISwapperImpl implements NameURISwapper {
 	
     // intentionally protected - there should be no need for this prefix to be visible outside.  You might want to use the isNameScheme() helper  
     private static final String NAME_SCHEME = "name";
-
+    
     private @Inject IQualifiedNameProvider nameProvider;
     private @Inject IQualifiedNameConverter nameConverter;
 	
@@ -57,6 +58,10 @@ public class NameURISwapperImpl implements NameURISwapper {
     @Override
 	public void replaceAllNameURIProxiesByReferences(EObject rootObject) {
         replaceReferences(rootObject, new NameURIByXTextReferenceReplacer());
+        
+        // TODO move temporary hack - if this works, it would have to be done at all "levels", not just the root!
+//    	final Adapter node = new FakeCompositeNode("??_ROOT_???");
+//    	rootObject.eAdapters().add(node);
     }
 
     protected <T extends EObject> void replaceReferences(T rootObject, ReferenceReplacer r) {
@@ -127,13 +132,11 @@ public class NameURISwapperImpl implements NameURISwapper {
             if (name == null)
                 throw new IllegalArgumentException(NameURISwapperImpl.class + " IQualifiedNameConverter returned null for " + qName);
             
-            // Note the '#' suffix... this is needed because otherwise the
+            // Note the URI's '#' suffix... this is needed because otherwise the
             // org.eclipse.emf.ecore.xmi.impl.XMLHandler's setValueFromId()
             // does not create Proxy objects but just ignores such href from XML.
             final URI uri = URI.createURI(NAME_SCHEME + ":/" + name + "#"); 
-
             final EObject newProxy = EcoreUtil3.createProxy(uri, eReference.getEReferenceType());
-    		((InternalEObject) newProxy).eSetProxyURI(uri);
 
             return newProxy;
        }
@@ -151,11 +154,15 @@ public class NameURISwapperImpl implements NameURISwapper {
                 
                 final IScope scope = scopeProvider.getScope(eObject, eReference);
                 final IEObjectDescription objectDescription = scope.getSingleElement(name);
-                if (objectDescription == null)
-                	throw new IllegalArgumentException("IScope cannot resolve QualifiedName '" + crossRefString + "'");
                 
-                final EObject newObjectOrProxy = objectDescription.getEObjectOrProxy();
-                return newObjectOrProxy;
+                if (objectDescription != null) {
+                    return objectDescription.getEObjectOrProxy();
+                } else {
+//                	final Adapter node = new FakeCompositeNode(crossRefString);
+//					crossReference.eAdapters().add(node);
+                	return crossReference;
+                }
+                
             } else {
                 return crossReference;
             }
