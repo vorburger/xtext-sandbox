@@ -25,13 +25,9 @@
 package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.observable.ChangeEvent;
-import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -67,8 +63,6 @@ public class EMFXtextPropertiesTest {
 		}
 	}
 
-	protected boolean changedIt = false;
-	
 	@Test
 	public void testSimpleValueBinding() {
 		// Create an ECore model
@@ -97,21 +91,11 @@ public class EMFXtextPropertiesTest {
 		db.bindValue(BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(titleFeature).observe(access));
 		
-		// TODO https://bugs.eclipse.org/bugs/show_bug.cgi?id=389515
-		Binding binding = (Binding) db.getBindings().get(0);
-		binding.getModel().addChangeListener(new IChangeListener() {
-			@Override
-			public void handleChange(ChangeEvent event) {
-				changedIt = true;
-			}
-		});
-		
 		assertEquals(eObject.eGet(titleFeature), bean.getName());
 		
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", bean.getName());
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
-		assertTrue(changedIt);
 		
 		db.dispose();
 	}
