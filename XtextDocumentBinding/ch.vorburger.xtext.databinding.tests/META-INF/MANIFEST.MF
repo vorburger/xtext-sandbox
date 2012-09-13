@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for DataBinding for Xtext
+Bundle-SymbolicName: ch.vorburger.xtext.databinding.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Vorburger.ch
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: ch.vorburger.xtext.databinding,
+ org.junit,
+ com.google.guava,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200"
+Export-Package: ch.vorburger.beans,
+ ch.vorburger.xtext.databinding.tests.utils
+

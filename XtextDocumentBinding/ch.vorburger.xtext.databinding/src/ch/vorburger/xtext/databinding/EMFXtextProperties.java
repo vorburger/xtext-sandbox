@@ -29,14 +29,15 @@ public class EMFXtextProperties {
 	    return featureProperty;
 	}
 
-	public static EStructuralFeature set(IXtextResourceReadWriteAccess xTextReadWriteAccess, EStructuralFeature feature) {
-		throw new UnsupportedOperationException();
-	}
+
+	// TODO all variations just like in EMFProperties / EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
 
 	public static EStructuralFeature value(IXtextResourceReadWriteAccess xTextReadWriteAccess, FeaturePath featurePath) {
 		throw new UnsupportedOperationException();
 	}
 
-	// TODO all variations just like in EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
+	public static EStructuralFeature set(IXtextResourceReadWriteAccess xTextReadWriteAccess, EStructuralFeature feature) {
+		throw new UnsupportedOperationException();
+	}
 	
 }

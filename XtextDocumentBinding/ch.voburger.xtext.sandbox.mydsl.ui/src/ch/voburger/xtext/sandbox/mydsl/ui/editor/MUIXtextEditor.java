@@ -43,28 +43,28 @@ public class MUIXtextEditor extends XtextEditor {
 		SashForm sashForm = new SashForm(container,SWT.VERTICAL);
 		sashForm.setLayout(new FillLayout());
 
+		Composite browserSide = new Composite(sashForm,SWT.NONE);
+		browserSide.setLayout(new FillLayout());
+
 		Composite xtextSide = new Composite(sashForm,SWT.NONE);
 		xtextSide.setLayout(new FillLayout());
 		super.createPartControl(xtextSide);
 		
-		Composite browserSide = new Composite(sashForm,SWT.NONE);
-		browserSide.setLayout(new FillLayout());
-		
-		final Text textWidgetWithListener = new Text(browserSide, SWT.BORDER);
-		textWidgetWithListener.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				final String text = textWidgetWithListener.getText();
-				//System.out.println(text);
-				getDocument().modify(new IUnitOfWork.Void<XtextResource>() {
-					@Override
-					public void process(XtextResource state) throws Exception {
-						Model model = (Model) state.getContents().get(0);
-						model.getGreetings().get(0).setName(text);
-					}
-				});
-			}
-		});
+//		final Text textWidgetWithListener = new Text(browserSide, SWT.BORDER);
+//		textWidgetWithListener.addModifyListener(new ModifyListener() {
+//			@Override
+//			public void modifyText(ModifyEvent e) {
+//				final String text = textWidgetWithListener.getText();
+//				//System.out.println(text);
+//				getDocument().modify(new IUnitOfWork.Void<XtextResource>() {
+//					@Override
+//					public void process(XtextResource state) throws Exception {
+//						Model model = (Model) state.getContents().get(0);
+//						model.getGreetings().get(0).setName(text);
+//					}
+//				});
+//			}
+//		});
 		
 		final Text textWidgetWithBinding = new Text(browserSide, SWT.BORDER);
 
@@ -82,7 +82,7 @@ public class MUIXtextEditor extends XtextEditor {
 				WidgetProperties.text(SWT.Modify).observe(textWidgetWithBinding),
 				EMFXtextProperties.value(getDocument(), MyDslPackage.Literals.GREETING__NAME).observe(greeting));
 		
-		sashForm.setWeights(new int[] {90,10});
+		sashForm.setWeights(new int[] {10,90});
 	}
 
 }
