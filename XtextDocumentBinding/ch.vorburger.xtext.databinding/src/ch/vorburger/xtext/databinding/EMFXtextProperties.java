@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 @SuppressWarnings("restriction")
 public class EMFXtextProperties {
 
+	// TODO Rename *ALL* the classes to drop EMF* prefix, e.g. EMFXtextProperties -> XtextProperties
+	
 	// TODO It would be better if this class could share some code with EMFProperties..
 	// That's not possible today because it's all static - because if I could adapt it...
 	

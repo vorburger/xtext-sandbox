@@ -23,7 +23,7 @@ import ch.voburger.xtext.sandbox.mydsl.myDsl.MyDslPackage;
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
 
 /**
- * Xtext Editor with a Browser in it.
+ * Sample Xtext Editor with some SWT Controls next to the edit area which are linked to the Resource via Data Binding.
  * 
  * @author Michael Vorburger, with tips from Kai Kreuzer (for initial tip with
  *         IXtextDocument / link to Jan Köhnlein's Blog) and Yann Andenmatten
@@ -31,6 +31,8 @@ import ch.vorburger.xtext.databinding.EMFXtextProperties;
  */
 public class MUIXtextEditor extends XtextEditor {
 
+	// TODO Build a PDE test for this!
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
