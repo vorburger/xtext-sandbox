@@ -10,9 +10,10 @@ package ch.vorburger.xtext.databinding;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
+import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
 
 /**
@@ -20,50 +21,35 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
  *
  * @author Michael Vorburger
  */
+@SuppressWarnings("unchecked")
 public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 
-	private final IXtextResourceReadWriteAccess access;
-
-	public EMFXtextValueProperty(IXtextResourceReadWriteAccess xTextAccess, EStructuralFeature eStructuralFeature) {
+	public EMFXtextValueProperty(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
-		this.access = xTextAccess;
 	}
 
 	@Override
 	protected void doSetValue(final Object source, final Object value) {
+		IWriteAccess<XtextResource> access = (IWriteAccess<XtextResource>) source;
 	    access.modify(new IUnitOfWork.Void<XtextResource>() {
 	    	@Override public void process(XtextResource state) throws Exception {
-	    		assertSameResource(source, state);
-	    		EMFXtextValueProperty.super.doSetValue(source, value);
+	    		// TODO Handling (via TDD) if it doesn't exist yet! Ideally, don't throw an error, but create it on-the-fly...
+	    		EObject eObject = state.getContents().get(0);
+	    		EMFXtextValueProperty.super.doSetValue(eObject, value);
 	    	};
 		});
 	}
 
 	@Override
 	protected Object doGetValue(final Object source) {
+		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
 		return access.readOnly(new IUnitOfWork<Object, XtextResource>() {
 			@Override public Object exec(XtextResource state) throws Exception {
-				assertSameResource(source, state);
-				return EMFXtextValueProperty.super.doGetValue(source);
+	    		// TODO Handling (via TDD) if it doesn't exist yet! Should probably return null and NOT create it on-the-fly?
+	    		EObject eObject = state.getContents().get(0);
+				return EMFXtextValueProperty.super.doGetValue(eObject);
 			}
 		});
-	}
-
-	/**
-	 * Helper to just make sure we're on the same page;
-	 * is the XtextResource passed to the IUnitOfWork really the resource of our EObject?
-	 */
-	protected void assertSameResource(Object source, XtextResource state) {
-		// TODO later do this potentially somewhat costly type casting only if org.eclipse.core.databinding.util.Policy#DEFAULT ?
-		EObject eObj = (EObject)source;
-		Resource resource = eObj.eResource();
-		XtextResource xtextResource = (XtextResource) resource;
-		// TODO This null check shouldn't be needed ?!? Better throw exception (and log, see Bugzilla issue), instead just ignoring (because the DefaultTextEditComposer won't work!)
-		if (xtextResource != null && !xtextResource.equals(state)) {
-			// TODO IStatus status;
-			// Policy.getLog().log(status);
-			throw new RuntimeException("Whoa, we're not on the same page - the eResource of my object and the XtextResource passed to the IUnitOfWork are not the same - how come?!");
-		}
 	}
 
 }

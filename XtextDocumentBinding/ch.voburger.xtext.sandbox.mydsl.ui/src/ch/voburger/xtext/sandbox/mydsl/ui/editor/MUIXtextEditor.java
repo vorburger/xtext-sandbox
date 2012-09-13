@@ -17,12 +17,8 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
-import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
-import ch.voburger.xtext.sandbox.mydsl.myDsl.Greeting;
-import ch.voburger.xtext.sandbox.mydsl.myDsl.Model;
 import ch.voburger.xtext.sandbox.mydsl.myDsl.MyDslPackage;
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
 
@@ -66,23 +62,17 @@ public class MUIXtextEditor extends XtextEditor {
 //			}
 //		});
 		
+		// TODO Validation Errors should show in the Widget! E.g. Name is ID..
 		final Text textWidgetWithBinding = new Text(browserSide, SWT.BORDER);
 
-		// TODO This is wrong! exec() Doc: "Do not return any references to something contained in this resource" - but then how to do data binding?!
-		// Note XtextDocument's ensureThatStateIsNotReturned - which would catch this, if not commented out? Ask on Forum why not active, create Bug?
-		Greeting greeting = getDocument().readOnly(new IUnitOfWork<Greeting, XtextResource>() {
-			public Greeting exec(XtextResource state) throws Exception {
-				Model model = (Model) state.getContents().get(0);
-				return model.getGreetings().get(0);
-			};
-		});
-		
 		EMFDataBindingContext db = new EMFDataBindingContext();
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(textWidgetWithBinding),
-				EMFXtextProperties.value(getDocument(), MyDslPackage.Literals.GREETING__NAME).observe(greeting));
+				EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME).observe(getDocument()));
 		
 		sashForm.setWeights(new int[] {10,90});
+		
+		// TODO Why Bidi not working in Editor, although it does in Test? Change DSL -> change Widget!
 	}
 
 }

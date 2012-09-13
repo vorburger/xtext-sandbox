@@ -82,14 +82,14 @@ public class EMFXtextPropertiesTest {
 		Realm realm = new DatabindingTestRealm();
 		DataBindingContext db = new XtextDataBindingContext(realm);
 		
-		// TODO Use WritableValue instead of direct eObject
+		// TODO Use an indirect WritableValue in observe instead of direct (both for illustration and to test it)
 		
 		// TODO Do I really need to go through an XtextResource? Better abstraction?
 		XtextResource resource = new XtextResource();
 		resource.getContents().add(eObject);
 		XtextResourceTestAccess access = new XtextResourceTestAccess(resource);
 		db.bindValue(BeanProperties.value("name").observe(bean),
-				EMFXtextProperties.value(access, titleFeature).observe(eObject));
+				EMFXtextProperties.value(titleFeature).observe(access));
 		
 		assertEquals(eObject.eGet(titleFeature), bean.getName());
 		

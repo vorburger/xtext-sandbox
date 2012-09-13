@@ -18,4 +18,7 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
  * @author Michael Vorburger
  */
 public interface IXtextResourceReadWriteAccess extends IReadAccess<XtextResource>, IWriteAccess<XtextResource> {
+	
+	// TODO Remove! This won't be needed anymore, once I'm done with the rewrite based on the new approach..
+	
 }

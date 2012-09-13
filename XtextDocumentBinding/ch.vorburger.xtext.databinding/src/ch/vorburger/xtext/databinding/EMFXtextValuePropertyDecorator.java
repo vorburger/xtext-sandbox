@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class EMFXtextValuePropertyDecorator extends ValueProperty implements IEMFXtextValueProperty {
 
+	// TODO Revisit later if this is still needed... since EMFXtextProperties switched to EMFValuePropertyDecorator ?
+	
 	private final IValueProperty delegate;
 	private final EStructuralFeature eStructuralFeature;
 	private final IXtextResourceReadWriteAccess xTextReadWriteAccess;

@@ -17,6 +17,8 @@ import org.eclipse.emf.databinding.IEMFValueProperty;
  */
 public interface IEMFXtextValueProperty extends IEMFXtextProperty, IEMFValueProperty {
 
+	  // TODO Revisit later if this is still needed... since EMFXtextProperties switched to EMFValuePropertyDecorator ?
+	
 	  IEMFXtextValueProperty value(IEMFXtextValueProperty property);
 
 	  IEMFXtextListProperty list(IEMFXtextListProperty property);
