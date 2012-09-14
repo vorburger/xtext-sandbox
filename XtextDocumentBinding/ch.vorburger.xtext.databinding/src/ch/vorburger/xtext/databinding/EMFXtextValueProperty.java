@@ -11,10 +11,11 @@ package ch.vorburger.xtext.databinding;
 import org.eclipse.core.databinding.property.INativePropertyListener;
 import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
-import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.databinding.internal.EMFPropertyListener;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
@@ -49,52 +50,45 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 	@Override
 	protected Object doGetValue(final Object source) {
 		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
-		EObject eObject = getEObject(access);
-		return EMFXtextValueProperty.super.doGetValue(eObject);
-	}
-	
-	// TODO Carefully test if this pattern above/below will really work for FeaturePath as well, not just for one root EStructuralFeature...
-	
-	protected EObject getEObject(IReadAccess<XtextResource> access) {
-		return access.readOnly(new IUnitOfWork<EObject, XtextResource>() {
-			@Override public EObject exec(XtextResource state) throws Exception {
+		return access.readOnly(new IUnitOfWork<Object, XtextResource>() {
+			@Override public Object exec(XtextResource state) throws Exception {
 	    		// TODO Handling (via TDD) if it doesn't exist yet! Should probably return null and NOT create it on-the-fly?
-	    		return state.getContents().get(0);
+				EObject eObject = state.getContents().get(0);
+				return EMFXtextValueProperty.super.doGetValue(eObject);
 				
 			}
 		});
 	}
-
+	
+	// TODO Carefully test if this pattern above/below will really work for FeaturePath as well, not just for one root EStructuralFeature...
+	
+	protected Resource getResource(Object object) {
+		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) object;
+		return access.readOnly(new IUnitOfWork<Resource, XtextResource>() {
+			@Override public Resource exec(XtextResource state) throws Exception {
+	    		return state;
+			}
+		});
+	}
+	
 	@Override
 	public INativePropertyListener adaptListener(final ISimplePropertyListener listener)  {
 		return new EMFPropertyListener.EMFValuePropertyListener() {
 			@Override
 			public void addTo(Object source) {
 				if (source != null) {
-					getNotifier(source).eAdapters().add(this);
+					// TODO Optimize - we only need one on the Resource listener really - not one per Binding 
+					getResource(source).eAdapters().add(this);
 				}
 			}
 
 			@Override
 			public void removeFrom(Object source) {
 				if (source != null) {
-					getNotifier(source).eAdapters().remove(this);
+					getResource(source).eAdapters().remove(this);
 				}
 			}
 			
-			protected Notifier getNotifier(Object source) {
-				Notifier notifier;
-				if (source instanceof Notifier) {
-					notifier = (Notifier) source;
-				} else if (source instanceof IReadAccess<?>) {
-					IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
-					notifier = (EObject) EMFXtextValueProperty.this.getEObject(access);
-				} else {
-					throw new IllegalArgumentException("Can't add/remove Listener because this source Object is neither an EObject nor an IReadAccess: " + source);
-				}
-				return notifier;
-			}
-
 	    	@Override
 	        protected IProperty getOwner()
 	        {
@@ -112,6 +106,13 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 	        {
 	          return EMFXtextValueProperty.this.getFeature();
 	        }
+
+			@Override
+			public void notifyChanged(Notification msg) {
+				// TODO Remove this temporary / only for dev System.out
+				System.out.println(msg);
+				super.notifyChanged(msg);
+			}
 	      };
 	  }
 
