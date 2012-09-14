@@ -23,8 +23,6 @@ public class TestValuePropertyTest {
 	
 	// TODO Look into Core DataBinding sources for stuff like this...
 	
-	// TODO Make this pass - doesn't work yet (last assertEquals fails)
-	
 	// TODO Actually, make this independent of EMF Data Binding - just test binding two TestValueProperties
 	
 	@Test

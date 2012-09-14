@@ -84,7 +84,6 @@ public class EMFXtextPropertiesTest {
 		
 		// TODO Use an indirect WritableValue in observe instead of direct (both for illustration and to test it)
 		
-		// TODO Do I really need to go through an XtextResource? Better abstraction?
 		XtextResource resource = new XtextResource();
 		resource.getContents().add(eObject);
 		XtextResourceTestAccess access = new XtextResourceTestAccess(resource);
