@@ -11,6 +11,7 @@ package ch.vorburger.xtext.databinding;
 import org.eclipse.core.databinding.property.INativePropertyListener;
 import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.databinding.internal.EMFPropertyListener;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -24,7 +25,7 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
  * Like EMFEditValueProperty, but using an IXtextResourceReadWriteAccess instead of an EditingDomain.
  *
  * @author Michael Vorburger
- * @author Phani Kumar - Contributions for correct adaptListener
+ * @author Phani Kumar (@netsrujana) - Contributions for correct adaptListener
  */
 @SuppressWarnings({ "unchecked", "restriction" })
 public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
@@ -48,15 +49,13 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 	@Override
 	protected Object doGetValue(final Object source) {
 		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
-		EObject eObj = getEObject(access);
-		return EMFXtextValueProperty.super.doGetValue(eObj);
+		EObject eObject = getEObject(access);
+		return EMFXtextValueProperty.super.doGetValue(eObject);
 	}
 	
-	/**
-	 * @param access
-	 * @return
-	 */
-	public EObject getEObject(IReadAccess<XtextResource> access) {
+	// TODO Carefully test if this pattern above/below will really work for FeaturePath as well, not just for one root EStructuralFeature...
+	
+	protected EObject getEObject(IReadAccess<XtextResource> access) {
 		return access.readOnly(new IUnitOfWork<EObject, XtextResource>() {
 			@Override public EObject exec(XtextResource state) throws Exception {
 	    		// TODO Handling (via TDD) if it doesn't exist yet! Should probably return null and NOT create it on-the-fly?
@@ -72,33 +71,28 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 			@Override
 			public void addTo(Object source) {
 				if (source != null) {
-					EObject eobj = null;
-					if (source instanceof EObject) {
-						eobj = (EObject) source;
-					} else if (source instanceof IReadAccess<?>) {
-						IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
-						eobj = (EObject) EMFXtextValueProperty.this.getEObject(access);
-					}
-					if (eobj != null) {
-						eobj.eAdapters().add(this);
-					}
+					getNotifier(source).eAdapters().add(this);
 				}
 			}
 
 			@Override
 			public void removeFrom(Object source) {
 				if (source != null) {
-					EObject eobj = null;
-					if (source instanceof EObject) {
-						eobj = (EObject) source;
-					} else if (source instanceof IReadAccess<?>) {
-						IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
-						eobj = (EObject) EMFXtextValueProperty.this.getEObject(access);
-					}
-					if (eobj != null) {
-						eobj.eAdapters().remove(this);
-					}
+					getNotifier(source).eAdapters().remove(this);
 				}
+			}
+			
+			protected Notifier getNotifier(Object source) {
+				Notifier notifier;
+				if (source instanceof Notifier) {
+					notifier = (Notifier) source;
+				} else if (source instanceof IReadAccess<?>) {
+					IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;
+					notifier = (EObject) EMFXtextValueProperty.this.getEObject(access);
+				} else {
+					throw new IllegalArgumentException("Can't add/remove Listener because this source Object is neither an EObject nor an IReadAccess: " + source);
+				}
+				return notifier;
 			}
 
 	    	@Override
