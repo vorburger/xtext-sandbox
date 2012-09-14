@@ -21,6 +21,8 @@ import ch.vorburger.xtext.databinding.IXtextResourceReadWriteAccess;
  */
 public class XtextResourceTestAccess implements IXtextResourceReadWriteAccess {
 
+	// TODO Remove? Probably won't be needed anymore, once I'm done with the rewrite based on the new approach..
+
 	private final XtextResource state;
 
 	public XtextResourceTestAccess(XtextResource state) {
