@@ -4,6 +4,7 @@ generate myDsl "http://www.voburger.ch/xtext/sandbox/mydsl/MyDsl"
 
 Model:
 	'Greetings name:' name=ID '{'
+		// TODO 'child: ' child = Model
 		greetings += Greeting*
 	'}';
 	

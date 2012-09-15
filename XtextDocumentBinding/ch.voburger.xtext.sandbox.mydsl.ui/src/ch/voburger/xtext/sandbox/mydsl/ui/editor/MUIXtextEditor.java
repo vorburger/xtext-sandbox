@@ -65,12 +65,14 @@ public class MUIXtextEditor extends XtextEditor {
 //		});
 		
 		// TODO Validation Errors should show in the Widget! E.g. Name is ID..
+		// http://www.toedter.com/blog/?p=36#comment-16753  ControlDecorationSupport
 		final Text textWidgetWithBinding = new Text(browserSide, SWT.BORDER);
 
 		EMFDataBindingContext db = new EMFDataBindingContext();
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(textWidgetWithBinding),
-				EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME).observe(getDocument()));
+				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
+		// TODO Must throw exception when using wrong binding EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME).observe(getDocument())
 		
 		sashForm.setWeights(new int[] {10,90});
 		

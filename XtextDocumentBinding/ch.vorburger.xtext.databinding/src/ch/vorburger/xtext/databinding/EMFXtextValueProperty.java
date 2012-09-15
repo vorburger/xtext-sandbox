@@ -11,22 +11,20 @@ package ch.vorburger.xtext.databinding;
 import org.eclipse.core.databinding.property.INativePropertyListener;
 import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.databinding.internal.EMFPropertyListener;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.util.concurrent.IWriteAccess;
+
+import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
 
 
 /**
  * Like EMFEditValueProperty, but using an IXtextResourceReadWriteAccess instead of an EditingDomain.
  *
  * @author Michael Vorburger
- * @author Phani Kumar (@netsrujana) - Contributions for correct adaptListener
  */
 @SuppressWarnings({ "unchecked", "restriction" })
 public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
@@ -62,58 +60,23 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
 	
 	// TODO Carefully test if this pattern above/below will really work for FeaturePath as well, not just for one root EStructuralFeature...
 	
-	protected Resource getResource(Object object) {
-		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) object;
-		return access.readOnly(new IUnitOfWork<Resource, XtextResource>() {
-			@Override public Resource exec(XtextResource state) throws Exception {
-	    		return state;
-			}
-		});
-	}
-	
 	@Override
 	public INativePropertyListener adaptListener(final ISimplePropertyListener listener)  {
-		return new EMFPropertyListener.EMFValuePropertyListener() {
-			@Override
-			public void addTo(Object source) {
-				if (source != null) {
-					// TODO Optimize - we only need one on the Resource listener really - not one per Binding 
-					getResource(source).eAdapters().add(this);
-				}
-			}
-
-			@Override
-			public void removeFrom(Object source) {
-				if (source != null) {
-					getResource(source).eAdapters().remove(this);
-				}
-			}
-			
+		return new XtextPropertyListener.XtextValuePropertyListener() {
 	    	@Override
-	        protected IProperty getOwner()
-	        {
+	        protected IProperty getOwner() {
 	          return EMFXtextValueProperty.this;
 	        }
 
 	        @Override
-	        protected ISimplePropertyListener getListener()
-	        {
+	        protected ISimplePropertyListener getListener() {
 	          return listener;
 	        }
 
 			@Override
-	        protected EStructuralFeature getFeature()
-	        {
+	        protected EStructuralFeature getFeature() {
 	          return EMFXtextValueProperty.this.getFeature();
 	        }
-
-			@Override
-			public void notifyChanged(Notification msg) {
-				// TODO Remove this temporary / only for dev System.out
-				System.out.println(msg);
-				super.notifyChanged(msg);
-			}
 	      };
 	  }
-
 }
