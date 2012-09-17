@@ -26,7 +26,6 @@ package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.databinding.Binding;
@@ -78,6 +77,7 @@ public class EMFXtextPropertiesTest {
 	private Bean bean;
 	private XtextResourceTestAccess access;
 	private EObject eObject;
+	private EObject containedEObject;
 
 	@Before
 	public void setUp() {
@@ -89,9 +89,12 @@ public class EMFXtextPropertiesTest {
 		titleFeature = helper.addAttribute(clazz, stringType, "title");
 		referenceFeature = helper.addContainmentReference(clazz, clazz, "childContainmentReferenceToTest");
 		
-		// Create an EObject
+		// Create EObjects
 		eObject = helper.createInstance(clazz);
 		eObject.eSet(titleFeature, "This is the Title");
+
+		containedEObject = helper.createInstance(clazz);
+		eObject.eSet(referenceFeature, containedEObject);
 		
 		// Create a Bean
 		bean = new Bean();
@@ -112,7 +115,7 @@ public class EMFXtextPropertiesTest {
 				EMFXtextProperties.value(titleFeature).observe(access));
 		DataBindingTestUtils.assertContextOK(db);
 		
-		assertEquals(eObject.eGet(titleFeature), bean.getName());
+		assertEquals(bean.getName(), eObject.eGet(titleFeature));
 		
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", bean.getName()); // This just tests the bean, not the binding
@@ -125,11 +128,11 @@ public class EMFXtextPropertiesTest {
 	 * The XtextProperties Data Binding API needs to be observing an XTextDocument (IReadAccess<XtextResource>, IWriteAccess<XtextResource>). 
 	 */
 	@Test
-	public void testErrorObserveObjectInsteadOfresourceAcess() {
+	public void testErrorObserveObjectInsteadOfResourceAcess() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(titleFeature).observe(eObject));
 		
-		bean.setName("reset, reset"); // TODO needed?
+		bean.setName("reset, reset");
 		Binding binding1 = (Binding) db.getBindings().get(0);
 		IStatus status = (IStatus)binding1.getValidationStatus().getValue();
 		assertFalse("Binding should have caused a validation error", status.isOK());
@@ -145,15 +148,22 @@ public class EMFXtextPropertiesTest {
 				EMFXtextProperties.value(FeaturePath.fromList(referenceFeature, titleFeature)).observe(access));
 		DataBindingTestUtils.assertContextOK(db);
 		
-		assertEquals(((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature), bean.getName());
-		assertNull(eObject.eGet(titleFeature));
+		// Referenced Feature has now been set (sync) by binding:
+		assertEquals(bean.getName(), ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
+		// Root object feature is as set in setUp():
+		assertEquals("This is the Title", eObject.eGet(titleFeature));
 		
+		// Change bound property in bean:
 		bean.setName("reset, reset");
+		// Referenced Feature has now been set (sync) by binding and changed:
 		assertEquals("reset, reset", ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
-		assertNull(eObject.eGet(titleFeature));
+		// Root object feature should NOT have changed:
+		assertEquals("This is the Title", eObject.eGet(titleFeature));
 		DataBindingTestUtils.assertContextOK(db);
 	}
 
+	// TODO Write a new test, or adapt above, where referenceFeature was null and has to be constructed
+	
 	@After
 	public void tearDown() {
 		db.dispose();
