@@ -28,7 +28,8 @@ public class ResourceBasedSourceAccessor implements SourceAccessor {
 		resource = eObject.eResource();
 		if (resource != null) {
 			uriFragment = resource.getURIFragment(eObject);
-			System.out.println(eObject + " :::" + uriFragment);
+			if (uriFragment == null)
+				throw new IllegalArgumentException("Resource returned null for URI Fragment for EObject: " + eObject.toString());
 		} else {
 			throw new IllegalArgumentException("EObject has no eResource to observe: " + eObject.toString());
 		}
@@ -38,7 +39,7 @@ public class ResourceBasedSourceAccessor implements SourceAccessor {
 	public void eSet(EStructuralFeature feature, Object value) {
 		final EObject eObject = resource.getEObject(uriFragment);
 		if (eObject == null)
-			throw new IllegalStateException("Huh?! resource.getEObject(uriFragment) == null on Resource " + resource + ", for URI Fragement " + uriFragment);
+			throw new IllegalStateException("Huh?! resource.getEObject(uriFragment) == null on Resource " + resource + ", for URI Fragment " + uriFragment);
 		eObject.eSet(feature, value);
 	}
 
@@ -46,7 +47,8 @@ public class ResourceBasedSourceAccessor implements SourceAccessor {
 	public Object eGet(EStructuralFeature feature) {
 		final EObject eObject = resource.getEObject(uriFragment);
 		if (eObject == null)
-			throw new IllegalStateException("Huh?! resource.getEObject(uriFragment) == null on Resource " + resource + ", for URI Fragement " + uriFragment);
+			return null;
+			// TODO ??? throw new IllegalStateException("Huh?! resource.getEObject(uriFragment) == null on Resource " + resource + ", for URI Fragment " + uriFragment);
 		return eObject.eGet(feature);
 	}
 

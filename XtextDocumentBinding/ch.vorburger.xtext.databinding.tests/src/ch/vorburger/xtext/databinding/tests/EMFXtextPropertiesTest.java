@@ -148,7 +148,7 @@ public class EMFXtextPropertiesTest {
 	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testErrorObserveObjectInsteadOfResourceAcess() {
-		Binding binding1 =  db.bindValue(
+		db.bindValue(
 				BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(titleFeature).observe(eObject));
 	}
@@ -187,7 +187,7 @@ public class EMFXtextPropertiesTest {
 	
 	@After
 	public void tearDown() {
-		// TODO Re-enable!! db.dispose();
+		db.dispose();
 	}
 
 }

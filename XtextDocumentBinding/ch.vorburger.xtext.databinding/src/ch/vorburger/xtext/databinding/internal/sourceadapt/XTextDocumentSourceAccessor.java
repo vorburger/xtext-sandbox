@@ -9,6 +9,7 @@
 package ch.vorburger.xtext.databinding.internal.sourceadapt;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -44,8 +45,11 @@ public class XTextDocumentSourceAccessor implements SourceAccessor {
 	    access.modify(new IUnitOfWork.Void<XtextResource>() {
 	    	@Override public void process(XtextResource state) throws Exception {
 	    		// TODO Handling (via TDD) if it doesn't exist yet! Ideally, don't throw an error, but create it on-the-fly...
-	    		EObject eObject = state.getContents().get(0);
-	    	    eObject.eSet(feature, value);
+	    		EObject rootEObject = rootEObject(state);
+				if (rootEObject != null)
+					rootEObject.eSet(feature, value);
+				else
+		    		throw new IllegalStateException("Uh uh, no content in Resource - why you asking to set it, calling code? Feature: " + feature +  ", Resource: " + state);
 	    	};
 		});
 	}
@@ -55,10 +59,21 @@ public class XTextDocumentSourceAccessor implements SourceAccessor {
 		return access.readOnly(new IUnitOfWork<Object, XtextResource>() {
 			@Override public Object exec(XtextResource resource) throws Exception {
 	    		// TODO Handling (via TDD) if it doesn't exist yet! Should probably return null and NOT create it on-the-fly?
-				EObject eObject = resource.getContents().get(0);
-				return eObject.eGet(feature);
+				EObject rootEObject = rootEObject(resource);
+				if (rootEObject != null)
+					return rootEObject.eGet(feature);
+				else
+					return null;
 			}
 		});
+	}
+
+	protected EObject rootEObject(XtextResource resource) {
+		final EList<EObject> contents = resource.getContents();
+		if (!contents.isEmpty())
+			return contents.get(0);
+		else
+			return null;
 	}
 
 	@Override
