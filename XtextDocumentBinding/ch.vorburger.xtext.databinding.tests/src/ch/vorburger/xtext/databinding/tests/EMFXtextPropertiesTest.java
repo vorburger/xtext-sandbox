@@ -116,10 +116,16 @@ public class EMFXtextPropertiesTest {
 		DataBindingTestUtils.assertContextOK(db);
 		
 		assertEquals(bean.getName(), eObject.eGet(titleFeature));
-		
+
+		// First let's test changing the target and checking the model
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", bean.getName()); // This just tests the bean, not the binding
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
+		
+		// Now let's test changing the model and checking the target 
+		eObject.eSet(titleFeature, "setitsetit!");
+		assertEquals("setitsetit!", bean.getName());
+		
 		DataBindingTestUtils.assertContextOK(db);
 	}
 
@@ -152,13 +158,18 @@ public class EMFXtextPropertiesTest {
 		assertEquals(bean.getName(), ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
 		// Root object feature is as set in setUp():
 		assertEquals("This is the Title", eObject.eGet(titleFeature));
-		
-		// Change bound property in bean:
+
+		// Again, first let's test changing the target and checking the model
 		bean.setName("reset, reset");
 		// Referenced Feature has now been set (sync) by binding and changed:
 		assertEquals("reset, reset", ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
 		// Root object feature should NOT have changed:
 		assertEquals("This is the Title", eObject.eGet(titleFeature));
+		
+		// Now let's test changing the model and checking the target
+		containedEObject.eSet(titleFeature, "setitsetit!");
+		assertEquals("setitsetit!", bean.getName());
+		
 		DataBindingTestUtils.assertContextOK(db);
 	}
 
