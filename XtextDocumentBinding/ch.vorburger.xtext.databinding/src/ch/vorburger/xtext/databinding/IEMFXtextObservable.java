@@ -17,6 +17,8 @@ import org.eclipse.emf.databinding.IEMFObservable;
  */
 public interface IEMFXtextObservable extends IEMFObservable {
 
+	// TODO With the new approach, this will probably be deleted...
+	
 	IXtextResourceReadWriteAccess getReadWriteAccess();
 
 }

@@ -32,25 +32,22 @@ public class EMFXtextProperties {
 	// That's not possible today because it's all static - but if one would change it...
 	
 	public static IEMFValueProperty value(EStructuralFeature feature) {
-		IValueProperty property = new EMFXtextValueProperty(feature);
-	    EMFValuePropertyDecorator featureProperty = new EMFValuePropertyDecorator(property, feature);
-	    return featureProperty;
+	    return value(FeaturePath.fromList(feature));
 	}
 
 	public static IEMFValueProperty value(FeaturePath featurePath) {
-		throw new UnsupportedOperationException();
+	    IValueProperty property;
+	    property = new EMFXtextValueProperty(featurePath.getFeaturePath()[0]);
+
+	    IEMFValueProperty featureProperty = new EMFValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
+
+	    for (int i = 1; i < featurePath.getFeaturePath().length; i++)
+	    {
+	      featureProperty = featureProperty.value(featurePath.getFeaturePath()[i]);
+	    }
+
+	    return featureProperty;
 	}
 	
 	// TODO complete this by adding all variations just like in EMFProperties / EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
-
-	// TODO old approach IXtextResourceReadWriteAccess arg is wrong here now of course - fix it 
-	public static EStructuralFeature value(IXtextResourceReadWriteAccess xTextReadWriteAccess, FeaturePath featurePath) {
-		throw new UnsupportedOperationException();
-	}
-
-	// TODO old approach IXtextResourceReadWriteAccess arg is wrong here now of course - fix it 
-	public static EStructuralFeature set(IXtextResourceReadWriteAccess xTextReadWriteAccess, EStructuralFeature feature) {
-		throw new UnsupportedOperationException();
-	}
-	
 }

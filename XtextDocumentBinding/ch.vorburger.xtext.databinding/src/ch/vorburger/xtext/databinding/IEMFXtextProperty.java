@@ -18,6 +18,8 @@ import org.eclipse.emf.databinding.IEMFProperty;
  */
 public interface IEMFXtextProperty extends IEMFProperty {
 
+	// TODO With the new approach, this will probably be deleted...
+
 	  IXtextResourceReadWriteAccess getReadWriteAccess();
 
 }
