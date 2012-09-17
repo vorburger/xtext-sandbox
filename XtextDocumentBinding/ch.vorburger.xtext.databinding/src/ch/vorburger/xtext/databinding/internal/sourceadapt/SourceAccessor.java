@@ -12,7 +12,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
- * Adapter to transform {@link Object}s used as Observed Property Sources in Data Binding.
+ * Wrapper to make the {@link Object}s used as Observed Property Sources in Data Binding useable.
  *   
  * @author Michael Vorburger
  */
@@ -22,9 +22,6 @@ public interface SourceAccessor {
 	
 	Object eGet(EStructuralFeature feature);
 	
-	/**
-	 * Adapts the underlying Source to a List to which EMF Adapters can be added for Change Notification.  
-	 */
 	void addAdapter(Adapter adapter);
 	
 	void removeAdapter(Adapter adapter);

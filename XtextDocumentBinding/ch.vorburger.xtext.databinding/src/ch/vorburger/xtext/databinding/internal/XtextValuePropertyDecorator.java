@@ -50,31 +50,44 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 	}
 
 	@Override
-	public IObservableValue observe(Object source) {
-		return observe(getSourceAsReadWriteAccess(source));
-	}
-	
-	@Override
-	public IObservableValue observe(Realm realm, Object source) {
-		return observe(realm, getSourceAsReadWriteAccess(source));
-	}
-
 	@SuppressWarnings("unchecked")
-	protected IWriteAccess<XtextResource> getSourceAsReadWriteAccess(Object source) {
-		if (source instanceof IWriteAccess<?>) {
-			return (IWriteAccess<XtextResource>) source;
+	public IObservableValue observe(Object source) {
+		if (source instanceof SourceAccessor) {
+			return observe((SourceAccessor) source);
+		} else if (source instanceof IWriteAccess<?>) {
+			return observe((IWriteAccess<XtextResource>) source);
 		} else {
-			throw new IllegalArgumentException("source object to observe is not an IWriteAccess<XtextResource> : " + source);
+			throw new IllegalArgumentException("source object to observe is not an IWriteAccess<XtextResource> (nor a SourceAccessor already): " + source);
 		}
 	}
 	
+	@Override
+	@SuppressWarnings("unchecked")
+	public IObservableValue observe(Realm realm, Object source) {
+		if (source instanceof SourceAccessor) {
+			return observe(realm, (SourceAccessor) source);
+		} else if (source instanceof IWriteAccess<?>) {
+			return observe(realm, (IWriteAccess<XtextResource>) source);
+		} else {
+			throw new IllegalArgumentException("source object to observe is not an IWriteAccess<XtextResource> (nor a SourceAccessor already): " + source);
+		}
+	}
+
+	protected IObservableValue observe(SourceAccessor source) {
+		return super.observe(source);
+	}
+
+	protected IObservableValue observe(Realm realm, SourceAccessor source) {
+		return super.observe(realm, source);
+	}
+
 	@Override
 	// TODO Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
 	public IObservableValue observe(IWriteAccess<XtextResource> source) {
 		// // TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
 		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
 		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
-		return super.observe(wrappedSource);
+		return observe(wrappedSource);
 	}
 
 	@Override
@@ -83,7 +96,7 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 		// TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
 		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
 		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
-		return super.observe(realm, wrappedSource);
+		return observe(realm, wrappedSource);
 	}
 	
 //	@Override

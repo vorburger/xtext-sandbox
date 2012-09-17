@@ -1,5 +1,6 @@
-Greetings name: FirstContact
+Greetings name: xyx
 {
+	childModel: Greetings name: dd {}
 	Hello Homaro!
 	Hello Humanity!
 }

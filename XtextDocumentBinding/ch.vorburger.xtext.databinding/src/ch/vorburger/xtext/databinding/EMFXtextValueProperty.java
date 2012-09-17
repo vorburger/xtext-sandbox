@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import ch.vorburger.xtext.databinding.internal.EMFValuePropertyWithInvalidFeatureLogging;
 import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
+import ch.vorburger.xtext.databinding.internal.sourceadapt.ResourceBasedSourceAccessor;
 import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
 
 
@@ -77,7 +78,7 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 	public IObservableFactory valueFactory() {
 		return new IObservableFactory() {
 			public IObservable createObservable(Object target) {
-				return observe(getResource(target));
+				return observe(getSourceAccessorWrapper(target));
 			}
 		};
 	}
@@ -86,19 +87,14 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 	public IObservableFactory valueFactory(final Realm realm) {
 		return new IObservableFactory() {
 			public IObservable createObservable(Object target) {
-				return observe(realm, getResource(target));
+				return observe(realm, getSourceAccessorWrapper(target));
 			}
 		};
 	}
 
-	protected Resource getResource(Object target) {
+	protected Object getSourceAccessorWrapper(Object target) {
 		EObject eObject = (EObject) target;
-		Resource resource = eObject.eResource();
-		if (resource != null) {
-			return resource;
-		} else {
-			throw new IllegalArgumentException("EObject has no eResource to observe: " + eObject.toString());
-		}
+		return new ResourceBasedSourceAccessor(eObject);
 	}
 
 }

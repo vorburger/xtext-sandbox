@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
- * SourceAccessor based on EObject.
+ * SourceAccessor based on direct EObject access.
  * 
  * This is NOT suitable for Xtext EMF Models, because inside the XtextDocument
  * EObject come and go (the tree is constantly updated and object deleted and

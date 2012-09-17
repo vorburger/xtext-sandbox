@@ -25,13 +25,10 @@
 package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -40,6 +37,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
 import org.junit.After;
 import org.junit.Before;
@@ -109,11 +107,16 @@ public class EMFXtextPropertiesTest {
 		XtextResource resource = new XtextResource();
 		resource.getContents().add(eObject);
 		access = new XtextResourceTestAccess(resource);
-		
-		System.out.println(resource.getURIFragment(eObject));
-		System.out.println(resource.getURIFragment(containedEObject));
 	}
 
+	@Test
+	public void testURIFragment() {
+		Resource resource = containedEObject.eResource();
+		String uriFragment = resource.getURIFragment(containedEObject);
+		EObject gotEObject = resource.getEObject(uriFragment);
+		assertEquals(containedEObject, gotEObject);
+	}
+	
 	@Test
 	public void testSimpleValueBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
