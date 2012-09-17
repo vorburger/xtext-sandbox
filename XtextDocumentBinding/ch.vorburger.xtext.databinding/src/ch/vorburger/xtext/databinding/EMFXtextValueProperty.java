@@ -18,6 +18,7 @@ import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
+import ch.vorburger.xtext.databinding.internal.EMFValuePropertyWithErrorLogging;
 import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
 
 

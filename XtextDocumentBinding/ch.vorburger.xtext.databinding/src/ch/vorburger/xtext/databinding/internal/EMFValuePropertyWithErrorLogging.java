@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xtext.databinding;
+package ch.vorburger.xtext.databinding.internal;
 
 import org.eclipse.core.databinding.util.Policy;
 import org.eclipse.core.runtime.IStatus;
