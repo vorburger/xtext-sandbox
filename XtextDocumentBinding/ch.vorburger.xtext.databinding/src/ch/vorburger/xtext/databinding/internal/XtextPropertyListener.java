@@ -71,13 +71,14 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 		public void notifyChanged(Notification msg) {
 			if (msg.isTouch())
 				return;
-			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
 
-			// TODO how to check to make sure it is this property that is affected and not another?!
-// TODO like this? must cover this with a test case before activating!			
-//			if (!getFeature().equals(msg.getFeature()))
-//				return;
+			// We better make sure it is this property that is affected and not another
+			// (Not doing this still passes tests, as it probably gets filter later,
+			//  so this is more of an optimization?)
+			if (!getFeature().equals(msg.getFeature()))
+				return;
 			
+			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
 			switch (msg.getEventType()) {
 			case Notification.REMOVE:
 				if (msg.getOldValue() instanceof EObject) {

@@ -78,14 +78,16 @@ public class EMFXtextPropertiesTest {
 	private XtextResourceTestAccess access;
 	private EObject eObject;
 	private EObject containedEObject;
+	private EClass clazz;
+	private ECoreHelper helper;
 
 	@Before
 	public void setUp() {
 		// Create an ECore model
-		ECoreHelper helper = new ECoreHelper();
+		helper = new ECoreHelper();
 		EDataType stringType = EcorePackage.eINSTANCE.getEString();
 		EPackage pkg = helper.createPackage("tests");
-		EClass clazz = helper.createClass(pkg, "Test");
+		clazz = helper.createClass(pkg, "Test");
 		titleFeature = helper.addAttribute(clazz, stringType, "title");
 		referenceFeature = helper.addContainmentReference(clazz, clazz, "childContainmentReferenceToTest");
 		
@@ -122,7 +124,12 @@ public class EMFXtextPropertiesTest {
 		assertEquals("reset, reset", bean.getName()); // This just tests the bean, not the binding
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
 		
-		// Now let's test changing the model and checking the target 
+		// Now let's test changing the model and checking the target
+		// Start by changing another feature of the model (which is not data bound, in this test)
+		eObject.eSet(referenceFeature, null);
+		// Of course, the other feature (under test) should, obviously, not change yet
+		assertEquals("reset, reset", bean.getName());
+		// Now we change the data bound feature in model and make sure the target changed 
 		eObject.eSet(titleFeature, "setitsetit!");
 		assertEquals("setitsetit!", bean.getName());
 		
@@ -167,6 +174,11 @@ public class EMFXtextPropertiesTest {
 		assertEquals("This is the Title", eObject.eGet(titleFeature));
 		
 		// Now let's test changing the model and checking the target
+		// Start by changing another feature of the model (which is not data bound, in this test)
+		containedEObject.eSet(referenceFeature, helper.createInstance(clazz));
+		// Of course, the other feature (under test) should, obviously, not change yet
+		assertEquals("reset, reset", bean.getName());
+		// Now we change the data bound feature in model and make sure the target changed 
 		containedEObject.eSet(titleFeature, "setitsetit!");
 		assertEquals("setitsetit!", bean.getName());
 		
