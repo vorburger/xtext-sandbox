@@ -11,8 +11,9 @@ package ch.vorburger.xtext.databinding;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.IEMFValueProperty;
-import org.eclipse.emf.databinding.internal.EMFValuePropertyDecorator;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
+import ch.vorburger.xtext.databinding.internal.XtextValuePropertyDecorator;
 
 /**
  * Like EMFProperties, but compatible with Xtext,
@@ -23,7 +24,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  *
  * @author Michael Vorburger
  */
-@SuppressWarnings("restriction")
 public class EMFXtextProperties {
 
 	// TODO Rename *ALL* the classes to drop EMF* prefix, e.g. EMFXtextProperties -> XtextProperties
@@ -39,7 +39,7 @@ public class EMFXtextProperties {
 	    IValueProperty property;
 	    property = new EMFXtextValueProperty(featurePath.getFeaturePath()[0]);
 
-	    IEMFValueProperty featureProperty = new EMFValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
+	    IEMFValueProperty featureProperty = new XtextValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
 
 	    for (int i = 1; i < featurePath.getFeaturePath().length; i++)
 	    {

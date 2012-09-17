@@ -8,6 +8,8 @@
 
 package ch.vorburger.xtext.databinding.internal;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.observable.Diffs;
 import org.eclipse.core.databinding.property.INativePropertyListener;
 import org.eclipse.core.databinding.property.IProperty;
@@ -20,6 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextSyntaxDiagnostic;
 import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
@@ -33,13 +36,20 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 	// NOTE extends EContentAdapter, NOT EMFPropertyListener which extends AdapterImpl
 
 	@SuppressWarnings("unchecked")
-	protected Resource getResource(Object object) {
-		IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) object;
-		return access.readOnly(new IUnitOfWork<Resource, XtextResource>() {
-			@Override public Resource exec(XtextResource state) throws Exception {
-	    		return state;
-			}
-		});
+	protected Resource getResource(Object source) {
+		// @see very similar logic in EMFXtextValueProperty.doGetValue() :
+		if (source instanceof IReadAccess<?>) {
+			IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;	
+			return access.readOnly(new IUnitOfWork<Resource, XtextResource>() {
+				@Override public Resource exec(XtextResource state) throws Exception {
+		    		return state;
+				}
+			});
+		} else if (source instanceof Resource) {
+			return (Resource) source;
+		} else {
+			throw new IllegalArgumentException("Observed source object is neither an IReadAccess<XtextResource> nor an EMF Resource: " + source);
+		}
 	}
 	
 	@Override
@@ -69,16 +79,11 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 	public abstract static class XtextValuePropertyListener extends XtextPropertyListener {
 		@Override
 		public void notifyChanged(Notification msg) {
+			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
+
 			if (msg.isTouch())
 				return;
-
-			// We better make sure it is this property that is affected and not another
-			// (Not doing this still passes tests, as it probably gets filter later,
-			//  so this is more of an optimization?)
-			if (!getFeature().equals(msg.getFeature()))
-				return;
 			
-			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
 			switch (msg.getEventType()) {
 			case Notification.REMOVE:
 				if (msg.getOldValue() instanceof EObject) {
@@ -95,11 +100,26 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 				break;
 			
 			case Notification.SET:
+				// We better make sure it is this property that is affected and not another
+				// (Not doing this still passes tests, as it probably gets filter later,
+				//  so this is more of an optimization?)
+				if (!getFeature().equals(msg.getFeature()))
+					return;
 				sendChangeEvent(msg, msg.getOldValue(), msg.getNewValue());
 				break;
 				
 			case Notification.REMOVE_MANY:
 				// Ignore Notification.REMOVE_MANY
+				break;
+			case Notification.ADD_MANY:
+				@SuppressWarnings("unchecked") List<Object> newValue = (List<Object>) msg.getNewValue();
+				if (newValue != null & !newValue.isEmpty()) {
+					if (newValue.get(0) instanceof XtextSyntaxDiagnostic) {
+						// Ignore Notification.ADD_MANY for Diagnostics		
+					} else {
+						throw new UnsupportedOperationException(msg.toString());
+					}
+				}
 				break;
 				
 			default:

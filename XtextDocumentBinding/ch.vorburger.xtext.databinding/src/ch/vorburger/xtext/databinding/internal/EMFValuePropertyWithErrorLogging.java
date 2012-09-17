@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author Michael Vorburger
  */
 @SuppressWarnings("restriction")
-public class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
+public abstract class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
 
 	public EMFValuePropertyWithErrorLogging(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
@@ -31,21 +31,25 @@ public class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
 	@Override
 	protected Object doGetValue(Object source) {
 		try {
-			return super.doGetValue(source);
+			return doSafeGetValue(source);
 		} catch (RuntimeException e) {
 			Policy.getLog().log(new Status(IStatus.ERROR, Policy.JFACE_DATABINDING, 0, "Error in EMF eGet", e)); //$NON-NLS-1$
 			throw e;
 		}
 	}
 
+	abstract protected Object doSafeGetValue(Object source);
+
 	@Override
 	protected void doSetValue(Object source, Object value) {
 		try {
-			super.doSetValue(source, value);
+			doSafeSetValue(source, value);
 		} catch (RuntimeException e) {
 			Policy.getLog().log(new Status(IStatus.ERROR, Policy.JFACE_DATABINDING, 0, "Error in EMF eSet", e)); //$NON-NLS-1$
 			throw e;
 		}
 	}
+
+	abstract protected void doSafeSetValue(Object source, Object value);
 
 }

@@ -21,15 +21,15 @@ import org.eclipse.emf.ecore.util.ExtendedMetaData;
  * @author Michael Vorburger
  */
 @SuppressWarnings("restriction")
-public class EMFValuePropertyWithInvalidFeatureLogging extends EMFValuePropertyWithErrorLogging {
+public abstract class EMFValuePropertyWithInvalidFeatureLogging extends EMFValuePropertyWithErrorLogging {
 
 	public EMFValuePropertyWithInvalidFeatureLogging(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
 	}
 
 	@Override
-	protected Object doGetValue(Object source) {
-		// return super.doGetValue(source);
+	protected Object doSafeGetValue(Object source) {
+		// From super.doGetValue(source) :
 	    EObject eObj = (EObject)source;
 	    if (ExtendedMetaData.INSTANCE.getAffiliation(eObj.eClass(), getFeature()) != null) {
 	    	return eObj.eGet(getFeature());

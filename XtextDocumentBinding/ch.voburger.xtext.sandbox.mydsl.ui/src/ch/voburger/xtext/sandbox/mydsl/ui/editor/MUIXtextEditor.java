@@ -9,6 +9,7 @@
 package ch.voburger.xtext.sandbox.mydsl.ui.editor;
 
 import org.eclipse.emf.databinding.EMFDataBindingContext;
+import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -46,30 +47,26 @@ public class MUIXtextEditor extends XtextEditor {
 		xtextSide.setLayout(new FillLayout());
 		super.createPartControl(xtextSide);
 		
-//		final Text textWidgetWithListener = new Text(browserSide, SWT.BORDER);
-//		textWidgetWithListener.addModifyListener(new ModifyListener() {
-//			@Override
-//			public void modifyText(ModifyEvent e) {
-//				final String text = textWidgetWithListener.getText();
-//				//System.out.println(text);
-//				getDocument().modify(new IUnitOfWork.Void<XtextResource>() {
-//					@Override
-//					public void process(XtextResource state) throws Exception {
-//						Model model = (Model) state.getContents().get(0);
-//						model.getGreetings().get(0).setName(text);
-//					}
-//				});
-//			}
-//		});
-		
 		// TODO Validation Errors should show in the Widget! E.g. Name is ID..
 		// http://www.toedter.com/blog/?p=36#comment-16753  ControlDecorationSupport
-		final Text textWidgetWithBinding = new Text(browserSide, SWT.BORDER);
-
+		// http://www.vogella.com/articles/EclipseDataBinding/article.html#databinding_decorations
+		
+		final Text modelName = new Text(browserSide, SWT.BORDER);
+		final Text childModelName = new Text(browserSide, SWT.BORDER);
+		final Text mainGreetingName = new Text(browserSide, SWT.BORDER);
+		
 		EMFDataBindingContext db = new EMFDataBindingContext();
 		db.bindValue(
-				WidgetProperties.text(SWT.Modify).observe(textWidgetWithBinding),
+				WidgetProperties.text(SWT.Modify).observe(modelName),
 				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
+		db.bindValue(
+				WidgetProperties.text(SWT.Modify).observe(childModelName),
+				EMFXtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__CHILD_MODEL, MyDslPackage.Literals.MODEL__NAME))
+					.observe(getDocument()));
+		db.bindValue(
+				WidgetProperties.text(SWT.Modify).observe(mainGreetingName),
+				EMFXtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__MAIN_GREEETING, MyDslPackage.Literals.GREETING__NAME))
+					.observe(getDocument()));
 		
 		sashForm.setWeights(new int[] {10,90});
 	}
