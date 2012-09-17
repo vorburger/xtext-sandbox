@@ -26,7 +26,6 @@ package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.emf.ecore.EAttribute;
@@ -36,6 +35,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.resource.XtextResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import ch.vorburger.beans.AbstractPropertyChangeNotifier;
@@ -63,30 +64,40 @@ public class EMFXtextPropertiesTest {
 		}
 	}
 
-	@Test
-	public void testSimpleValueBinding() {
+	private XtextDataBindingContext db;
+	private EAttribute titleFeature;
+	private Bean bean;
+	private XtextResourceTestAccess access;
+	private EObject eObject;
+
+	@Before
+	public void setUp() {
 		// Create an ECore model
 		ECoreHelper helper = new ECoreHelper();
 		EDataType stringType = EcorePackage.eINSTANCE.getEString();
 		EPackage pkg = helper.createPackage("tests");
 		EClass clazz = helper.createClass(pkg, "Test");
-		EAttribute titleFeature = helper.addAttribute(clazz, stringType, "title");
+		titleFeature = helper.addAttribute(clazz, stringType, "title");
 
 		// Create an EObject
-		EObject eObject = helper.createInstance(clazz);
+		eObject = helper.createInstance(clazz);
 		eObject.eSet(titleFeature, "This is the Title");
 		
 		// Create a Bean
-		Bean bean = new Bean();
+		bean = new Bean();
 		
 		Realm realm = new DatabindingTestRealm();
-		DataBindingContext db = new XtextDataBindingContext(realm);
+		db = new XtextDataBindingContext(realm);
 		
 		// TODO Use an indirect WritableValue in observe instead of direct (both for illustration and to test it)
 		
 		XtextResource resource = new XtextResource();
 		resource.getContents().add(eObject);
-		XtextResourceTestAccess access = new XtextResourceTestAccess(resource);
+		access = new XtextResourceTestAccess(resource);
+	}
+
+	@Test
+	public void testSimpleValueBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(titleFeature).observe(access));
 		
@@ -95,7 +106,10 @@ public class EMFXtextPropertiesTest {
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", bean.getName());
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
-		
+	}
+
+	@After
+	public void tearDown() {
 		db.dispose();
 	}
 
