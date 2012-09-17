@@ -72,7 +72,6 @@ public class MUIXtextEditor extends XtextEditor {
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(textWidgetWithBinding),
 				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
-		// TODO Must throw exception when using wrong binding EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME).observe(getDocument())
 		
 		sashForm.setWeights(new int[] {10,90});
 		
