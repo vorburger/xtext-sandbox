@@ -35,11 +35,11 @@ public class EMFXtextProperties {
 	    return value(FeaturePath.fromList(feature));
 	}
 
-	public static IEMFValueProperty value(FeaturePath featurePath) {
+	public static IXtextValueProperty value(FeaturePath featurePath) {
 	    IValueProperty property;
 	    property = new EMFXtextValueProperty(featurePath.getFeaturePath()[0]);
 
-	    IEMFValueProperty featureProperty = new XtextValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
+	    IXtextValueProperty featureProperty = new XtextValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
 
 	    for (int i = 1; i < featurePath.getFeaturePath().length; i++)
 	    {

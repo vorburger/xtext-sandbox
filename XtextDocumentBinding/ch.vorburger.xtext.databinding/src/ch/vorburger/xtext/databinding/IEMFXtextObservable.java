@@ -10,6 +10,8 @@ package ch.vorburger.xtext.databinding;
 
 import org.eclipse.emf.databinding.IEMFObservable;
 
+import ch.vorburger.xtext.databinding.internal.sourceadapt.IXtextResourceReadWriteAccess;
+
 /**
  * Like IEMFEditObservable, but using an IXtextResourceReadWriteAccess instead of an EditingDomain.
  * 

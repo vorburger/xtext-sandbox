@@ -55,6 +55,8 @@ public class MUIXtextEditor extends XtextEditor {
 		final Text childModelName = new Text(browserSide, SWT.BORDER);
 		final Text mainGreetingName = new Text(browserSide, SWT.BORDER);
 		
+		// TODO Is there any use to go via an indirect WritableValue in observe instead of getDocument() ?  Double check if it works.. as we are registering change notification adapters on the Resource in the SourceAccessor implementation, I'm not sure it will work as-is. 
+		
 		EMFDataBindingContext db = new EMFDataBindingContext();
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(modelName),

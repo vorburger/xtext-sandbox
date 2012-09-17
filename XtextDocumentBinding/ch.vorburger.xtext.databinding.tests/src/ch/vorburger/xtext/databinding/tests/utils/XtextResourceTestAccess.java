@@ -10,18 +10,16 @@ package ch.vorburger.xtext.databinding.tests.utils;
 
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
-
-import ch.vorburger.xtext.databinding.IXtextResourceReadWriteAccess;
+import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
 /**
  * IXtextResourceReadWriteAccess for tests.
  *
  * @author Michael Vorburger
  */
-public class XtextResourceTestAccess implements IXtextResourceReadWriteAccess {
-
-	// TODO Remove? Probably won't be needed anymore, once I'm done with the rewrite based on the new approach..
+public class XtextResourceTestAccess implements IReadAccess<XtextResource>, IWriteAccess<XtextResource> {
 
 	private final XtextResource state;
 

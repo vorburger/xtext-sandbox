@@ -19,12 +19,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.databinding.internal.EMFPropertyListener;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextSyntaxDiagnostic;
-import org.eclipse.xtext.util.concurrent.IReadAccess;
-import org.eclipse.xtext.util.concurrent.IUnitOfWork;
+
+import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
 
 /**
  * Like {@link EMFPropertyListener}, but {@link #addTo(Object)} works with Resource instead of EObject.
@@ -33,37 +31,18 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
  */
 @SuppressWarnings("restriction")
 public abstract class XtextPropertyListener extends EContentAdapter implements INativePropertyListener {
-	// NOTE extends EContentAdapter, NOT EMFPropertyListener which extends AdapterImpl
+	// NOTE This extends EContentAdapter, NOT EMFPropertyListener which extends just AdapterImpl
 
-	@SuppressWarnings("unchecked")
-	protected Resource getResource(Object source) {
-		// @see very similar logic in EMFXtextValueProperty.doGetValue() :
-		if (source instanceof IReadAccess<?>) {
-			IReadAccess<XtextResource> access = (IReadAccess<XtextResource>) source;	
-			return access.readOnly(new IUnitOfWork<Resource, XtextResource>() {
-				@Override public Resource exec(XtextResource state) throws Exception {
-		    		return state;
-				}
-			});
-		} else if (source instanceof Resource) {
-			return (Resource) source;
-		} else {
-			throw new IllegalArgumentException("Observed source object is neither an IReadAccess<XtextResource> nor an EMF Resource: " + source);
-		}
-	}
-	
 	@Override
 	public void addTo(Object source) {
-		if (source != null) {
-			getResource(source).eAdapters().add(this);
-		}
+		SourceAccessor sourceAccessor = (SourceAccessor) source;
+		sourceAccessor.addAdapter(this);
 	}
 
 	@Override
 	public void removeFrom(Object source) {
-		if (source != null) {
-			getResource(source).eAdapters().remove(this);
-		}
+		SourceAccessor sourceAccessor = (SourceAccessor) source;
+		sourceAccessor.removeAdapter(this);
 	}
 
 	@Override

@@ -17,6 +17,8 @@ import org.eclipse.emf.databinding.IEMFListProperty;
  */
 public interface IEMFXtextListProperty extends IEMFXtextProperty, IEMFListProperty {
 
+	// TODO Merge with new IXtextValueProperty, and remove!
+	
 	  IEMFXtextListProperty values(IEMFXtextValueProperty property);
 
 }

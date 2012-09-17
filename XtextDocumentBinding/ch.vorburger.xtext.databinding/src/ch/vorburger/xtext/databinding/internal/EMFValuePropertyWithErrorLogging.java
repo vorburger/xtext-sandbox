@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 @SuppressWarnings("restriction")
 public abstract class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
 
+	// TODO move this one into an internal.helper sub-package
+	
 	public EMFValuePropertyWithErrorLogging(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
 	}

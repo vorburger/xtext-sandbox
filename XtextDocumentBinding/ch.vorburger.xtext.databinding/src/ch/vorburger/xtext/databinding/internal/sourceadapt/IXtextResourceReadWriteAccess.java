@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xtext.databinding;
+package ch.vorburger.xtext.databinding.internal.sourceadapt;
 
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.concurrent.IReadAccess;
@@ -18,7 +18,6 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
  * @author Michael Vorburger
  */
 public interface IXtextResourceReadWriteAccess extends IReadAccess<XtextResource>, IWriteAccess<XtextResource> {
-	
-	// TODO Remove! This won't be needed anymore, once I'm done with the rewrite based on the new approach..
+	// TODO This could & should be in org.eclipse.xtext (NOT xtext.util *NOR* xtext.ui!), and org.eclipse.xtext.ui.editor.model.IXtextDocument should extend this instead of IReadAccess<XtextResource>, IWriteAccess<XtextResource>  
 	
 }

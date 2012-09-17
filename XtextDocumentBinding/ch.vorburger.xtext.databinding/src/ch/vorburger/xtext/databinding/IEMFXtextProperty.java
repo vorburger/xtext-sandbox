@@ -10,6 +10,8 @@ package ch.vorburger.xtext.databinding;
 
 import org.eclipse.emf.databinding.IEMFProperty;
 
+import ch.vorburger.xtext.databinding.internal.sourceadapt.IXtextResourceReadWriteAccess;
+
 
 /**
  * Like IEMFEditProperty, but using an IXtextResourceReadWriteAccess instead of an EditingDomain.

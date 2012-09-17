@@ -17,6 +17,8 @@ import org.eclipse.emf.databinding.IEMFMapProperty;
  */
 public interface IEMFXtextMapProperty extends IEMFXtextProperty, IEMFMapProperty {
 
-	  IEMFXtextMapProperty values(IEMFXtextValueProperty property);
+	// TODO Merge with new IXtextValueProperty, and remove!
+
+	IEMFXtextMapProperty values(IEMFXtextValueProperty property);
 	  
 }

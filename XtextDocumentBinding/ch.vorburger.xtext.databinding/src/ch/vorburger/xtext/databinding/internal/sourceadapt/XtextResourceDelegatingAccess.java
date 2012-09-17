@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xtext.databinding;
+package ch.vorburger.xtext.databinding.internal.sourceadapt;
 
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.concurrent.IReadAccess;
@@ -15,11 +15,13 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
 // package-local
 public class XtextResourceDelegatingAccess implements IXtextResourceReadWriteAccess {
+	// TODO Remove this once XTextDocument implements IXtextResourceReadWriteAccess 
+	
 	private final IWriteAccess<XtextResource> writeDelegate;
 	private final IReadAccess<XtextResource> readDelegate;
 
 	@SuppressWarnings("unchecked")
-	XtextResourceDelegatingAccess(IWriteAccess<XtextResource> xTextWriteAccess) {
+	public XtextResourceDelegatingAccess(IWriteAccess<XtextResource> xTextWriteAccess) {
 		writeDelegate = xTextWriteAccess;
 		readDelegate = (IReadAccess<XtextResource>) xTextWriteAccess;
 	}

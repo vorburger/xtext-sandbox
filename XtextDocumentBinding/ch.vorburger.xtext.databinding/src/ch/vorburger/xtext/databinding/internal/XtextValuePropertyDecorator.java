@@ -8,9 +8,8 @@
 
 package ch.vorburger.xtext.databinding.internal;
 
-import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.Realm;
-import org.eclipse.core.databinding.observable.masterdetail.IObservableFactory;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.core.internal.databinding.property.ValuePropertyDetailValue;
 import org.eclipse.emf.databinding.FeaturePath;
@@ -19,11 +18,15 @@ import org.eclipse.emf.databinding.IEMFMapProperty;
 import org.eclipse.emf.databinding.IEMFSetProperty;
 import org.eclipse.emf.databinding.IEMFValueProperty;
 import org.eclipse.emf.databinding.internal.EMFValuePropertyDecorator;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
+import ch.vorburger.xtext.databinding.IXtextValueProperty;
+import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
+import ch.vorburger.xtext.databinding.internal.sourceadapt.XTextDocumentSourceAccessor;
+import ch.vorburger.xtext.databinding.internal.sourceadapt.XtextResourceDelegatingAccess;
 
 /**
  * Like EMFValuePropertyDecorator, but for the Xtext Data Binding.
@@ -31,7 +34,7 @@ import ch.vorburger.xtext.databinding.EMFXtextProperties;
  * @author Michael Vorburger
  */
 @SuppressWarnings("restriction")
-public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator {
+public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator implements IXtextValueProperty {
 
 	// TODO Similarly to (EMF)XtextProperties, it would be better if this class could share more code with EMFValuePropertyDecorator...
 	// That's not possible today because EMFValuePropertyDecorator uses new instead of some kind of Factory methods - but if one would change that...
@@ -45,19 +48,61 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator {
 	    this.delegate = delegate;
 	    this.eStructuralFeature = eStructuralFeature;
 	}
+
+	@Override
+	public IObservableValue observe(Object source) {
+		return observe(getSourceAsReadWriteAccess(source));
+	}
 	
 	@Override
-	public IEMFValueProperty value(EStructuralFeature feature) {
+	public IObservableValue observe(Realm realm, Object source) {
+		return observe(realm, getSourceAsReadWriteAccess(source));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected IWriteAccess<XtextResource> getSourceAsReadWriteAccess(Object source) {
+		if (source instanceof IWriteAccess<?>) {
+			return (IWriteAccess<XtextResource>) source;
+		} else {
+			throw new IllegalArgumentException("source object to observe is not an IWriteAccess<XtextResource> : " + source);
+		}
+	}
+	
+	@Override
+	// TODO Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
+	public IObservableValue observe(IWriteAccess<XtextResource> source) {
+		// // TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
+		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
+		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
+		return super.observe(wrappedSource);
+	}
+
+	@Override
+	// TODO Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
+	public IObservableValue observe(Realm realm, IWriteAccess<XtextResource> source) {
+		// TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
+		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
+		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
+		return super.observe(realm, wrappedSource);
+	}
+	
+//	@Override
+//	public IObservableValue observe(EObject source) {
+//		throw new UnsupportedOperationException();
+//	}
+	
+	@Override
+	public IXtextValueProperty value(EStructuralFeature feature) {
 		return value(FeaturePath.fromList(feature));
 	}
 
 	@Override
-	public IEMFValueProperty value(FeaturePath featurePath) {
+	public IXtextValueProperty value(FeaturePath featurePath) {
 		return value(EMFXtextProperties.value(featurePath));
 	}
 
 	@Override
-	public IEMFValueProperty value(IEMFValueProperty property) {
+	public IXtextValueProperty value(IEMFValueProperty property) {
 		return new XtextValuePropertyDecorator(
 				new ValuePropertyDetailValue(/*master*/ this, /*detail*/ property), // NOT super.value(property) ! 
 				property.getStructuralFeature());
@@ -98,8 +143,6 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator {
 		// TODO return new XtextMapPropertyDecorator(super.map(property), property.getStructuralFeature());
 		throw new UnsupportedOperationException();
 	}
-	
-
 	
 // We might not need Xtext-specific subclassed variants of the Decorators?
 //
