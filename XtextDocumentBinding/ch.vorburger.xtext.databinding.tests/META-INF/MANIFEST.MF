@@ -12,5 +12,6 @@ Require-Bundle: ch.vorburger.xtext.databinding,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.core.databinding.beans;bundle-version="1.2.200"
 Export-Package: ch.vorburger.beans,
+ ch.vorburger.databinding.tests.utils,
  ch.vorburger.xtext.databinding.tests.utils
 

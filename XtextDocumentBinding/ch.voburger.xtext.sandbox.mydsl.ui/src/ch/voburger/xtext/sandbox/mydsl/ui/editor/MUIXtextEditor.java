@@ -12,8 +12,6 @@ import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -74,8 +72,6 @@ public class MUIXtextEditor extends XtextEditor {
 				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
 		
 		sashForm.setWeights(new int[] {10,90});
-		
-		// TODO Why Bidi not working in Editor, although it does in Test? Change DSL -> change Widget!
 	}
 
 }

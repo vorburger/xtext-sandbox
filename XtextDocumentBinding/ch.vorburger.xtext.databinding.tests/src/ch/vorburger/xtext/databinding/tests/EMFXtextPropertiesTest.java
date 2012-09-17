@@ -47,6 +47,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.vorburger.beans.AbstractPropertyChangeNotifier;
+import ch.vorburger.databinding.tests.utils.DataBindingTestUtils;
 import ch.vorburger.databinding.tests.utils.DatabindingTestRealm;
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
 import ch.vorburger.xtext.databinding.XtextDataBindingContext;
@@ -109,12 +110,14 @@ public class EMFXtextPropertiesTest {
 	public void testSimpleValueBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(titleFeature).observe(access));
+		DataBindingTestUtils.assertContextOK(db);
 		
 		assertEquals(eObject.eGet(titleFeature), bean.getName());
 		
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", bean.getName()); // This just tests the bean, not the binding
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
+		DataBindingTestUtils.assertContextOK(db);
 	}
 
 	/**
@@ -140,6 +143,7 @@ public class EMFXtextPropertiesTest {
 	public void testPathFeatureBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
 				EMFXtextProperties.value(FeaturePath.fromList(referenceFeature, titleFeature)).observe(access));
+		DataBindingTestUtils.assertContextOK(db);
 		
 		assertEquals(((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature), bean.getName());
 		assertNull(eObject.eGet(titleFeature));
@@ -147,6 +151,7 @@ public class EMFXtextPropertiesTest {
 		bean.setName("reset, reset");
 		assertEquals("reset, reset", ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
 		assertNull(eObject.eGet(titleFeature));
+		DataBindingTestUtils.assertContextOK(db);
 	}
 
 	@After
