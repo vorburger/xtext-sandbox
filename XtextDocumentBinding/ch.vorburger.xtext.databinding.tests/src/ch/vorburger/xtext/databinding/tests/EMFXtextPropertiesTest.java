@@ -25,16 +25,23 @@
 package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.util.concurrent.IReadAccess;
+import org.eclipse.xtext.util.concurrent.IWriteAccess;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +73,7 @@ public class EMFXtextPropertiesTest {
 
 	private XtextDataBindingContext db;
 	private EAttribute titleFeature;
+	private EReference referenceFeature;
 	private Bean bean;
 	private XtextResourceTestAccess access;
 	private EObject eObject;
@@ -78,7 +86,8 @@ public class EMFXtextPropertiesTest {
 		EPackage pkg = helper.createPackage("tests");
 		EClass clazz = helper.createClass(pkg, "Test");
 		titleFeature = helper.addAttribute(clazz, stringType, "title");
-
+		referenceFeature = helper.addContainmentReference(clazz, clazz, "childContainmentReferenceToTest");
+		
 		// Create an EObject
 		eObject = helper.createInstance(clazz);
 		eObject.eSet(titleFeature, "This is the Title");
@@ -107,6 +116,37 @@ public class EMFXtextPropertiesTest {
 		assertEquals("reset, reset", bean.getName());
 		assertEquals("reset, reset", eObject.eGet(titleFeature));
 	}
+
+	/**
+	 * Tests that using an EObject in observe(), like the EMFProperties Data Binding API expects fails.
+	 * The XtextProperties Data Binding API needs to be observing an XTextDocument (IReadAccess<XtextResource>, IWriteAccess<XtextResource>). 
+	 */
+	@Test
+	public void testErrorObserveObjectInsteadOfresourceAcess() {
+		db.bindValue(BeanProperties.value("name").observe(bean),
+				EMFXtextProperties.value(titleFeature).observe(eObject));
+		
+		bean.setName("reset, reset"); // TODO needed?
+		Binding binding1 = (Binding) db.getBindings().get(0);
+		IStatus status = (IStatus)binding1.getValidationStatus().getValue();
+		assertFalse("Binding should have caused a validation error", status.isOK());
+		assertTrue(status.toString(), status.getException() instanceof ClassCastException);
+
+		// We have to remove the failed binding, otherwise the db.dispose() in tearDown() fails the test
+		db.removeBinding(binding1);
+	}
+	
+//	@Test
+//	public void testPathFeatureBinding() {
+//		db.bindValue(BeanProperties.value("name").observe(bean),
+//				EMFXtextProperties.value(titleFeature).observe(access));
+//		
+//		assertEquals(eObject.eGet(titleFeature), bean.getName());
+//		
+//		bean.setName("reset, reset");
+//		assertEquals("reset, reset", bean.getName());
+//		assertEquals("reset, reset", eObject.eGet(titleFeature));
+//	}
 
 	@After
 	public void tearDown() {
