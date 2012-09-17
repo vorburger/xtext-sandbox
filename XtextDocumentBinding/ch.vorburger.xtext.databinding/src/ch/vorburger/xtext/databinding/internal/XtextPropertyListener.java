@@ -67,28 +67,43 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 
 	
 	public abstract static class XtextValuePropertyListener extends XtextPropertyListener {
-		// TODO Carefully test if this will really work for FeaturePath as well, not just for one root EStructuralFeature...
 		@Override
 		public void notifyChanged(Notification msg) {
-			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
 			if (msg.isTouch())
 				return;
-			// TODO rewrite this more nicely.. use switch case? move out shareable code.
-			// TODO how to check to make sure it is this property that is affected and not another?
-			if (msg.getEventType() == Notification.REMOVE) {
+			System.out.println(msg); // TODO Remove Dev only System.out.println used to learn
+
+			// TODO how to check to make sure it is this property that is affected and not another?!
+// TODO like this? must cover this with a test case before activating!			
+//			if (!getFeature().equals(msg.getFeature()))
+//				return;
+			
+			switch (msg.getEventType()) {
+			case Notification.REMOVE:
 				if (msg.getOldValue() instanceof EObject) {
 					EObject oldEObject = (EObject) msg.getOldValue();
 					sendChangeEvent(msg, oldEObject.eGet(getFeature()), null);
 				}
-			} else if (msg.getEventType() == Notification.ADD) {
+				break;
+
+			case Notification.ADD:
 				if (msg.getNewValue() instanceof EObject) {
 					EObject newEObject = (EObject) msg.getNewValue();
 					sendChangeEvent(msg, null, newEObject.eGet(getFeature()));
 				}
-			} else if (msg.getEventType() == Notification.SET) {
-				// TODO Must handle this!
+				break;
+			
+			case Notification.SET:
+				sendChangeEvent(msg, msg.getOldValue(), msg.getNewValue());
+				break;
+				
+			case Notification.REMOVE_MANY:
+				// Ignore Notification.REMOVE_MANY
+				break;
+				
+			default:
+				throw new UnsupportedOperationException(msg.toString());
 			}
-			// OK to ignore Notification.REMOVE_MANY
 		}
 		
 		protected void sendChangeEvent(Notification msg, Object oldValue, Object newValue) {
