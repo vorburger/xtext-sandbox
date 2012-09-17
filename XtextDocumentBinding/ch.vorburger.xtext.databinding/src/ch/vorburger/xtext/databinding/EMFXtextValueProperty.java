@@ -18,7 +18,7 @@ import org.eclipse.xtext.util.concurrent.IReadAccess;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
-import ch.vorburger.xtext.databinding.internal.EMFValuePropertyWithErrorLogging;
+import ch.vorburger.xtext.databinding.internal.EMFValuePropertyWithInvalidFeatureLogging;
 import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
 
 
@@ -28,7 +28,7 @@ import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
  * @author Michael Vorburger
  */
 @SuppressWarnings({ "unchecked", "restriction" })
-public class EMFXtextValueProperty extends EMFValuePropertyWithErrorLogging {
+public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLogging {
 
 	public EMFXtextValueProperty(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);

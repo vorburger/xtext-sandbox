@@ -12,9 +12,7 @@ import org.eclipse.core.databinding.util.Policy;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.databinding.internal.EMFValueProperty;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.ExtendedMetaData;
 
 /**
  * EMFValueProperty which logs an error for any Exception caught from eSet() & eGet().
@@ -33,17 +31,7 @@ public class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
 	@Override
 	protected Object doGetValue(Object source) {
 		try {
-			// return super.doGetValue(source);
-		    EObject eObj = (EObject)source;
-		    if (ExtendedMetaData.INSTANCE.getAffiliation(eObj.eClass(), getFeature()) != null) {
-		    	return eObj.eGet(getFeature());
-		    } else {
-		    	String msg = "Could not find Feature '" + getFeature().getName()
-		    			+ "' of EClass '" + getFeature().getEContainingClass().getName()
-		    			+ "' on EObject " + eObj.toString(); //$NON-NLS-1$
-				Policy.getLog().log(new Status(IStatus.ERROR, Policy.JFACE_DATABINDING, msg));
-				throw new IllegalArgumentException(msg);
-		    }
+			return super.doGetValue(source);
 		} catch (RuntimeException e) {
 			Policy.getLog().log(new Status(IStatus.ERROR, Policy.JFACE_DATABINDING, 0, "Error in EMF eGet", e)); //$NON-NLS-1$
 			throw e;
