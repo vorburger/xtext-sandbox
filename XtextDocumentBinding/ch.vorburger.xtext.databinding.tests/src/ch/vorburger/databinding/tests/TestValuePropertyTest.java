@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
-import ch.vorburger.xtext.databinding.tests.utils.DatabindingTestRealm;
+import ch.vorburger.databinding.tests.utils.DatabindingTestRealm;
 import ch.vorburger.xtext.databinding.tests.utils.ECoreHelper;
 
 @SuppressWarnings("restriction")

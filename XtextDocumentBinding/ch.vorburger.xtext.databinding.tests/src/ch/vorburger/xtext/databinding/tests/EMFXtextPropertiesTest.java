@@ -47,9 +47,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.vorburger.beans.AbstractPropertyChangeNotifier;
+import ch.vorburger.databinding.tests.utils.DatabindingTestRealm;
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
 import ch.vorburger.xtext.databinding.XtextDataBindingContext;
-import ch.vorburger.xtext.databinding.tests.utils.DatabindingTestRealm;
 import ch.vorburger.xtext.databinding.tests.utils.ECoreHelper;
 import ch.vorburger.xtext.databinding.tests.utils.XtextResourceTestAccess;
 

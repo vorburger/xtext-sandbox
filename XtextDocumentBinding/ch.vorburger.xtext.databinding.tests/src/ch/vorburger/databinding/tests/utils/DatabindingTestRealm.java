@@ -22,7 +22,7 @@
  *  limitations under the License.
  */
 
-package ch.vorburger.xtext.databinding.tests.utils;
+package ch.vorburger.databinding.tests.utils;
 
 import org.eclipse.core.databinding.observable.Realm;
 
