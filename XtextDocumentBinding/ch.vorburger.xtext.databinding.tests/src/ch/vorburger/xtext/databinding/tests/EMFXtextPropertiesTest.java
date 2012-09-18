@@ -26,7 +26,6 @@ package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.emf.databinding.FeaturePath;
@@ -115,6 +114,8 @@ public class EMFXtextPropertiesTest {
 		String uriFragment = resource.getURIFragment(containedEObject);
 		EObject gotEObject = resource.getEObject(uriFragment);
 		assertEquals(containedEObject, gotEObject);
+		// System.out.println(resource.getURIFragment(eObject));
+		// System.out.println(uriFragment);
 	}
 	
 	@Test

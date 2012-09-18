@@ -19,10 +19,18 @@ import org.eclipse.emf.ecore.resource.Resource;
  * @author Michael Vorburger
  */
 public class ResourceBasedSourceAccessor implements SourceAccessor {
+	// TODO This class is not actually used here, anymore - probably delete it later, as it makes no sense/has no use anymore. If for any reason I end up keeping it, should refactor to share code with XTextDocumentSourceAccessor instead of having copy/pasted it in there
 
 	private final Resource resource;
 	private final String uriFragment;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param eObject to access later. Implementation keeps URI Fragment of this
+	 *            EOBject in Resource - but shall never "hang on" to (keep a reference)
+	 *            to this object! 
+	 */
 	public ResourceBasedSourceAccessor(EObject eObject) {
 		super();
 		resource = eObject.eResource();
@@ -48,7 +56,6 @@ public class ResourceBasedSourceAccessor implements SourceAccessor {
 		final EObject eObject = resource.getEObject(uriFragment);
 		if (eObject == null)
 			return null;
-			// TODO ??? throw new IllegalStateException("Huh?! resource.getEObject(uriFragment) == null on Resource " + resource + ", for URI Fragment " + uriFragment);
 		return eObject.eGet(feature);
 	}
 
