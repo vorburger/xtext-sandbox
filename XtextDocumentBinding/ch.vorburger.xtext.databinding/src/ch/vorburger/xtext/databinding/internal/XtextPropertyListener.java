@@ -79,11 +79,16 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 				break;
 			
 			case Notification.SET:
-				// We better make sure it is this property that is affected and not another
-				// (Not doing this still passes tests, as it probably gets filter later,
-				//  so this is more of an optimization?)
-				if (!getFeature().equals(msg.getFeature()))
-					return;
+				// In an ideal world, we should may be "filter" to make sure it is this property
+				// that is affected and not another.  However, as not doing that still works,
+				// as something else appears to re-check further down the road, we pass on
+				// everything... because AFAIK it would be difficult to get this right:
+				// In the case of a nested property (based on an observeDetail()),
+				// I can't see how we could correctly filter? 
+				//
+				// It's possibly slightly in-efficient, but it works!
+				// Could optimize later.
+				//
 				sendChangeEvent(msg, msg.getOldValue(), msg.getNewValue());
 				break;
 				
