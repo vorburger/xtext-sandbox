@@ -21,12 +21,6 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
  * (IReadAccess<XtextResource> & IWriteAccess<XtextResource>),
  * normally the XtextDocument.
  * 
- * <p>This can only access Features in the first EObject of
- * the Resource contents, and nothing "nested deeper inside".
- * For the purposed of getting a starting point for Data Binding,
- * that's good enough.  Nesting works through the 
- * </p>
- * 
  * <p>Notification Adapters are registered on the Resource.</p>
  * 
  * @author Michael Vorburger
