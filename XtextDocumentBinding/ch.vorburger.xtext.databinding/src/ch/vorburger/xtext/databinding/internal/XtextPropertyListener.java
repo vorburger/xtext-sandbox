@@ -58,7 +58,8 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 	public abstract static class XtextValuePropertyListener extends XtextPropertyListener {
 		@Override
 		public void notifyChanged(Notification msg) {
-			System.out.println("XtextValuePropertyListener: " + msg); // TODO Remove Dev only System.out.println used to learn
+			// TODO HIGH Remove Dev only System.out.println used to learn.. use a logger?
+			System.out.println("XtextValuePropertyListener: " + msg);
 
 			if (msg.isTouch())
 				return;

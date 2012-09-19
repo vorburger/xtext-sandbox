@@ -47,7 +47,7 @@ public class MUIXtextEditor extends XtextEditor {
 		xtextSide.setLayout(new FillLayout());
 		super.createPartControl(xtextSide);
 		
-		// TODO Validation Errors should show in the Widget! E.g. Name is ID..
+		// TODO HIGH Validation Errors should show in the Widget! E.g. Name is ID..
 		// http://www.toedter.com/blog/?p=36#comment-16753  ControlDecorationSupport
 		// http://www.vogella.com/articles/EclipseDataBinding/article.html#databinding_decorations
 		
@@ -55,7 +55,7 @@ public class MUIXtextEditor extends XtextEditor {
 		final Text childModelName = new Text(browserSide, SWT.BORDER);
 		final Text mainGreetingName = new Text(browserSide, SWT.BORDER);
 		
-		// TODO Is there any use to go via an indirect WritableValue in observe instead of getDocument() ?  Double check if it works.. as we are registering change notification adapters on the Resource in the SourceAccessor implementation, I'm not sure it will work as-is. 
+		// TODO HIGH Is there any use to go via an indirect WritableValue in observe instead of getDocument() ?  Double check if it works.. as we are registering change notification adapters on the Resource in the SourceAccessor implementation, I'm not sure it will work as-is. 
 		
 		EMFDataBindingContext db = new EMFDataBindingContext();
 		db.bindValue(

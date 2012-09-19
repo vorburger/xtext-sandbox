@@ -21,9 +21,9 @@ import ch.vorburger.xtext.databinding.tests.utils.ECoreHelper;
 @SuppressWarnings("restriction")
 public class TestValuePropertyTest {
 	
-	// TODO Look into Core DataBinding sources for stuff like this...
+	// TODO LOW Look into Core DataBinding sources for stuff like this...
 	
-	// TODO Actually, make this independent of EMF Data Binding - just test binding two TestValueProperties
+	// TODO LOW Actually, make this independent of EMF Data Binding - just test binding two TestValueProperties
 	
 	@Test
 	public void test1() {

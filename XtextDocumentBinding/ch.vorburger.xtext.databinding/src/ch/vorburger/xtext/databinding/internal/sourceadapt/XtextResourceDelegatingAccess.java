@@ -15,7 +15,7 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
 // package-local
 public class XtextResourceDelegatingAccess implements IXtextResourceReadWriteAccess {
-	// TODO Remove this once XTextDocument implements IXtextResourceReadWriteAccess 
+	// TODO LOW Remove this once XTextDocument implements IXtextResourceReadWriteAccess 
 	
 	private final IWriteAccess<XtextResource> writeDelegate;
 	private final IReadAccess<XtextResource> readDelegate;

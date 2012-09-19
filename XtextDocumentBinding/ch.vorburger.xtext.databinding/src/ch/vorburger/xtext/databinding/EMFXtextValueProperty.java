@@ -20,8 +20,8 @@ import org.eclipse.core.databinding.property.ISimplePropertyListener;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import ch.vorburger.xtext.databinding.internal.EMFValuePropertyWithInvalidFeatureLogging;
 import ch.vorburger.xtext.databinding.internal.XtextPropertyListener;
+import ch.vorburger.xtext.databinding.internal.nicetohave.EMFValuePropertyWithInvalidFeatureLogging;
 import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
 import ch.vorburger.xtext.databinding.internal.sourceadapt.XTextDocumentSourceAccessor;
 
@@ -53,28 +53,22 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 	@Override
 	public INativePropertyListener adaptListener(final ISimplePropertyListener listener) {
 		return new XtextPropertyListener.XtextValuePropertyListener() {
-	    	@Override
-	        protected IProperty getOwner() {
-	          return EMFXtextValueProperty.this;
-	        }
-
-	        @Override
-	        protected ISimplePropertyListener getListener() {
-	          return listener;
-	        }
+			@Override
+			protected IProperty getOwner() {
+				return EMFXtextValueProperty.this;
+			}
 
 			@Override
-	        protected EStructuralFeature getFeature() {
-	          return EMFXtextValueProperty.this.getFeature();
-	        }
-	      };
-	  }
+			protected ISimplePropertyListener getListener() {
+				return listener;
+			}
 
-	// TODO Doc why are we doing this:
-	// During
-	// org.eclipse.core.internal.databinding.observable.masterdetail.DetailObservableValue,
-	// when valueFactory() [see below] directly returns the Resource as
-	// Observable:
+			@Override
+			protected EStructuralFeature getFeature() {
+				return EMFXtextValueProperty.this.getFeature();
+			}
+		};
+	}
 
 	@Override
 	public IObservableValue observeDetail(IObservableValue master) {
@@ -88,25 +82,6 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 				return observe(master.getRealm(), getSourceAccessorWrapper(master, target));
 			}
 		};
-	}
-
-	@Override
-	public IObservableFactory valueFactory() {
-		throw new UnsupportedOperationException("Knock, knock - who's calling? ;) Should go through something overloaded observeDetail() ...");
-//		return new IObservableFactory() {
-//			public IObservable createObservable(Object target) {
-//				return observe(getSourceAccessorWrapper(target));
-//			}
-//		};
-	}
-	@Override
-	public IObservableFactory valueFactory(final Realm realm) {
-		throw new UnsupportedOperationException("Knock, knock - who's calling? ;) Should go through something overloaded observeDetail() ...");
-//		return new IObservableFactory() {
-//			public IObservable createObservable(Object target) {
-//				return observe(realm, getSourceAccessorWrapper(target));
-//			}
-//		};
 	}
 
 	protected Object getSourceAccessorWrapper(IObservableValue master, Object target) {
@@ -123,4 +98,13 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 			throw new IllegalArgumentException("IObservableValue master is not an IObserving: " + master); 
 	}
 
+	@Override
+	public IObservableFactory valueFactory() {
+		throw new UnsupportedOperationException("Knock, knock - who's calling? ;) You should go through something like the overloaded observeDetail() ...");
+	}
+	
+	@Override
+	public IObservableFactory valueFactory(final Realm realm) {
+		throw new UnsupportedOperationException("Knock, knock - who's calling? ;) You should go through something like the overloaded observeDetail() ...");
+	}
 }

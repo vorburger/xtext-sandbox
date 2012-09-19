@@ -36,10 +36,15 @@ import ch.vorburger.xtext.databinding.internal.sourceadapt.XtextResourceDelegati
 @SuppressWarnings("restriction")
 public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator implements IXtextValueProperty {
 
-	// TODO Similarly to (EMF)XtextProperties, it would be better if this class could share more code with EMFValuePropertyDecorator...
+	// TODO MEDIUM EXPLORE Might be able & better to do use the same pattern as EMF Edit DB instead of what what I did via SourceAccessor, by introducing a XtextObservableValueDecorator, à la EMFEditObservableValueDecorator?
+	// But then this class would have to have an IWriteAccess/IXtextResourceReadWriteAccess field,
+	// just like EMFEditValuePropertyDecorator has an EditingDomain... which is not what we want - as that should be the source. How to unify these two concepts nicely? 
+
+	// TODO LOW Similarly to (EMF)XtextProperties, it would be better if this class could share more code with EMFValuePropertyDecorator...
 	// That's not possible today because EMFValuePropertyDecorator uses new instead of some kind of Factory methods - but if one would change that...
+	// NOTE EMFEditValuePropertyDecorator actually has the same problem.. it extends ValueProperty instead of EMFValuePropertyDecorator 
 	
-	// TODO This is a stupid duplication of fields that are already in the parent EMFValuePropertyDecorator, but because they are private and no protected getter, no choice: 
+	// See above; this is a stupid duplication of fields that are already in the parent EMFValuePropertyDecorator, but because they are private and no protected getter, no choice: 
 	protected final IValueProperty delegate;
 	protected final EStructuralFeature eStructuralFeature;
 
@@ -82,27 +87,22 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 	}
 
 	@Override
-	// TODO Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
+	// TODO LOW Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
 	public IObservableValue observe(IWriteAccess<XtextResource> source) {
-		// // TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
+		// // TODO LOW Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
 		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
 		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
 		return observe(wrappedSource);
 	}
 
 	@Override
-	// TODO Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
+	// TODO LOW Change argument type from IWriteAccess<XtextResource> to IXtextResourceReadWriteAccess once XTextDocument implements that
 	public IObservableValue observe(Realm realm, IWriteAccess<XtextResource> source) {
-		// TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
+		// TODO LOW Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess
 		XtextResourceDelegatingAccess gimmick = new XtextResourceDelegatingAccess(source);
 		SourceAccessor wrappedSource = new XTextDocumentSourceAccessor(gimmick);
 		return observe(realm, wrappedSource);
 	}
-	
-//	@Override
-//	public IObservableValue observe(EObject source) {
-//		throw new UnsupportedOperationException();
-//	}
 	
 	@Override
 	public IXtextValueProperty value(EStructuralFeature feature) {
@@ -123,77 +123,38 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 	
 	@Override
 	public IEMFListProperty list(EStructuralFeature feature) {
-		// TODO return list(EMFXtextProperties.list(feature));
+		// TODO HIGH return list(EMFXtextProperties.list(feature));
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IEMFListProperty list(IEMFListProperty property) {
-		// TODO return new XtextListPropertyDecorator(super.list(property), property.getStructuralFeature());
+		// TODO HIGH return new XtextListPropertyDecorator(super.list(property), property.getStructuralFeature());
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IEMFSetProperty set(EStructuralFeature feature) {
-		// TODO return set(EMFXtextProperties.set(feature));
+		// TODO LOW return set(EMFXtextProperties.set(feature));
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IEMFSetProperty set(IEMFSetProperty property) {
-		// TODO return new XtextSetPropertyDecorator(super.set(property), property.getStructuralFeature());
+		// TODO LOW return new XtextSetPropertyDecorator(super.set(property), property.getStructuralFeature());
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IEMFMapProperty map(EStructuralFeature feature) {
-		// TODO return map(XtextProperties.map(feature));
+		// TODO LOW return map(XtextProperties.map(feature));
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public IEMFMapProperty map(IEMFMapProperty property) {
-		// TODO return new XtextMapPropertyDecorator(super.map(property), property.getStructuralFeature());
+		// TODO LOW return new XtextMapPropertyDecorator(super.map(property), property.getStructuralFeature());
 		throw new UnsupportedOperationException();
 	}
-	
-// We might not need Xtext-specific subclassed variants of the Decorators?
-//
-//
-//	@Override
-//	public IObservableValue observe(Object source) {
-//		// TODO return new XTextObservableValueDecorator(delegate.observe(source), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public IObservableValue observe(Realm realm, Object source) {
-//		// TODO return new XtextObservableValueDecorator(delegate.observe(realm, source), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public IObservableValue observeDetail(IObservableValue master) {
-//		// TODO return new XtextObservableValueDecorator(delegate.observeDetail(master), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public IObservableList observeDetail(IObservableList master) {
-//		// TODO return new XtextObservableListDecorator(delegate.observeDetail(master), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public IObservableMap observeDetail(IObservableSet master) {
-//		// TODO return new XtextObservableMapDecorator(delegate.observeDetail(master), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	@Override
-//	public IObservableMap observeDetail(IObservableMap master) {
-//		// TODO return new XtextObservableMapDecorator(delegate.observeDetail(master), eStructuralFeature);
-//		throw new UnsupportedOperationException();
-//	}
 
 }

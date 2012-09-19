@@ -8,17 +8,15 @@
 
 package ch.vorburger.xtext.databinding;
 
-import org.eclipse.emf.databinding.IEMFMapProperty;
 
 /**
- * Like IEMFEditMapProperty, but using an IXtextResourceReadWriteAccess instead of an EditingDomain.
+ * Like IEMFListProperty, but using an IXtextResourceReadWriteAccess instead of an direct EObject access (or an EditingDomain).
  *
  * @author Michael Vorburger
  */
-public interface IEMFXtextMapProperty extends IEMFXtextProperty, IEMFMapProperty {
+public interface IXtextListProperty { // TODO HIGH extends IXtextProperty, IEMFListProperty
+	// TODO HIGH Write (and test) an implementation of this!
+	
+	IXtextListProperty values(IXtextValueProperty property);
 
-	// TODO Merge with new IXtextValueProperty, and remove!
-
-	IEMFXtextMapProperty values(IEMFXtextValueProperty property);
-	  
 }

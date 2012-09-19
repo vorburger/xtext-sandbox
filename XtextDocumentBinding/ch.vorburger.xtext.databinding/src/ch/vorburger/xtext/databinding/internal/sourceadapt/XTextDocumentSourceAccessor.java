@@ -52,7 +52,7 @@ public class XTextDocumentSourceAccessor implements SourceAccessor {
 	public void eSet(final EStructuralFeature feature, final Object value) {
 	    access.modify(new IUnitOfWork.Void<XtextResource>() {
 	    	@Override public void process(XtextResource resource) throws Exception {
-	    		// TODO Handling (via TDD) if it doesn't exist yet! Ideally, don't throw an error, but create it on-the-fly...
+	    		// TODO HIGH Handling (via TDD) if it doesn't exist yet! Ideally, don't throw an error, but create it on-the-fly...
 	    		EObject eObject = resource.getEObject(uriFragment);
 				if (eObject != null)
 					eObject.eSet(feature, value);
@@ -66,7 +66,6 @@ public class XTextDocumentSourceAccessor implements SourceAccessor {
 	public Object eGet(final EStructuralFeature feature) {
 		return access.readOnly(new IUnitOfWork<Object, XtextResource>() {
 			@Override public Object exec(XtextResource resource) throws Exception {
-	    		// TODO Handling (via TDD) if it doesn't exist yet! Should probably return null and NOT create it on-the-fly?
 				EObject eObject = resource.getEObject(uriFragment);
 				if (eObject != null)
 					return eObject.eGet(feature);

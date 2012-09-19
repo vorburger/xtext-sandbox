@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xtext.databinding.internal;
+package ch.vorburger.xtext.databinding.internal.nicetohave;
 
 import org.eclipse.core.databinding.util.Policy;
 import org.eclipse.core.runtime.IStatus;
@@ -24,8 +24,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 @SuppressWarnings("restriction")
 public abstract class EMFValuePropertyWithErrorLogging extends EMFValueProperty {
 
-	// TODO move this one into an internal.helper sub-package
-	
 	public EMFValuePropertyWithErrorLogging(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
 	}

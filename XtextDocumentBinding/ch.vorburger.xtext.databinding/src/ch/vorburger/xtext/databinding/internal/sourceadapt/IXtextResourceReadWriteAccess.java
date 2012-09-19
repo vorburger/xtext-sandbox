@@ -18,6 +18,6 @@ import org.eclipse.xtext.util.concurrent.IWriteAccess;
  * @author Michael Vorburger
  */
 public interface IXtextResourceReadWriteAccess extends IReadAccess<XtextResource>, IWriteAccess<XtextResource> {
-	// TODO This could & should be in org.eclipse.xtext (NOT xtext.util *NOR* xtext.ui!), and org.eclipse.xtext.ui.editor.model.IXtextDocument should extend this instead of IReadAccess<XtextResource>, IWriteAccess<XtextResource>  
+	// TODO LOW This could be in org.eclipse.xtext (NOT xtext.util *NOR* xtext.ui!), and org.eclipse.xtext.ui.editor.model.IXtextDocument should extend this instead of IReadAccess<XtextResource>, IWriteAccess<XtextResource>  
 	
 }

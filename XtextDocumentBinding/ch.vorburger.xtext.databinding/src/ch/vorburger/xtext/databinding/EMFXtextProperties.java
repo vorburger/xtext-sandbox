@@ -26,9 +26,9 @@ import ch.vorburger.xtext.databinding.internal.XtextValuePropertyDecorator;
  */
 public class EMFXtextProperties {
 
-	// TODO Rename *ALL* the classes to drop EMF* prefix, e.g. EMFXtextProperties -> XtextProperties
+	// TODO HIGH Rename *ALL* the classes to drop EMF* prefix, e.g. EMFXtextProperties -> XtextProperties
 	
-	// TODO It would be better if this class could share some code with EMFProperties..
+	// TODO LOW It would be better if this class could share some code with EMFProperties..
 	// That's not possible today because it's all static - but if one would change it...
 	
 	public static IEMFValueProperty value(EStructuralFeature feature) {
@@ -49,5 +49,5 @@ public class EMFXtextProperties {
 	    return featureProperty;
 	}
 	
-	// TODO complete this by adding all variations just like in EMFProperties / EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
+	// TODO HIGH complete this by adding all variations just like in EMFProperties / EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
 }

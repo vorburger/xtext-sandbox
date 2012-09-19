@@ -101,7 +101,7 @@ public class EMFXtextPropertiesTest {
 		Realm realm = new DatabindingTestRealm();
 		db = new XtextDataBindingContext(realm);
 		
-		// TODO Use an indirect WritableValue in observe instead of direct (both for illustration and to test SourceAccessor stuff)
+		// TODO HIGH Use an indirect WritableValue in observe instead of direct (both for illustration and to test SourceAccessor stuff)
 		
 		XtextResource resource = new XtextResource();
 		resource.getContents().add(eObject);
@@ -161,7 +161,7 @@ public class EMFXtextPropertiesTest {
 		DataBindingTestUtils.assertContextOK(db);
 		
 		// Referenced Feature has now been set (sync) by binding:
-		// TODO reactivate! assertEquals(bean.getName(), ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
+		assertEquals(bean.getName(), ((EObject)eObject.eGet(referenceFeature)).eGet(titleFeature));
 		// Root object feature is as set in setUp():
 		assertEquals("This is the Title", eObject.eGet(titleFeature));
 
@@ -184,7 +184,7 @@ public class EMFXtextPropertiesTest {
 		DataBindingTestUtils.assertContextOK(db);
 	}
 
-	// TODO Write a new test, or adapt above, where referenceFeature was null and has to be constructed
+	// TODO HIGH  Write a new test, or adapt above, where referenceFeature was null and has to be constructed
 	
 	@After
 	public void tearDown() {

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xtext.databinding.internal;
+package ch.vorburger.xtext.databinding.internal.nicetohave;
 
 import org.eclipse.core.databinding.util.Policy;
 import org.eclipse.core.runtime.IStatus;
@@ -23,10 +23,8 @@ import org.eclipse.emf.ecore.util.ExtendedMetaData;
 @SuppressWarnings("restriction")
 public abstract class EMFValuePropertyWithInvalidFeatureLogging extends EMFValuePropertyWithErrorLogging {
 
-	// TODO adapt this as a new DelegatingSourceAccessor instead of initial approach extends EMFValuePropertyWithErrorLogging ?
+	// TODO MEDIUM adapt this as a new DelegatingSourceAccessor instead of initial approach extends EMFValuePropertyWithErrorLogging ?
 	
-	// TODO move this one into an internal.helper sub-package
-
 	public EMFValuePropertyWithInvalidFeatureLogging(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
 	}
@@ -38,7 +36,7 @@ public abstract class EMFValuePropertyWithInvalidFeatureLogging extends EMFValue
 	    if (ExtendedMetaData.INSTANCE.getAffiliation(eObj.eClass(), getFeature()) != null) {
 	    	return eObj.eGet(getFeature());
 	    } else {
-	    	// TODO Ask on Platform/UI and/or EMF Forum/Mailing List why the EMFValueProperty doesn't work like this:
+	    	// TODO LOW Ask on Platform/UI and/or EMF Forum/Mailing List why the EMFValueProperty doesn't already do this check
 	    	String msg = "Could not find Feature '" + getFeature().getName()
 	    			+ "' of EClass '" + getFeature().getEContainingClass().getName()
 	    			+ "' on EObject " + eObj.toString(); //$NON-NLS-1$
