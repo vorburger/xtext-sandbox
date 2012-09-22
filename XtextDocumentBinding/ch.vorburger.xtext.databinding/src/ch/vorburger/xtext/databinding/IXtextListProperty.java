@@ -8,6 +8,11 @@
 
 package ch.vorburger.xtext.databinding;
 
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.util.concurrent.IWriteAccess;
+
 
 /**
  * Like IEMFListProperty, but using an IXtextResourceReadWriteAccess instead of an direct EObject access (or an EditingDomain).
@@ -15,8 +20,11 @@ package ch.vorburger.xtext.databinding;
  * @author Michael Vorburger
  */
 public interface IXtextListProperty { // TODO HIGH extends IXtextProperty, IEMFListProperty
-	// TODO HIGH Write (and test) an implementation of this!
 	
 	IXtextListProperty values(IXtextValueProperty property);
+
+	IObservableList observe(IWriteAccess<XtextResource> source);
+
+	IObservableList observe(Realm realm, IWriteAccess<XtextResource> source);
 
 }

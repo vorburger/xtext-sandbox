@@ -26,6 +26,9 @@ package ch.vorburger.xtext.databinding.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.emf.databinding.FeaturePath;
@@ -60,17 +63,22 @@ public class EMFXtextPropertiesTest {
 	@SuppressWarnings("serial")
 	private static class Bean extends AbstractPropertyChangeNotifier {
 		private String name;
+		private List<Bean> list = new ArrayList<EMFXtextPropertiesTest.Bean>();
 		public void setName(String name) {
 			firePropertyChange("name", this.name, this.name = name);
 		}
 		public String getName() {
 			return name;
 		}
+		public List<Bean> getList() {
+			return list;
+		}
 	}
 
 	private XtextDataBindingContext db;
 	private EAttribute titleFeature;
 	private EReference referenceFeature;
+	private EReference listFeature;
 	private Bean bean;
 	private XtextResourceTestAccess access;
 	private EObject eObject;
@@ -87,6 +95,7 @@ public class EMFXtextPropertiesTest {
 		clazz = helper.createClass(pkg, "Test");
 		titleFeature = helper.addAttribute(clazz, stringType, "title");
 		referenceFeature = helper.addContainmentReference(clazz, clazz, "childContainmentReferenceToTest");
+		listFeature = helper.addMultiContainmentReference(clazz, clazz, "list");
 		
 		// Create EObjects
 		eObject = helper.createInstance(clazz);
@@ -184,7 +193,36 @@ public class EMFXtextPropertiesTest {
 		DataBindingTestUtils.assertContextOK(db);
 	}
 
-	// TODO HIGH  Write a new test, or adapt above, where referenceFeature was null and has to be constructed
+	// TODO HIGH referenceFeature in path was initially null and must be constructed during sync!
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testListBinding() {
+		EObject eObjectInList = helper.createInstance(clazz);
+		eObjectInList.eSet(titleFeature, "First Object in List");
+		List<EObject> list = (List<EObject>) eObject.eGet(listFeature);
+		list.add(eObjectInList);
+		
+		db.bindList(BeanProperties.list("list").observe(bean),
+				EMFXtextProperties.list(listFeature).observe(access));
+		DataBindingTestUtils.assertContextOK(db);
+		
+		// Check that an object was added to the bound list
+		List<Bean> beanList = bean.getList();
+		assertEquals(1, beanList.size());
+		Bean firstBeanInList = beanList.get(0);
+		assertEquals("First Object in List", firstBeanInList.getName());
+		
+		// Check that a modification of the object in the list is sync'd
+		eObjectInList.eSet(titleFeature, "First Object in List CHANGED");
+		assertEquals("First Object in List CHANGED", firstBeanInList.getName());
+		
+		// Check opposite modification of the object in the list is sync'd
+		firstBeanInList.setName("First BEAN in List");
+		assertEquals("First BEAN in List", eObjectInList.eGet(titleFeature));
+	}
+
+	// TODO HIGH List Binding change position 
 	
 	@After
 	public void tearDown() {

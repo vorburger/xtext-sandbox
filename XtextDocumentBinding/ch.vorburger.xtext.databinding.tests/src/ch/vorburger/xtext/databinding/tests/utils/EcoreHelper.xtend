@@ -54,6 +54,20 @@ class ECoreHelper {
 		eclass.EStructuralFeatures += attribute
 		return attribute
 	}
+
+	def addMultiContainmentReference(EClass eclass, EClassifier type, String attributeName) {
+		val attribute = EcoreFactory::eINSTANCE.createEReference
+		attribute.name = attributeName
+		attribute.unsettable = false
+		attribute.changeable = true
+		attribute.EType = type;
+		
+		attribute.containment = true
+		attribute.setUpperBound(-1);
+		
+		eclass.EStructuralFeatures += attribute
+		return attribute
+	}
 	
 	def addEnumLiteral(EEnum eEnum, String literalName) {
 		val literal = EcoreFactory::eINSTANCE.createEEnumLiteral()

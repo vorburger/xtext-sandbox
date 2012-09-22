@@ -8,11 +8,14 @@
 
 package ch.vorburger.xtext.databinding;
 
+import org.eclipse.core.databinding.property.list.IListProperty;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.IEMFValueProperty;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import ch.vorburger.xtext.databinding.internal.XtextListProperty;
+import ch.vorburger.xtext.databinding.internal.XtextListPropertyDecorator;
 import ch.vorburger.xtext.databinding.internal.XtextValuePropertyDecorator;
 
 /**
@@ -49,5 +52,12 @@ public class EMFXtextProperties {
 	    return featureProperty;
 	}
 	
-	// TODO HIGH complete this by adding all variations just like in EMFProperties / EMFEditProperties, with FeaturePath/multiple/Set/List/resource stuff etc.
+	public static IXtextListProperty list(EStructuralFeature feature) {
+		 IListProperty property = new XtextListProperty(feature);
+		 return new XtextListPropertyDecorator(property, feature);
+	}
+	
+	// TODO HIGH public static IXtextListProperty list(FeaturePath feature) {
+
+	// TODO HIGH complete this by adding all variations just like in EMFProperties / EMFEditProperties, with multiple/Set/resource stuff etc.
 }

@@ -8,9 +8,12 @@
 
 package ch.vorburger.xtext.databinding.internal;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.databinding.observable.Diffs;
+import org.eclipse.core.databinding.observable.list.ListDiff;
+import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.property.INativePropertyListener;
 import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
@@ -28,6 +31,7 @@ import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
  * Like {@link EMFPropertyListener}, but {@link #addTo(Object)} works with Resource instead of EObject.
  * 
  * @author Michael Vorburger
+ * @author Phani Kumar (@netsrujana) - Intro. XtextListPropertyListener (in collaboration with Michael Vorburger)
  */
 @SuppressWarnings("restriction")
 public abstract class XtextPropertyListener extends EContentAdapter implements INativePropertyListener {
@@ -119,4 +123,101 @@ public abstract class XtextPropertyListener extends EContentAdapter implements I
 							Diffs.createValueDiff(oldValue, newValue)));
 		}
 	}
+
+	public abstract static class XtextListPropertyListener extends XtextPropertyListener {
+		@Override
+		public void notifyChanged(Notification msg) {
+			// TODO HIGH Remove Dev only System.out.println used to learn.. use a logger?
+			System.out.println("XtextListPropertyListener: " + msg);
+
+			// TODO VERY HIGH getFeature() == msg.getFeature()
+			if (getFeature() == msg.getFeature() && !msg.isTouch()) {
+				final ListDiff diff;
+				switch (msg.getEventType()) {
+				case Notification.ADD: {
+					diff = Diffs.createListDiff(Diffs.createListDiffEntry(
+							msg.getPosition(), true, msg.getNewValue()));
+					break;
+				}
+				case Notification.ADD_MANY: {
+					Collection<?> newValues = (Collection<?>) msg.getNewValue();
+					ListDiffEntry[] listDiffEntries = new ListDiffEntry[newValues
+							.size()];
+					int position = msg.getPosition();
+					int index = 0;
+					for (Object newValue : newValues) {
+						listDiffEntries[index++] = Diffs.createListDiffEntry(
+								position++, true, newValue);
+					}
+					diff = Diffs.createListDiff(listDiffEntries);
+					break;
+				}
+				case Notification.REMOVE: {
+					diff = Diffs.createListDiff(Diffs.createListDiffEntry(
+							msg.getPosition(), false, msg.getOldValue()));
+					break;
+				}
+				case Notification.REMOVE_MANY: {
+					Collection<?> oldValues = (Collection<?>) msg.getOldValue();
+					ListDiffEntry[] listDiffEntries = new ListDiffEntry[oldValues
+							.size()];
+					int[] positions = (int[]) msg.getNewValue();
+					if (positions == null) {
+						int index = 0;
+						for (Object oldValue : oldValues) {
+							listDiffEntries[index] = Diffs.createListDiffEntry(
+									0, false, oldValue);
+							++index;
+						}
+					} else {
+						int index = 0;
+						for (Object oldValue : oldValues) {
+							listDiffEntries[index] = Diffs.createListDiffEntry(
+									positions[index] - index, false, oldValue);
+							++index;
+						}
+					}
+					diff = Diffs.createListDiff(listDiffEntries);
+					break;
+				}
+				case Notification.SET:
+				case Notification.RESOLVE: {
+					ListDiffEntry[] listDiffEntries = new ListDiffEntry[2];
+					int pos = msg.getPosition();
+					// Looks like a single valued feature
+					if (pos == -1) {
+						pos = 0;
+					}
+					listDiffEntries[0] = Diffs.createListDiffEntry(pos, false, msg.getOldValue());
+					listDiffEntries[1] = Diffs.createListDiffEntry(pos, true, msg.getNewValue());
+					diff = Diffs.createListDiff(listDiffEntries);
+					break;
+				}
+				case Notification.MOVE: {
+					Object movedValue = msg.getNewValue();
+					ListDiffEntry[] listDiffEntries = new ListDiffEntry[2];
+					listDiffEntries[0] = Diffs.createListDiffEntry(
+							(Integer) msg.getOldValue(), false, movedValue);
+					listDiffEntries[1] = Diffs.createListDiffEntry(
+							msg.getPosition(), true, movedValue);
+					diff = Diffs.createListDiff(listDiffEntries);
+					break;
+				}
+				case Notification.UNSET: {
+					// This just represents going back to the unset state, but
+					// that doesn't affect the contents of the list.
+					//
+					return;
+				}
+				default: {
+					throw new UnsupportedOperationException(msg.toString());
+				}
+				}
+				getListener().handleEvent(
+						(new SimplePropertyEvent(SimplePropertyEvent.CHANGE,
+								msg.getNotifier(), getOwner(), diff)));
+			}
+		}
+	}
+
 }
