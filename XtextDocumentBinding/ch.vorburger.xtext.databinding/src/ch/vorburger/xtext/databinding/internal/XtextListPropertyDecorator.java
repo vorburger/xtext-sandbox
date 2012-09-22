@@ -45,6 +45,17 @@ public class XtextListPropertyDecorator extends EMFListPropertyDecorator impleme
 		}
 	}
 
+	// NOTE: These two methods invoking just super() may appear useless at
+	// first, but they are not - remove them and watch the StackOverflowError
+	// and you'll understand... ;-)
+	//
+	protected IObservableList observe(SourceAccessor source) {
+		return super.observe(source);
+	}
+	protected IObservableList observe(Realm realm, SourceAccessor source) {
+		return super.observe(realm, source);
+	}
+
 	@Override
 	public IObservableList observe(IWriteAccess<XtextResource> source) {
 		// // TODO Remove gimmick once XTextDocument implements IXtextResourceReadWriteAccess

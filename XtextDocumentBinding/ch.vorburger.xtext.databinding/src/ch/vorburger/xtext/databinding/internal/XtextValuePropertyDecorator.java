@@ -78,10 +78,13 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 		}
 	}
 
+	// NOTE: These two methods invoking just super() may appear useless at
+	// first, but they are not - remove them and watch the StackOverflowError
+	// and you'll understand... ;-)
+	//
 	protected IObservableValue observe(SourceAccessor source) {
 		return super.observe(source);
 	}
-
 	protected IObservableValue observe(Realm realm, SourceAccessor source) {
 		return super.observe(realm, source);
 	}

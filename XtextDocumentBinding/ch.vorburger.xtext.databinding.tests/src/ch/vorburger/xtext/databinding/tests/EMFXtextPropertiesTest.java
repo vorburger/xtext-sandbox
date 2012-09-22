@@ -29,8 +29,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.emf.databinding.EMFUpdateListStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -72,6 +76,10 @@ public class EMFXtextPropertiesTest {
 		}
 		public List<Bean> getList() {
 			return list;
+		}
+		@SuppressWarnings("unused") // BeanProperties requires this 
+		public void setList(List<Bean> list) {
+			this.list = list;
 		}
 	}
 
@@ -203,8 +211,29 @@ public class EMFXtextPropertiesTest {
 		List<EObject> list = (List<EObject>) eObject.eGet(listFeature);
 		list.add(eObjectInList);
 		
+		UpdateListStrategy modelToTarget = new EMFUpdateListStrategy() {
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				// TODO Remove System.out.println - or better move it into a else Log WARN below? 
+				System.out.println(getClass().getName() + " :: createConverter :" + fromType.toString() + " -> " + toType.toString());
+				if (fromType instanceof EObject /* TODO && toType instanceof Bean */) {
+					// TODO It should be possible to write this in a generic fashion? Backed by Binding?
+					return new Converter(fromType, toType) {
+						@Override
+						public Object convert(Object fromObject) {
+							final Bean newBean = new Bean();
+							EObject eObject = (EObject) fromObject;
+							newBean.setName((String) eObject.eGet(titleFeature));
+							return newBean;
+						}
+					};
+				}
+				return super.createConverter(fromType, toType);
+			}
+		};
 		db.bindList(BeanProperties.list("list").observe(bean),
-				EMFXtextProperties.list(listFeature).observe(access));
+				EMFXtextProperties.list(listFeature).observe(access),
+				null, modelToTarget);
 		DataBindingTestUtils.assertContextOK(db);
 		
 		// Check that an object was added to the bound list
