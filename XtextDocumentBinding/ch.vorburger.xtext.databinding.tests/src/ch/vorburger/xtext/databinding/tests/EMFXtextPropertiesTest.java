@@ -34,6 +34,7 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateListStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.ecore.EAttribute;
@@ -47,6 +48,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.vorburger.beans.AbstractPropertyChangeNotifier;
@@ -202,10 +204,11 @@ public class EMFXtextPropertiesTest {
 	}
 
 	// TODO HIGH referenceFeature in path was initially null and must be constructed during sync!
-	
+
 	@Test
+	@Ignore // TODO MEDIUM Figure this out
 	@SuppressWarnings("unchecked")
-	public void testListBinding() {
+	public void tryOutAndLearnEMFListBinding() {
 		EObject eObjectInList = helper.createInstance(clazz);
 		eObjectInList.eSet(titleFeature, "First Object in List");
 		List<EObject> list = (List<EObject>) eObject.eGet(listFeature);
@@ -216,7 +219,10 @@ public class EMFXtextPropertiesTest {
 			protected IConverter createConverter(Object fromType, Object toType) {
 				// TODO Remove System.out.println - or better move it into a else Log WARN below? 
 				System.out.println(getClass().getName() + " :: createConverter :" + fromType.toString() + " -> " + toType.toString());
-				if (fromType instanceof EObject /* TODO && toType instanceof Bean */) {
+				if (toType == Object.class) {
+					throw new IllegalArgumentException("Cannot create Converter without knowning toType! If you're using BeanProperties.list, add elementType Class as second argument");
+				}
+				if (fromType instanceof EReference && toType == Bean.class) { // TODO handle subclasses?!
 					// TODO It should be possible to write this in a generic fashion? Backed by Binding?
 					return new Converter(fromType, toType) {
 						@Override
@@ -231,7 +237,59 @@ public class EMFXtextPropertiesTest {
 				return super.createConverter(fromType, toType);
 			}
 		};
-		db.bindList(BeanProperties.list("list").observe(bean),
+		db.bindList(BeanProperties.list("list", Bean.class).observe(bean),
+				EMFProperties.list(listFeature).observe(eObject),
+				null, modelToTarget);
+		DataBindingTestUtils.assertContextOK(db);
+		
+		// Check that an object was added to the bound list
+		List<Bean> beanList = bean.getList();
+		assertEquals(1, beanList.size());
+		Bean firstBeanInList = beanList.get(0);
+		assertEquals("First Object in List", firstBeanInList.getName());
+		
+		// Check that a modification of the object in the list is sync'd
+		eObjectInList.eSet(titleFeature, "First Object in List CHANGED");
+		assertEquals("First Object in List CHANGED", firstBeanInList.getName());
+		
+		// Check opposite modification of the object in the list is sync'd
+		firstBeanInList.setName("First BEAN in List");
+		assertEquals("First BEAN in List", eObjectInList.eGet(titleFeature));
+	}
+	
+	@Test
+	@Ignore // TODO MEDIUM Figure this out
+	@SuppressWarnings("unchecked")
+	public void testXtextListBinding() {
+		EObject eObjectInList = helper.createInstance(clazz);
+		eObjectInList.eSet(titleFeature, "First Object in List");
+		List<EObject> list = (List<EObject>) eObject.eGet(listFeature);
+		list.add(eObjectInList);
+		
+		UpdateListStrategy modelToTarget = new EMFUpdateListStrategy() {
+			@Override
+			protected IConverter createConverter(Object fromType, Object toType) {
+				// TODO Remove System.out.println - or better move it into a else Log WARN below? 
+				System.out.println(getClass().getName() + " :: createConverter :" + fromType.toString() + " -> " + toType.toString());
+				if (toType == Object.class) {
+					throw new IllegalArgumentException("Cannot create Converter without knowning toType! If you're using BeanProperties.list, add elementType Class as second argument");
+				}
+				if (fromType instanceof EReference && toType == Bean.class) { // TODO handle subclasses?!
+					// TODO It should be possible to write this in a generic fashion? Backed by Binding?
+					return new Converter(fromType, toType) {
+						@Override
+						public Object convert(Object fromObject) {
+							final Bean newBean = new Bean();
+							EObject eObject = (EObject) fromObject;
+							newBean.setName((String) eObject.eGet(titleFeature));
+							return newBean;
+						}
+					};
+				}
+				return super.createConverter(fromType, toType);
+			}
+		};
+		db.bindList(BeanProperties.list("list", Bean.class).observe(bean),
 				EMFXtextProperties.list(listFeature).observe(access),
 				null, modelToTarget);
 		DataBindingTestUtils.assertContextOK(db);

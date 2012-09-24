@@ -8,9 +8,13 @@
 
 package ch.voburger.xtext.sandbox.mydsl.ui.editor;
 
-import org.eclipse.emf.databinding.EMFDataBindingContext;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerSupport;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,6 +24,7 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 
 import ch.voburger.xtext.sandbox.mydsl.myDsl.MyDslPackage;
 import ch.vorburger.xtext.databinding.EMFXtextProperties;
+import ch.vorburger.xtext.databinding.XtextDataBindingContext;
 
 /**
  * Sample Xtext Editor with some SWT Controls next to the edit area which are linked to the Resource via Data Binding.
@@ -30,7 +35,7 @@ import ch.vorburger.xtext.databinding.EMFXtextProperties;
  */
 public class MUIXtextEditor extends XtextEditor {
 
-	// TODO Build a PDE test for this!
+	// TODO LOW Build a PDE test for this!
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -55,9 +60,17 @@ public class MUIXtextEditor extends XtextEditor {
 		final Text childModelName = new Text(browserSide, SWT.BORDER);
 		final Text mainGreetingName = new Text(browserSide, SWT.BORDER);
 		
-		// TODO HIGH Is there any use to go via an indirect WritableValue in observe instead of getDocument() ?  Double check if it works.. as we are registering change notification adapters on the Resource in the SourceAccessor implementation, I'm not sure it will work as-is. 
+		final ListViewer greetingsNames = new ListViewer(browserSide);
+		// Instead of the following, we'll use an ViewerSupport below...
+		// 		greetingsNames.setContentProvider(new ObservableListContentProvider(/* viewerUpdater */));
+		// 		greetingsNames.setLabelProvider(labelProvider);
+		// 		greetingsNames.setInput(input);
 		
-		EMFDataBindingContext db = new EMFDataBindingContext();
+		// TODO HIGH Show Field which gets updated in function of the Selection made in the List (Vogella §2.4 ViewerProperties, also check out ViewersObservables)
+		
+		// TODO HIGH Is there any use to go via an indirect WritableValue in observe instead of getDocument() ?  Double check if it works.. as we are registering change notification adapters on the Resource in the SourceAccessor implementation, I'm not sure it will work as-is.
+		
+		DataBindingContext db = new XtextDataBindingContext();
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(modelName),
 				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
@@ -69,6 +82,11 @@ public class MUIXtextEditor extends XtextEditor {
 				WidgetProperties.text(SWT.Modify).observe(mainGreetingName),
 				EMFXtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__MAIN_GREEETING, MyDslPackage.Literals.GREETING__NAME))
 					.observe(getDocument()));
+		
+		// TODO Is this bidi? Greeting Name should be able to be changed in List Viewer, and Order up/down modified.. Or is not possible with a List, only with a Table?   
+		IObservableList input = EMFXtextProperties.list(MyDslPackage.Literals.MODEL__GREETINGS).observe(getDocument());
+		IValueProperty labelProperty = EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME);
+		// TODO HIGH MAKE THIS MARK?? - ViewerSupport.bind(greetingsNames, input, labelProperty);
 		
 		sashForm.setWeights(new int[] {10,90});
 	}

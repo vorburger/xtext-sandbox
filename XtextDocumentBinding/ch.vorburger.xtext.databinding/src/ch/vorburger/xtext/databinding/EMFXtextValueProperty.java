@@ -8,6 +8,7 @@
 
 package ch.vorburger.xtext.databinding;
 
+import org.eclipse.core.databinding.observable.IDecoratingObservable;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.IObserving;
 import org.eclipse.core.databinding.observable.Realm;
@@ -72,30 +73,57 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 
 	@Override
 	public IObservableValue observeDetail(IObservableValue master) {
-		return MasterDetailObservables.detailValue(master, 
-				valueFactory(master), getValueType());
+		return MasterDetailObservables.detailValue(master, valueFactory(master), getValueType());
 	}
 
-	private IObservableFactory valueFactory(final IObservableValue master) {
+// TODO HIGH needed?!
+//	
+//	@Override
+//	public IObservableList observeDetail(IObservableList master) {
+//		return MasterDetailObservables.detailValues(master, valueFactory(master), getValueType());
+//	}
+//
+//	@Override
+//	public IObservableMap observeDetail(IObservableSet master) {
+//		return MasterDetailObservables.detailValues(master, valueFactory(master), getValueType());
+//	}
+//
+//	@Override
+//	public IObservableMap observeDetail(IObservableMap master) {
+//		return MasterDetailObservables.detailValues(master, valueFactory(master), getValueType());
+//	}
+
+	private IObservableFactory valueFactory(final IObservable master) {
+		final IObserving observing = getObserving(master);
 		return new IObservableFactory() {
 			public IObservable createObservable(Object target) {
-				return observe(master.getRealm(), getSourceAccessorWrapper(master, target));
+				Object observed = observing.getObserved();
+				XTextDocumentSourceAccessor masterAccessor = getSourceAccessor(observed);
+				EObject eObject = (EObject) target;
+				XTextDocumentSourceAccessor source = new XTextDocumentSourceAccessor(masterAccessor, eObject);
+				return observe(master.getRealm(), source);
 			}
 		};
 	}
 
-	protected Object getSourceAccessorWrapper(IObservableValue master, Object target) {
+	protected XTextDocumentSourceAccessor getSourceAccessor(final Object observed) throws IllegalArgumentException {
+		if (observed instanceof XTextDocumentSourceAccessor) {
+			return (XTextDocumentSourceAccessor) observed;
+		} else {
+			throw new IllegalArgumentException("IObservable master is an IObserving, but not an XTextDocumentSourceAccessor: " + observed);
+		}
+	}
+	
+	protected IObserving getObserving(final IObservable master) throws IllegalArgumentException {
 		if (master instanceof IObserving) {
-			IObserving observing = (IObserving) master;
-			Object observed = observing.getObserved();
-			if (observed instanceof XTextDocumentSourceAccessor) {
-				XTextDocumentSourceAccessor masterAccessor = (XTextDocumentSourceAccessor) observed;
-				EObject eObject = (EObject) target;
-				return new XTextDocumentSourceAccessor(masterAccessor, eObject);
-			} else
-				throw new IllegalArgumentException("IObservableValue master is an IObserving, but not an XTextDocumentSourceAccessor: " + master); 
-		} else
-			throw new IllegalArgumentException("IObservableValue master is not an IObserving: " + master); 
+			return (IObserving) master;
+		} else if (master instanceof IDecoratingObservable) {
+			IDecoratingObservable decorating = (IDecoratingObservable) master;
+			IObservable decorated = decorating.getDecorated();
+			return getObserving(decorated);
+		} else {
+			throw new IllegalArgumentException("IObservable master is not an IObserving nor an IDecoratingObservable: " + master); 
+		}
 	}
 
 	@Override
