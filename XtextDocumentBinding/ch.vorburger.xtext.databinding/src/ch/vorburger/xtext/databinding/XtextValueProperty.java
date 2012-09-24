@@ -33,9 +33,9 @@ import ch.vorburger.xtext.databinding.internal.sourceadapt.XTextDocumentSourceAc
  * @author Michael Vorburger
  */
 @SuppressWarnings("restriction")
-public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLogging {
+public class XtextValueProperty extends EMFValuePropertyWithInvalidFeatureLogging {
 
-	public EMFXtextValueProperty(EStructuralFeature eStructuralFeature) {
+	public XtextValueProperty(EStructuralFeature eStructuralFeature) {
 		super(eStructuralFeature);
 	}
 
@@ -56,7 +56,7 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 		return new XtextPropertyListener.XtextValuePropertyListener() {
 			@Override
 			protected IProperty getOwner() {
-				return EMFXtextValueProperty.this;
+				return XtextValueProperty.this;
 			}
 
 			@Override
@@ -66,7 +66,7 @@ public class EMFXtextValueProperty extends EMFValuePropertyWithInvalidFeatureLog
 
 			@Override
 			protected EStructuralFeature getFeature() {
-				return EMFXtextValueProperty.this.getFeature();
+				return XtextValueProperty.this.getFeature();
 			}
 		};
 	}

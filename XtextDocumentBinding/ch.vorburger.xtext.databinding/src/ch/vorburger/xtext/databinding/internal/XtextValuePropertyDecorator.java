@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.util.concurrent.IWriteAccess;
 
-import ch.vorburger.xtext.databinding.EMFXtextProperties;
+import ch.vorburger.xtext.databinding.XtextProperties;
 import ch.vorburger.xtext.databinding.IXtextValueProperty;
 import ch.vorburger.xtext.databinding.internal.sourceadapt.SourceAccessor;
 import ch.vorburger.xtext.databinding.internal.sourceadapt.XTextDocumentSourceAccessor;
@@ -114,7 +114,7 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 
 	@Override
 	public IXtextValueProperty value(FeaturePath featurePath) {
-		return value(EMFXtextProperties.value(featurePath));
+		return value(XtextProperties.value(featurePath));
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 	
 	@Override
 	public IEMFListProperty list(EStructuralFeature feature) {
-		// TODO HIGH return list(EMFXtextProperties.list(feature));
+		// TODO HIGH return list(XtextProperties.list(feature));
 		throw new UnsupportedOperationException();
 	}
 
@@ -138,7 +138,7 @@ public class XtextValuePropertyDecorator extends EMFValuePropertyDecorator imple
 
 	@Override
 	public IEMFSetProperty set(EStructuralFeature feature) {
-		// TODO LOW return set(EMFXtextProperties.set(feature));
+		// TODO LOW return set(XtextProperties.set(feature));
 		throw new UnsupportedOperationException();
 	}
 

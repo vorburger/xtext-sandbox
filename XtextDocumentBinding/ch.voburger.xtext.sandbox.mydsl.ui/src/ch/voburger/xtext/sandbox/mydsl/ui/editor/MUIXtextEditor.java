@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 
 import ch.voburger.xtext.sandbox.mydsl.myDsl.MyDslPackage;
-import ch.vorburger.xtext.databinding.EMFXtextProperties;
+import ch.vorburger.xtext.databinding.XtextProperties;
 import ch.vorburger.xtext.databinding.XtextDataBindingContext;
 
 /**
@@ -73,19 +73,19 @@ public class MUIXtextEditor extends XtextEditor {
 		DataBindingContext db = new XtextDataBindingContext();
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(modelName),
-				EMFXtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
+				XtextProperties.value(MyDslPackage.Literals.MODEL__NAME).observe(getDocument()));
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(childModelName),
-				EMFXtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__CHILD_MODEL, MyDslPackage.Literals.MODEL__NAME))
+				XtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__CHILD_MODEL, MyDslPackage.Literals.MODEL__NAME))
 					.observe(getDocument()));
 		db.bindValue(
 				WidgetProperties.text(SWT.Modify).observe(mainGreetingName),
-				EMFXtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__MAIN_GREEETING, MyDslPackage.Literals.GREETING__NAME))
+				XtextProperties.value(FeaturePath.fromList(MyDslPackage.Literals.MODEL__MAIN_GREEETING, MyDslPackage.Literals.GREETING__NAME))
 					.observe(getDocument()));
 		
 		// TODO Is this bidi? Greeting Name should be able to be changed in List Viewer, and Order up/down modified.. Or is not possible with a List, only with a Table?   
-		IObservableList input = EMFXtextProperties.list(MyDslPackage.Literals.MODEL__GREETINGS).observe(getDocument());
-		IValueProperty labelProperty = EMFXtextProperties.value(MyDslPackage.Literals.GREETING__NAME);
+		IObservableList input = XtextProperties.list(MyDslPackage.Literals.MODEL__GREETINGS).observe(getDocument());
+		IValueProperty labelProperty = XtextProperties.value(MyDslPackage.Literals.GREETING__NAME);
 		// TODO HIGH MAKE THIS MARK?? - ViewerSupport.bind(greetingsNames, input, labelProperty);
 		
 		sashForm.setWeights(new int[] {10,90});

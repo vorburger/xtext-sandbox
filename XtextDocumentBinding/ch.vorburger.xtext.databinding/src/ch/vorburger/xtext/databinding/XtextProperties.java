@@ -27,10 +27,7 @@ import ch.vorburger.xtext.databinding.internal.XtextValuePropertyDecorator;
  *
  * @author Michael Vorburger
  */
-public class EMFXtextProperties {
-
-	// TODO HIGH Rename *ALL* the classes to drop EMF* prefix, e.g. EMFXtextProperties -> XtextProperties
-	
+public class XtextProperties {
 	// TODO LOW It would be better if this class could share some code with EMFProperties..
 	// That's not possible today because it's all static - but if one would change it...
 	
@@ -40,7 +37,7 @@ public class EMFXtextProperties {
 
 	public static IXtextValueProperty value(FeaturePath featurePath) {
 	    IValueProperty property;
-	    property = new EMFXtextValueProperty(featurePath.getFeaturePath()[0]);
+	    property = new XtextValueProperty(featurePath.getFeaturePath()[0]);
 
 	    IXtextValueProperty featureProperty = new XtextValuePropertyDecorator(property, featurePath.getFeaturePath()[0]);
 

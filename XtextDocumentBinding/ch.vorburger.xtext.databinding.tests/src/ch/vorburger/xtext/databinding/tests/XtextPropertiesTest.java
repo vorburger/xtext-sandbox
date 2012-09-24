@@ -54,7 +54,7 @@ import org.junit.Test;
 import ch.vorburger.beans.AbstractPropertyChangeNotifier;
 import ch.vorburger.databinding.tests.utils.DataBindingTestUtils;
 import ch.vorburger.databinding.tests.utils.DatabindingTestRealm;
-import ch.vorburger.xtext.databinding.EMFXtextProperties;
+import ch.vorburger.xtext.databinding.XtextProperties;
 import ch.vorburger.xtext.databinding.XtextDataBindingContext;
 import ch.vorburger.xtext.databinding.tests.utils.ECoreHelper;
 import ch.vorburger.xtext.databinding.tests.utils.XtextResourceTestAccess;
@@ -64,12 +64,12 @@ import ch.vorburger.xtext.databinding.tests.utils.XtextResourceTestAccess;
  * 
  * @author Michael Vorburger
  */
-public class EMFXtextPropertiesTest {
+public class XtextPropertiesTest {
 
 	@SuppressWarnings("serial")
 	private static class Bean extends AbstractPropertyChangeNotifier {
 		private String name;
-		private List<Bean> list = new ArrayList<EMFXtextPropertiesTest.Bean>();
+		private List<Bean> list = new ArrayList<XtextPropertiesTest.Bean>();
 		public void setName(String name) {
 			firePropertyChange("name", this.name, this.name = name);
 		}
@@ -140,7 +140,7 @@ public class EMFXtextPropertiesTest {
 	@Test
 	public void testSimpleValueBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
-				EMFXtextProperties.value(titleFeature).observe(access));
+				XtextProperties.value(titleFeature).observe(access));
 		DataBindingTestUtils.assertContextOK(db);
 		
 		assertEquals(bean.getName(), eObject.eGet(titleFeature));
@@ -170,13 +170,13 @@ public class EMFXtextPropertiesTest {
 	public void testErrorObserveObjectInsteadOfResourceAcess() {
 		db.bindValue(
 				BeanProperties.value("name").observe(bean),
-				EMFXtextProperties.value(titleFeature).observe(eObject));
+				XtextProperties.value(titleFeature).observe(eObject));
 	}
 
 	@Test
 	public void testPathFeatureBinding() {
 		db.bindValue(BeanProperties.value("name").observe(bean),
-				EMFXtextProperties.value(FeaturePath.fromList(referenceFeature, titleFeature)).observe(access));
+				XtextProperties.value(FeaturePath.fromList(referenceFeature, titleFeature)).observe(access));
 		DataBindingTestUtils.assertContextOK(db);
 		
 		// Referenced Feature has now been set (sync) by binding:
@@ -290,7 +290,7 @@ public class EMFXtextPropertiesTest {
 			}
 		};
 		db.bindList(BeanProperties.list("list", Bean.class).observe(bean),
-				EMFXtextProperties.list(listFeature).observe(access),
+				XtextProperties.list(listFeature).observe(access),
 				null, modelToTarget);
 		DataBindingTestUtils.assertContextOK(db);
 		
