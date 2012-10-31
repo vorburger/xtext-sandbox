@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.example.definitions
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.example.definitions; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.xtext.example.definitions,
+ org.xtext.example.definitions.services,
+ org.xtext.example.definitions.definitions,
+ org.xtext.example.definitions.definitions.impl,
+ org.xtext.example.definitions.definitions.util,
+ org.xtext.example.definitions.serializer,
+ org.xtext.example.definitions.parser.antlr,
+ org.xtext.example.definitions.parser.antlr.internal,
+ org.xtext.example.definitions.validation,
+ org.xtext.example.definitions.scoping,
+ org.xtext.example.definitions.generator,
+ org.xtext.example.definitions.formatting
+

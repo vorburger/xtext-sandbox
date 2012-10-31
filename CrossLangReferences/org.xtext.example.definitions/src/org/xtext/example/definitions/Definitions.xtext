@@ -1,0 +1,9 @@
+grammar org.xtext.example.definitions.Definitions with org.eclipse.xtext.common.Terminals
+
+generate definitions "http://www.xtext.org/example/definitions/Definitions"
+
+Model:
+	definitions+=Definition*;
+
+Definition:
+	'define' name=ID;

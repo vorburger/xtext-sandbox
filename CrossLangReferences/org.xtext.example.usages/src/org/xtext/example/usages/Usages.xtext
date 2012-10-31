@@ -1,0 +1,11 @@
+grammar org.xtext.example.usages.Usages with org.eclipse.xtext.common.Terminals
+
+generate usages "http://www.xtext.org/example/usages/Usages"
+
+import "http://www.xtext.org/example/definitions/Definitions" as def
+
+Model:
+	usages+=Usage*;
+	
+Usage:
+	'use' definition=[def::Definition];
