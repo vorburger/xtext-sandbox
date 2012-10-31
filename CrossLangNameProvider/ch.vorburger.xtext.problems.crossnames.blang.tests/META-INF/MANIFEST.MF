@@ -15,5 +15,12 @@ Require-Bundle: ch.vorburger.xtext.problems.crossnames.blang,
  org.eclipse.ui.workbench;resolution:=optional,
  org.eclipselabs.xtext.utils.unittesting;bundle-version="0.9.3"
 Import-Package: org.apache.log4j,
- org.apache.commons.logging
+ org.apache.commons.logging,
+ org.junit.runner;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.hamcrest.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: ch.vorburger.xtext.problems.crossnames
