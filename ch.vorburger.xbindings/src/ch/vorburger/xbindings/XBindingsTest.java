@@ -14,18 +14,6 @@ import org.junit.Test;
  */
 public class XBindingsTest {
 
-	static interface ChangeListener {
-		void changed(); // real-world will have before/after stuff; but KiSS for now..
-	}
-
-	static interface ChangeNotifier {
-		void setChangeListener(ChangeListener cl);
-	}
-	
-	static interface PropertyAccessTracker {
-		void accessed(ChangeNotifier cn);
-	}
-
 	// TODO not sure yet where exactly this will live in the end..  
 	static final ThreadLocal<ChangeListener> currentChangeListener = new ThreadLocal<>();
 
@@ -33,21 +21,6 @@ public class XBindingsTest {
 	static final PropertyAccessTracker pat = new PropertyAccessTracker() {
 		@Override public void accessed(ChangeNotifier cn) { cn.setChangeListener(currentChangeListener.get()); };
 	};
-	
-	static interface Property<T> extends ChangeNotifier {
-		T get();
-		void set(T newValue);
-	}
-	
-	static class PropertyImpl<T> implements Property<T> {
-		T value;
-		ChangeListener cl;
-		@Override public void set(T newValue) { value = newValue; if (cl != null) cl.changed(); }
-		@Override public T get() { if (pat != null) pat.accessed(this); return value; }
-		@Override public void setChangeListener(ChangeListener cl) {
-			this.cl = cl;
-		}
-	}
 	
 	// could be EMF, AOP-enhanced bean, EDB API, V Item, ...
 	static class A {
