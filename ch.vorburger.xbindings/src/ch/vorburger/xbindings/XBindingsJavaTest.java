@@ -12,7 +12,7 @@ import org.junit.Test;
  * 
  * @author Michael Vorburger
  */
-public class XBindingsTest {
+public class XBindingsJavaTest {
 
 	// could be EMF, AOP-enhanced bean, EDB API, V Item, ...
 	static class A {
@@ -34,17 +34,17 @@ public class XBindingsTest {
 			@Override public void changed() { 
 				assigner.apply(); }
 		});
-		assigner.apply();
-		// TODO later probably better do this inside a finally
-		PropertyAccessTrackerUtil.ThreadLocal.remove();
+		try {
+			assigner.apply();
+		} finally {
+			PropertyAccessTrackerUtil.ThreadLocal.remove();
+		}
 		assertEquals("hello, Yuhu", bName.get());
 		
 		a.name.set("Yoho");
 		assertEquals("hello, Yoho", bName.get());
 	}
 
-	// TODO now rewrite it in xtend.. ;)
-	
 	@Test
 	@Ignore
 	public void testBidi() {
@@ -53,10 +53,12 @@ public class XBindingsTest {
 //		assertEquals("booba", a.name.get());
 	}
 	
+	// TODO consider & test exception handling in assigner 
+	
 	// TODO think about list bindings
 	// TODO think about master detail type bindings
 	
-	// TODO now write wrappers for EMF and Beans (using EDB ?)
+	// TODO now write wrappers for EMF and Beans and JFace (using EDB ?)
 	
 	// TODO detect inifinite loops
 	
