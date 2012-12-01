@@ -8,6 +8,8 @@
 
 package ch.vorburger.xbindings;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
+
 /**
  * ThreadLocal-based utility for PropertyAccessTracker.
  * 
@@ -24,5 +26,13 @@ public class PropertyAccessTrackerUtil {
 		};
 	};
 
+	public static void record(final Procedure0 assigner) {
+		ThreadLocal.set(new ChangeListener() {
+			@Override
+			public void changed() {
+				assigner.apply();
+			}
+		});
+	}
 
 }

@@ -10,8 +10,6 @@ package ch.vorburger.xbindings;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.xtext.xbase.lib.Procedures;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 import org.junit.Test;
 
 /**
@@ -31,20 +29,12 @@ public class XBindingsJava7Test {
 	public void testBasic() {
 		aName.set("Yuhu");
 		
-		final Procedure0 assigner = new Procedures.Procedure0() {
-			@Override public void apply() {
+		new XBinding() {
+			void bind() {
 				bName.set("hello, " + aName.get());
 			}
 		};
-		PropertyAccessTrackerUtil.ThreadLocal.set(new ChangeListener() {
-			@Override public void changed() { 
-				assigner.apply(); }
-		});
-		try {
-			assigner.apply();
-		} finally {
-			PropertyAccessTrackerUtil.ThreadLocal.remove();
-		}
+		
 		assertEquals("hello, Yuhu", bName.get());
 		
 		aName.set("Yoho");
