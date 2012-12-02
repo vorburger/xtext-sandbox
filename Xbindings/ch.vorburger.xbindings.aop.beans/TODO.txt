@@ -1,0 +1,5 @@
+
+* MUST don't require @Observable, but.. all classes?! list them in some XML.. (or, better, programmatically via some API)
+	http://damnhandy.com/javabean-aspect/ mentions XML - re-introduce that on the original GitHub project..
+
+* MAY/LOW mix AOP-enhanced beans (for get*()) with existing hand-written Java Beans which already have ChangeSupport stuff

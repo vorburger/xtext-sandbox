@@ -1,0 +1,6 @@
+
+For it to work in Eclipse,
+I had to do Project > Properties,
+AspectJ Build > AspectPath, Add Project: handy-aspects-core
+
+TODO Need to check if this becomes unnecessary once converted to Maven - does the ajdt M2E support do this?
