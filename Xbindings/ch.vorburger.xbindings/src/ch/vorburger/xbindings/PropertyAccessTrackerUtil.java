@@ -11,29 +11,40 @@ package ch.vorburger.xbindings;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 
 /**
- * ThreadLocal-based utility for PropertyAccessTracker.
+ * ThreadLocal-based utility for PropertyChangeListener.
  * 
  * @author Michael Vorburger
  */
-public class PropertyAccessTrackerUtil {
+public class PropertyAccessTrackerUtil { // TODO rename class.. what would be a better name?
 
-	public static final ThreadLocal<PropertyChangeListener> ThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<PropertyChangeListener> threadLocal = new ThreadLocal<>();
 
 	public static final PropertyAccessListener INSTANCE = new PropertyAccessListener() {
 		@Override
 		public void accessed(PropertyChangeNotifier cn) {
-			if (ThreadLocal.get() != null)
-				cn.addChangeListener(ThreadLocal.get());
+			if (threadLocal.get() != null)
+				cn.addChangeListener(threadLocal.get());
 		};
 	};
 
-	public static void record(final Procedure0 assigner) {
-		ThreadLocal.set(new PropertyChangeListener() {
+	public static void bind(final Procedure0 assigner) {
+		if (threadLocal.get() != null) {
+			throw new IllegalStateException("how come threadLocal is already set?!");
+		}
+		
+		// PropertyAccessTrackerUtil::ThreadLocal.set( [| assigner.apply() ] )
+		threadLocal.set(new PropertyChangeListener() {
 			@Override
 			public void changed() {
 				assigner.apply();
 			}
 		});
+		
+		try {
+			assigner.apply(); // initial assignment
+		} finally {
+			threadLocal.remove();
+		}
 	}
 
 }

@@ -16,12 +16,7 @@ package ch.vorburger.xbindings
 class XBindings {
 	
 	def static bind(()=>void assigner) { 
-		PropertyAccessTrackerUtil::ThreadLocal.set( [| assigner.apply() ] )
-		try {
-			assigner.apply // initial assignment
-		} finally {
-			PropertyAccessTrackerUtil::ThreadLocal.remove();
-		}
+		PropertyAccessTrackerUtil::bind(assigner)
 	}
 	
 	def static void operator_lessEqualsThan(Property<String> x, Property<String> y) {

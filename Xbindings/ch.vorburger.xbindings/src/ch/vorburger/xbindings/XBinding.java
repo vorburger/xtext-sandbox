@@ -18,7 +18,7 @@ import org.eclipse.xtext.xbase.lib.Procedures;
 public abstract class XBinding {
 
 	public XBinding() {
-		XBindings.bind(new Procedures.Procedure0() {
+		PropertyAccessTrackerUtil.bind(new Procedures.Procedure0() {
 			@Override public void apply() {
 				bind();
 			}
