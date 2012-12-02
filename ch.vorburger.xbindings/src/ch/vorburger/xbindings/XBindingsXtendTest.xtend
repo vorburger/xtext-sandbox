@@ -64,8 +64,19 @@ class XBindingsXtendTest {
 	@Test def testComputedValue() {
 		aName.set("world");
 		
-		// can anybody think of a better way to do this?!
+		// any expression can go into bind - simple concatenation, or more complex with conversion and condition
 		bind[| bName.set("hello, " + aName.get) ]
+		assertEquals("hello, world", bName.get());
+		
+		aName.set("Mondo");
+		assertEquals("hello, Mondo", bName.get());
+	}
+
+	@Test def testComputedValueConcatenationSugar() {
+		aName.set("world");
+		
+		// this is syntactic sugar in case of simple concatenations, see above
+		bName <= "hello, " + aName
 		assertEquals("hello, world", bName.get());
 		
 		aName.set("Mondo");

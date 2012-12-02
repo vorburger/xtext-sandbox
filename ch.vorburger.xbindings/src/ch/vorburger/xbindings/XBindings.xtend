@@ -41,5 +41,22 @@ class XBindings {
  		// NOT bind[| x.set(y)] but simply:
  		x.set(y)
  	}
+
+	def static Property<String> operator_plus(String x, Property<String> y) {
+		val p = new PropertyImpl<String>()
+		bind[| p.set(x + y.get)]
+		return p
+	}	
 	
+	def static Property<String> operator_plus(Property<String> x, String y) {
+		val p = new PropertyImpl<String>()
+		bind[| p.set(x.get + y)]
+		return p
+	}
+	
+	def static Property<String> operator_plus(Property<String> x, Property<String> y) {
+		val p = new PropertyImpl<String>()
+		bind[| p.set(x.get + y.get)]
+		return p
+	}
 }
