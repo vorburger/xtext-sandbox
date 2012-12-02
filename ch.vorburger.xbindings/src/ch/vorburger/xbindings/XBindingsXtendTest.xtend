@@ -29,6 +29,7 @@ class XBindingsXtendTest {
 		
 		bName <= aName                       // creating a data binding
 		assertEquals("hello", bName.get());  // obviously! (initial value)
+		assertEquals("hello", aName.get());  // just for non-regression of a bug I had initially
 		
 		aName <= "world"
 		assertEquals("world", bName.get());  // wow - magic! ;)
