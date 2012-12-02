@@ -15,10 +15,10 @@ package ch.vorburger.xbindings;
  */
 public class PropertyImpl<T> implements Property<T> {
 	T value;
-	ChangeListener cl;
+	PropertyChangeListener cl;
 	@Override public void set(T newValue) { value = newValue; if (cl != null) cl.changed(); }
 	@Override public T get() { PropertyAccessTrackerUtil.INSTANCE.accessed(this); return value; }
-	@Override public void setChangeListener(ChangeListener cl) {
+	@Override public void setChangeListener(PropertyChangeListener cl) {
 		this.cl = cl;
 	}
 }

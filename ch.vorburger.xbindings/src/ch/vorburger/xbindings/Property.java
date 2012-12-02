@@ -13,7 +13,7 @@ package ch.vorburger.xbindings;
  * 
  * @author Michael Vorburger
  */
-public interface Property<T> extends ChangeNotifier {
+public interface Property<T> extends PropertyChangeNotifier {
 	
 	/**
 	 * Getter which invokes a PropertyAccessTracker.

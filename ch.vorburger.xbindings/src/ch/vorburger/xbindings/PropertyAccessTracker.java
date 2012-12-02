@@ -18,5 +18,5 @@ package ch.vorburger.xbindings;
  * @author Michael Vorburger
  */
 public interface PropertyAccessTracker {
-	void accessed(ChangeNotifier cn);
+	void accessed(PropertyChangeNotifier cn);
 }

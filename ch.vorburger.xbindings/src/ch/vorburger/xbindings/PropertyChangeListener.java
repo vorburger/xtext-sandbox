@@ -13,6 +13,6 @@ package ch.vorburger.xbindings;
  * 
  * @author Michael Vorburger
  */
-public interface ChangeListener {
+public interface PropertyChangeListener {
 	void changed(); // real-world will have before/after stuff; but KiSS for now..
 }

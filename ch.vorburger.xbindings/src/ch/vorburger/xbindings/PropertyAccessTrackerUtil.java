@@ -17,17 +17,17 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
  */
 public class PropertyAccessTrackerUtil {
 
-	public static final ThreadLocal<ChangeListener> ThreadLocal = new ThreadLocal<>();
+	public static final ThreadLocal<PropertyChangeListener> ThreadLocal = new ThreadLocal<>();
 
 	public static final PropertyAccessTracker INSTANCE = new PropertyAccessTracker() {
 		@Override
-		public void accessed(ChangeNotifier cn) {
+		public void accessed(PropertyChangeNotifier cn) {
 			cn.setChangeListener(ThreadLocal.get());
 		};
 	};
 
 	public static void record(final Procedure0 assigner) {
-		ThreadLocal.set(new ChangeListener() {
+		ThreadLocal.set(new PropertyChangeListener() {
 			@Override
 			public void changed() {
 				assigner.apply();
