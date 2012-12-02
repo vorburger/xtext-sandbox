@@ -17,9 +17,20 @@ import java.util.List;
  * @author Michael Vorburger
  */
 public class PropertyImpl<T> implements Property<T> {
+	// TODO if in the end no other implementations are made, merge Impl & interface?
+	
 	private T value;
 	private List<PropertyChangeListener> propertyChangeListeners;
 	
+	public PropertyImpl() {
+		super();
+	}
+	
+	public PropertyImpl(T value) {
+		super();
+		this.value = value;
+	}
+
 	@Override public void set(T newValue) { 
 		value = newValue; 
 		if (propertyChangeListeners != null) {
