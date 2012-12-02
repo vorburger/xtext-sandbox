@@ -38,7 +38,8 @@ class XBindings {
  	}
 
 	def static <T> void operator_lessEqualsThan(Property<T> x, T y) {
- 		bind[| x.set(y)]
+ 		// NOT bind[| x.set(y)] but simply:
+ 		x.set(y)
  	}
 	
 }

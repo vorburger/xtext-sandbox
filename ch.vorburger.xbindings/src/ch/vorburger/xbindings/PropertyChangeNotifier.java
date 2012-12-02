@@ -14,5 +14,7 @@ package ch.vorburger.xbindings;
  * @author Michael Vorburger
  */
 public interface PropertyChangeNotifier {
-	void setChangeListener(PropertyChangeListener cl);
+	void addChangeListener(PropertyChangeListener cl);
+	// TODO void removePropertyChangeListener(PropertyChangeListener listener); 
+	// TODO void removePropertyChangeListeners(); ?
 }

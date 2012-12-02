@@ -8,17 +8,38 @@
 
 package ch.vorburger.xbindings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Simple Property Implementation.
  * 
  * @author Michael Vorburger
  */
 public class PropertyImpl<T> implements Property<T> {
-	T value;
-	PropertyChangeListener cl;
-	@Override public void set(T newValue) { value = newValue; if (cl != null) cl.changed(); }
-	@Override public T get() { PropertyAccessTrackerUtil.INSTANCE.accessed(this); return value; }
-	@Override public void setChangeListener(PropertyChangeListener cl) {
-		this.cl = cl;
+	private T value;
+	private List<PropertyChangeListener> propertyChangeListeners;
+	
+	@Override public void set(T newValue) { 
+		value = newValue; 
+		if (propertyChangeListeners != null) {
+			for (PropertyChangeListener propertyChangeListener : propertyChangeListeners) {
+				propertyChangeListener.changed(); 
+			}
+		}
+	}
+	
+	@Override public T get() { 
+		PropertyAccessTrackerUtil.INSTANCE.accessed(this); 
+		return value; 
+	}
+	
+	@Override public void addChangeListener(PropertyChangeListener cl) {
+		if (cl == null)
+			return;
+		if (this.propertyChangeListeners == null)
+			this.propertyChangeListeners = new ArrayList<>(1);
+		if (!this.propertyChangeListeners.contains(propertyChangeListeners))
+			this.propertyChangeListeners.add(cl);
 	}
 }

@@ -72,12 +72,26 @@ class XBindingsXtendTest {
 		assertEquals("hello, Mondo", bName.get());
 	}
 	
-	// TODO consider & test exception handling in assigner 
+	/** Test to make sure lists of PropertyChangeListener work, not just one, just for non-regression of a bug I had initially */
+	@Test def testTwoBindings() {
+		val Property<String> cName = new PropertyImpl<String>();
+		aName <= "hello"
+		bName <= aName
+		cName <= aName
+		assertEquals("hello", aName.get());
+		assertEquals("hello", bName.get());
+		assertEquals("hello", cName.get());
+		aName <= "world"
+		assertEquals("world", cName.get());
+		assertEquals("world", bName.get());
+	}
 	
+	// TODO consider & test exception handling in assigner 
+
+	// TODO now write wrappers for EMF and (AOP-enhanced?) Beans and JFace (all using EDB ?), and Vaadin!
+		
 	// TODO think about list bindings
 	// TODO think about master detail type bindings
-	
-	// TODO now write wrappers for EMF and (AOP-enhanced?) Beans and JFace (all using EDB ?), and Vaadin!
 	
 	// TODO detect infinite loops
 	// TODO handle interdependencies
