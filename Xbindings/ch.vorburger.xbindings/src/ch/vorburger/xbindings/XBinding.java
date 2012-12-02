@@ -25,6 +25,6 @@ public abstract class XBinding {
 		});
 	}
 
-	abstract void bind();
+	abstract public void bind();
 
 }

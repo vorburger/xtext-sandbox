@@ -30,7 +30,7 @@ public class XBindingsJava7Test {
 		aName.set("Yuhu");
 		
 		new XBinding() {
-			void bind() {
+			public void bind() {
 				bName.set("hello, " + aName.get());
 			}
 		};
