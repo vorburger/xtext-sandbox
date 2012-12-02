@@ -19,7 +19,7 @@ public class PropertyAccessTrackerUtil {
 
 	public static final ThreadLocal<PropertyChangeListener> ThreadLocal = new ThreadLocal<>();
 
-	public static final PropertyAccessTracker INSTANCE = new PropertyAccessTracker() {
+	public static final PropertyAccessListener INSTANCE = new PropertyAccessListener() {
 		@Override
 		public void accessed(PropertyChangeNotifier cn) {
 			cn.setChangeListener(ThreadLocal.get());
