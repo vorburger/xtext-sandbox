@@ -1,0 +1,11 @@
+* ch.vorburger.xbindings -> ch.vorburger.xbindings.core, ch.vorburger.xbindings.xtend, ch.vorburger.xbindings.aop, ch.vorburger.xbindings.beans, ch.vorburger.xbindings.jface, ch.vorburger.xbindings.emf
+	* src/main/java & src/test/java
+	* pom.xml
+
+* SHOULD sample SWT two text fields bound to same model String property
+* SHOULD sample SWT two text fields bound to each other (no model)
+* COULD  sample dito in Swing
+
+* WHY lazy evaluation, like JavaFX supports - needed?
+
+* COULD apply to JPA, for Queries, like LINQ
