@@ -1,11 +1,34 @@
-* ch.vorburger.xbindings -> ch.vorburger.xbindings.core, ch.vorburger.xbindings.xtend, ch.vorburger.xbindings.aop, ch.vorburger.xbindings.beans, ch.vorburger.xbindings.jface, ch.vorburger.xbindings.emf
-	* src/main/java & src/test/java
+* MUST consider & test exception handling in assigner
+* MUST redo both steps (while re-recording dependencies)
+
+* Lists!
+* EMF.xtext
+
+* MUST testBidiBinding & detect infinite loops
+
+* JFace
+* master detail type bindings
+
+* ch.vorburger.xbindings split in 
+		ch.vorburger.xbindings.core
+		[ch.vorburger.xbindings.xtend (split needed?!)]
+		ch.vorburger.xbindings.aop
+			ch.vorburger.xbindings.beans
+			ch.vorburger.xbindings.jface
+			ch.vorburger.xbindings.emf
+				ch.vorburger.xbindings.emf.xtext
+	* src/main/java & src/test/java in core
 	* pom.xml
 
 * SHOULD sample SWT two text fields bound to same model String property
 * SHOULD sample SWT two text fields bound to each other (no model)
 * COULD  sample dito in Swing
 
+* COULD EMF without AOP - how to track getters? ask list
+
+* MAY use xtend Processed Annotations thing for something like @Bean with built-in (no AOP) Change and getter access tracking
+
 * WHY lazy evaluation, like JavaFX supports - needed?
+* COULD handle field interdependencies and automatically order ???
 
 * COULD apply to JPA, for Queries, like LINQ

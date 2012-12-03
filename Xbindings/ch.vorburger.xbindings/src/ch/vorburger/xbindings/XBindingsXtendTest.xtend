@@ -96,17 +96,5 @@ class XBindingsXtendTest {
 		assertEquals("world", cName.get());
 		assertEquals("world", bName.get());
 	}
-	
-	// TODO consider & test exception handling in assigner 
-
-	// TODO now write wrappers for EMF and (AOP-enhanced?) Beans and JFace (all using EDB ?), and Vaadin!
-		
-	// TODO think about list bindings
-	// TODO think about master detail type bindings
-	
-	// TODO detect infinite loops
-	// TODO handle interdependencies
-	
-	// TODO later, try using xtend Processed Annotations thing for something like @Bean ?
 	 
 }
