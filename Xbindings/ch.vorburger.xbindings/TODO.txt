@@ -1,4 +1,3 @@
-* MUST consider & test exception handling in assigner
 * MUST redo both steps (while re-recording dependencies)
 
 * Lists!
@@ -8,6 +7,8 @@
 
 * JFace
 * master detail type bindings
+
+* manage Exceptions in bindings, set Validation stuff instead of bubbling up
 
 * ch.vorburger.xbindings split in 
 		ch.vorburger.xbindings.core

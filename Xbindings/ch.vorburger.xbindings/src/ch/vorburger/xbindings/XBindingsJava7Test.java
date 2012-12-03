@@ -40,4 +40,28 @@ public class XBindingsJava7Test {
 		aName.set("Yoho");
 		assertEquals("hello, Yoho", bName.get());
 	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testExceptionInInitialBinding() {
+		new XBinding() {
+			public void bind() {
+				throw new IllegalArgumentException();
+			}
+		};
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testExceptionLaterInRePlayingBinding() {
+		aName.set("Yuhu");
+		new XBinding() {
+			public void bind() {
+				if (aName.get() != null)
+					bName.set("hello, " + aName.get());
+				else
+					throw new IllegalArgumentException();
+			}
+		};
+		aName.set(null);
+	}
+
 }

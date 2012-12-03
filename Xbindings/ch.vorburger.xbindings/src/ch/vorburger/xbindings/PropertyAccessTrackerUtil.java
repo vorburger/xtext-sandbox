@@ -42,6 +42,8 @@ public class PropertyAccessTrackerUtil { // TODO rename class.. what would be a 
 		
 		try {
 			assigner.apply(); // initial assignment
+		// could catch(Throwable) & log in case of trouble with initial assignment, but as it nicely bubbles up, there is currently no need to do that
+		// if Exception is caught, could remove/dispose binding here - but we would have to keep track of all PropertyChangeNotifiers seen for that
 		} finally {
 			threadLocal.remove();
 		}
