@@ -12,6 +12,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
+
 /**
  * XBindings Test (and example) written in Java (without lambda expressions / closures).
  * 
@@ -28,12 +30,12 @@ public class XBindingsJava7Test {
 	@Test
 	public void testBasic() {
 		aName.set("Yuhu");
-		
-		new XBinding() {
-			public void bind() {
+
+		new XBinding(new Procedure0() {
+			public void apply() {
 				bName.set("hello, " + aName.get());
 			}
-		};
+		});
 		
 		assertEquals("hello, Yuhu", bName.get());
 		
@@ -43,24 +45,24 @@ public class XBindingsJava7Test {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionInInitialBinding() {
-		new XBinding() {
-			public void bind() {
+		new XBinding(new Procedure0() {
+			public void apply() {
 				throw new IllegalArgumentException();
 			}
-		};
+		});
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testExceptionLaterInRePlayingBinding() {
 		aName.set("Yuhu");
-		new XBinding() {
-			public void bind() {
+		new XBinding(new Procedure0() {
+			public void apply() {
 				if (aName.get() != null)
 					bName.set("hello, " + aName.get());
 				else
 					throw new IllegalArgumentException();
 			}
-		};
+		});
 		aName.set(null);
 	}
 

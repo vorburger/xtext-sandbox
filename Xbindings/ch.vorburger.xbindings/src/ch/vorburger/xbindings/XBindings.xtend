@@ -15,8 +15,8 @@ package ch.vorburger.xbindings
  */
 class XBindings {
 	
-	def static bind(()=>void assigner) { 
-		PropertyAccessTrackerUtil::bind(assigner)
+	def static void bind(()=>void assigner) {
+		new XBinding(assigner); 
 	}
 	
 	def static void operator_lessEqualsThan(Property<String> x, Property<String> y) {

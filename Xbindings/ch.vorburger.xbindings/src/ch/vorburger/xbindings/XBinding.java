@@ -8,23 +8,22 @@
 
 package ch.vorburger.xbindings;
 
-import org.eclipse.xtext.xbase.lib.Procedures;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 
 /**
  * XBindings Java API Sugar.
  * 
  * @author Michael Vorburger
  */
-public abstract class XBinding {
+public class XBinding {
 
-	public XBinding() {
-		PropertyAccessTrackerUtil.bind(new Procedures.Procedure0() {
-			@Override public void apply() {
-				bind();
-			}
-		});
+	// TODO I'm not entirely sure yet if it's a better design to take Procedure0
+	// bindingStatement as constructor argument as it's now, or to instead make
+	// XBinding extend Procedure0 (for now, later take it off?) and have
+	// an abstract apply() method - like I had it initially.
+	//
+	public XBinding(Procedure0 bindingStatement) {
+		PropertyAccessTrackerUtil.bind(bindingStatement);
 	}
-
-	abstract public void bind();
-
+	
 }
