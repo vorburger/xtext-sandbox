@@ -6,13 +6,17 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xbindings;
+package ch.vorburger.xbindings.tests;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
+
+import ch.vorburger.xbindings.Property;
+import ch.vorburger.xbindings.PropertyImpl;
+import ch.vorburger.xbindings.XBinding;
 
 /**
  * XBindings Test (and example) written in Java (without lambda expressions / closures).

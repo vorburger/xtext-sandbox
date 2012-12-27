@@ -27,7 +27,8 @@ public class PropertyAccessTrackerUtil { // TODO rename class.. what would be a 
 		};
 	};
 
-	public static void bind(final Procedure0 binding) {
+	// Intentionally package local instead of public
+	static void bind(final Procedure0 binding) {
 		if (currentThreadPropertyChangeListener.get() != null) {
 			throw new IllegalStateException("how come threadLocal is already set?!");
 		}

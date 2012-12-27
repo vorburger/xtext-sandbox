@@ -1,12 +1,20 @@
+
+* new XBindingsXtendTest.testFullReBind must pass
 * MUST redo both steps (while re-recording dependencies)
 
+* THEORY.txt Doc
+
 * Lists!
-* EMF.xtext
+* EMF.xtext, with Unit Test this time..
 
 * MUST testBidiBinding & detect infinite loops
 
+* non-annotated JavaBeans, how to apply Aspect? read AspectJ doc..
+	ugly, in XML: http://damnhandy.com/javabean-aspect/
+
 * JFace
 * master detail type bindings
+* redo http://www.vogella.com/articles/EclipseDataBinding/article.html#jfacedb_selection
 
 * manage Exceptions in bindings, set Validation stuff instead of bubbling up
 
@@ -21,6 +29,8 @@
 	* src/main/java & src/test/java in core
 	* pom.xml
 
+* rename from xbindings to nbindings, "Natural Bindings" ?
+
 * SHOULD sample SWT two text fields bound to same model String property
 * SHOULD sample SWT two text fields bound to each other (no model)
 * COULD  sample dito in Swing
@@ -33,3 +43,6 @@
 * COULD handle field interdependencies and automatically order ???
 
 * COULD apply to JPA, for Queries, like LINQ
+
+* http://modelmapper.org/
+

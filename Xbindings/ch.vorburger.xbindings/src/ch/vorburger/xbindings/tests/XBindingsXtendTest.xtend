@@ -6,12 +6,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xbindings
+package ch.vorburger.xbindings.tests
 
+import ch.vorburger.xbindings.PropertyImpl
+import ch.vorburger.xbindings.Property
+import static extension ch.vorburger.xbindings.XBindings.*
+
+import org.junit.Ignore
 import org.junit.Test
 import static org.junit.Assert.*
-import static extension ch.vorburger.xbindings.XBindings.*
-import org.junit.Ignore
 
 /**
  * XBindings Test (and example) written in Xtend.
@@ -95,6 +98,25 @@ class XBindingsXtendTest {
 		aName <= "world"
 		assertEquals("world", cName.get());
 		assertEquals("world", bName.get());
+	}
+
+	/** Test to make sure that even if in an initial binding some getter wasn't called 
+	 *  (e.g. because of conditional in binding, or whatever), dependencies are
+	 *  re-recorded and can also be "discovered late".
+	 */
+	@Test def testFullReBind() {
+		val Property<Boolean> flag = new PropertyImpl<Boolean>(false);
+		aName.set("world");
+		
+		bind[| bName.set(if (flag.get) "hello, " + aName.get else "hello!") ]
+		assertEquals("hello!", bName.get());
+		
+		aName.set("Mondo");
+		flag.set(true)
+		assertEquals("hello, Mondo", bName.get());
+		
+		aName.set("5 Freunde");
+		assertEquals("hello, 5 Freunde", bName.get());
 	}
 	 
 }
