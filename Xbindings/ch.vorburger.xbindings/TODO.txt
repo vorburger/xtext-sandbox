@@ -1,25 +1,31 @@
 
-* new XBindingsXtendTest.testFullReBind must pass
-* MUST redo both steps (while re-recording dependencies)
-
-* THEORY.txt Doc
+* beans.. compilation errors, why no red?! switch IDE to other one with AJ tools..
 
 * Lists!
-* EMF.xtext, with Unit Test this time..
 
-* MUST testBidiBinding & detect infinite loops
+* Refactoring to have Binding more clearly express Property to set and expression used to obtain its (one and only) value, thus avoiding Bindings with two Statements conceptually
+
+* EMF.xtext, with Unit Test this time.. demo: M2M from one Xtext model to another (think JSON <-> XObjects)
+
+* JFace 0.1 POC
+
+* MUST pass XBindingsXtendTest.testBidiBinding & detect infinite loops
 
 * non-annotated JavaBeans, how to apply Aspect? read AspectJ doc..
 	ugly, in XML: http://damnhandy.com/javabean-aspect/
 
-* JFace
+* JFace 1.0
 * master detail type bindings
 * redo http://www.vogella.com/articles/EclipseDataBinding/article.html#jfacedb_selection
+
+---
+* THEORY.txt Doc
 
 * manage Exceptions in bindings, set Validation stuff instead of bubbling up
 
 * ch.vorburger.xbindings split in 
 		ch.vorburger.xbindings.core
+		ch.vorburger.xbindings.properties (usually not needed! just for tests of the infrastructure)
 		[ch.vorburger.xbindings.xtend (split needed?!)]
 		ch.vorburger.xbindings.aop
 			ch.vorburger.xbindings.beans
@@ -35,7 +41,7 @@
 * SHOULD sample SWT two text fields bound to each other (no model)
 * COULD  sample dito in Swing
 
-* COULD EMF without AOP - how to track getters? ask list
+* COULD EMF without AOP - how to track getters? ask list.. propose new Event?
 
 * MAY use xtend Processed Annotations thing for something like @Bean with built-in (no AOP) Change and getter access tracking
 

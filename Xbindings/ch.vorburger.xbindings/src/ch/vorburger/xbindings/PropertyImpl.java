@@ -32,16 +32,16 @@ public class PropertyImpl<T> implements Property<T> {
 	}
 
 	@Override public void set(T newValue) { 
-		value = newValue; 
+		this.value = newValue; 
 		if (propertyChangeListeners != null) {
 			for (PropertyChangeListener propertyChangeListener : propertyChangeListeners) {
-				propertyChangeListener.changed(); 
+				propertyChangeListener.propertyChange(); 
 			}
 		}
 	}
 	
 	@Override public T get() { 
-		PropertyAccessTrackerUtil.INSTANCE.accessed(this); 
+		XBinding.PROPERTY.accessed(this); 
 		return value; 
 	}
 	
@@ -50,7 +50,7 @@ public class PropertyImpl<T> implements Property<T> {
 			return;
 		if (this.propertyChangeListeners == null)
 			this.propertyChangeListeners = new ArrayList<>(1);
-		if (!this.propertyChangeListeners.contains(propertyChangeListeners))
+		if (!this.propertyChangeListeners.contains(cl))
 			this.propertyChangeListeners.add(cl);
 	}
 }

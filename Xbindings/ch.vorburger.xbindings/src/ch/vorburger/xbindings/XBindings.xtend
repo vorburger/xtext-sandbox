@@ -9,13 +9,13 @@
 package ch.vorburger.xbindings
 
 /**
- * XBindings Xtend extension methods & operator overloading.
+ * XBindings Xtend extension methods & operator overloading sugar.
  *  
  * @author Michael Vorburger
  */
 class XBindings {
 	
-	def static void bind(()=>void assigner) {
+	def static XBinding bind(()=>void assigner) {
 		new XBinding(assigner); 
 	}
 	

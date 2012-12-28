@@ -10,11 +10,12 @@ package ch.vorburger.xbindings.tests
 
 import ch.vorburger.xbindings.PropertyImpl
 import ch.vorburger.xbindings.Property
-import static extension ch.vorburger.xbindings.XBindings.*
-
 import org.junit.Ignore
 import org.junit.Test
+
 import static org.junit.Assert.*
+
+import static extension ch.vorburger.xbindings.XBindings.*
 
 /**
  * XBindings Test (and example) written in Xtend.
@@ -67,7 +68,7 @@ class XBindingsXtendTest {
 	@Test def testComputedValue() {
 		aName.set("world");
 		
-		// any expression can go into bind - simple concatenation, or more complex with conversion and condition
+		// any real full expression can go into bind - simple concatenation like here, or more complex stuff with conversion and condition
 		bind[| bName.set("hello, " + aName.get) ]
 		assertEquals("hello, world", bName.get());
 		
@@ -78,7 +79,7 @@ class XBindingsXtendTest {
 	@Test def testComputedValueConcatenationSugar() {
 		aName.set("world");
 		
-		// this is syntactic sugar in case of simple concatenations, see above
+		// this is syntactic sugar for simple concatenations, but actually does the same as above
 		bName <= "hello, " + aName
 		assertEquals("hello, world", bName.get());
 		
@@ -100,13 +101,29 @@ class XBindingsXtendTest {
 		assertEquals("world", bName.get());
 	}
 
+	/** Test similar to testFullReBind() above,
+	 *  but which creates a "chain" of Property Bindings,
+	 *  just for non-regression of a bug I had initially
+	 */
+	@Test def testTwoBindingPropertyChain() {
+		val Property<String> cName = new PropertyImpl<String>();
+		aName <= "hello"
+		bName <= aName
+		cName <= bName
+		assertEquals("hello", aName.get());
+		assertEquals("hello", bName.get());
+		assertEquals("hello", cName.get());
+		aName <= "world"
+		assertEquals("world", cName.get());
+		assertEquals("world", bName.get());
+	}
+
 	/** Test to make sure that even if in an initial binding some getter wasn't called 
 	 *  (e.g. because of conditional in binding, or whatever), dependencies are
 	 *  re-recorded and can also be "discovered late".
 	 */
 	@Test def testFullReBind() {
 		val Property<Boolean> flag = new PropertyImpl<Boolean>(false);
-		aName.set("world");
 		
 		bind[| bName.set(if (flag.get) "hello, " + aName.get else "hello!") ]
 		assertEquals("hello!", bName.get());
@@ -118,5 +135,4 @@ class XBindingsXtendTest {
 		aName.set("5 Freunde");
 		assertEquals("hello, 5 Freunde", bName.get());
 	}
-	 
 }

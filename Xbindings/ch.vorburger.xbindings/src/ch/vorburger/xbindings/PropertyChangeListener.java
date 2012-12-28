@@ -14,5 +14,5 @@ package ch.vorburger.xbindings;
  * @author Michael Vorburger
  */
 public interface PropertyChangeListener { // TODO rename to PropertyValueChangeListener, once I'll add Lists stuff?
-	void changed(); // real-world will have before/after stuff; but KiSS for now..
+	void propertyChange(); // real-world will have before/after stuff; but KiSS for now..
 }
