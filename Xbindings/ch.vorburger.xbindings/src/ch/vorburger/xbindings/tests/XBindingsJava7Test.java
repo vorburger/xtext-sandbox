@@ -14,9 +14,9 @@ import org.junit.Test;
 
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 
-import ch.vorburger.xbindings.Property;
-import ch.vorburger.xbindings.PropertyImpl;
 import ch.vorburger.xbindings.XBinding;
+import ch.vorburger.xbindings.property.Property;
+import ch.vorburger.xbindings.property.PropertyImpl;
 
 /**
  * XBindings Test (and example) written in Java (without lambda expressions / closures).

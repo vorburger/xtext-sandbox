@@ -6,7 +6,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xbindings;
+package ch.vorburger.xbindings.property;
+
+import ch.vorburger.xbindings.PropertyChangeNotifier;
 
 /**
  * Property which can be data bound (with Change Notification support).

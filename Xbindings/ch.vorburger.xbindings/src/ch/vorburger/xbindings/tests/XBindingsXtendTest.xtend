@@ -8,14 +8,14 @@
 
 package ch.vorburger.xbindings.tests
 
-import ch.vorburger.xbindings.PropertyImpl
-import ch.vorburger.xbindings.Property
+import ch.vorburger.xbindings.property.PropertyImpl
+import ch.vorburger.xbindings.property.Property
 import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.*
 
-import static extension ch.vorburger.xbindings.XBindings.*
+import static extension ch.vorburger.xbindings.property.XBindings.*
 
 /**
  * XBindings Test (and example) written in Xtend.

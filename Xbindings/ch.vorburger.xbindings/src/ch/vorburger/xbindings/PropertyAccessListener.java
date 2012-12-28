@@ -17,7 +17,6 @@ package ch.vorburger.xbindings;
  * 
  * @author Michael Vorburger
  */
-// intentionally just package local instead of public for now.. if this isn't needed by anything else, then may be remove it and keep only simple static method in XBinding
-interface PropertyAccessListener {
+public interface PropertyAccessListener {
 	void accessed(PropertyChangeNotifier cn);
 }

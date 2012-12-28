@@ -6,10 +6,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package ch.vorburger.xbindings;
+package ch.vorburger.xbindings.property;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.vorburger.xbindings.PropertyChangeListener;
+import ch.vorburger.xbindings.XBinding;
 
 /**
  * Simple Property Implementation.

@@ -23,7 +23,6 @@ public class XBinding implements PropertyChangeListener {
 
 	private static final ThreadLocal<PropertyChangeListener> currentThreadPropertyChangeListener = new ThreadLocal<>();
 
-	// TODO don't expose PropertyAccessListener PROPERTY to PropertyImpl, but just a static propertyAccessed() 
 	public static final PropertyAccessListener PROPERTY = new PropertyAccessListener() {
 		@Override
 		public void accessed(PropertyChangeNotifier cn) {
