@@ -35,7 +35,7 @@ public class BeanPropertyChangeNotifier implements PropertyChangeNotifier {
 		bean.addPropertyChangeListener(propertyName, new java.beans.PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				cl.changed();
+				cl.propertyChange();
 			}
 		});
 	}

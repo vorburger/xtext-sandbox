@@ -1,6 +1,4 @@
 
-* beans.. compilation errors, why no red?! switch IDE to other one with AJ tools..
-
 * Lists!
 
 * Refactoring to have Binding more clearly express Property to set and expression used to obtain its (one and only) value, thus avoiding Bindings with two Statements conceptually

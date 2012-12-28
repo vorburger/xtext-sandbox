@@ -10,6 +10,7 @@ package ch.vorburger.xbindings.beans.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 import org.junit.Test;
 
 import ch.vorburger.xbindings.XBinding;
@@ -29,12 +30,12 @@ public class JavaBeanJava7Test {
 		final TestJavaBean bean = new TestJavaBean();
 		bean.setValue(42);
 		
-		new XBinding() {
-			public void bind() {
+		new XBinding(new Procedure0() {
+			public void apply() {
 				bean.setName("hello, " + bean.getValue());
 				
 			}
-		};
+		});
 		
 		assertEquals("hello, 42", bean.getName());
 		

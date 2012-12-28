@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 
 import org.aspectj.lang.reflect.FieldSignature;
 
-import ch.vorburger.xbindings.PropertyAccessTrackerUtil;
 import ch.vorburger.xbindings.PropertyChangeNotifier;
+import ch.vorburger.xbindings.XBinding;
 
 import com.damnhandy.aspects.bean.Observable;
 import com.damnhandy.aspects.bean.JavaBean;
@@ -39,7 +39,7 @@ public aspect GetterTrackingAspect {
 		String fieldName = field.getName();
 
 		PropertyChangeNotifier propertyChangeNotifier = new BeanPropertyChangeNotifier(bean, fieldName);
-		PropertyAccessTrackerUtil.INSTANCE.accessed(propertyChangeNotifier);
+		XBinding.PROPERTY.accessed(propertyChangeNotifier);
 		return proceed(bean);
     }
 }

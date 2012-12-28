@@ -11,7 +11,7 @@ package ch.vorburger.xbindings.beans.tests
 import org.junit.Test
 
 import static org.junit.Assert.*
-import static extension ch.vorburger.xbindings.XBindings.*
+import static extension ch.vorburger.xbindings.property.XBindings.*
 
 /**
  * XBindings JavaBean Test (and example) written in Xtend.
