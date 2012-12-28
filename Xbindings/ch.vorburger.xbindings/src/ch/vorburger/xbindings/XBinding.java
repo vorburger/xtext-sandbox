@@ -15,7 +15,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
  * 
  * @author Michael Vorburger
  */
-public class XBinding implements PropertyChangeListener {
+public class XBinding implements PropertyChangeListener { // TODO rename to XPropertyBinding or XValueBinding? 
 	@Override
 	public void propertyChange() {
 		this.apply();

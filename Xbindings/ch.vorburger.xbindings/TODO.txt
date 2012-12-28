@@ -1,7 +1,9 @@
 
+* Refactoring to have Binding more clearly express Property to set and expression used to obtain its (one and only) value, thus avoiding Bindings with two Statements conceptually
+
 * Lists!
 
-* Refactoring to have Binding more clearly express Property to set and expression used to obtain its (one and only) value, thus avoiding Bindings with two Statements conceptually
+* Refactor ThreadLocal out into a well separated out new concept based on inspiration from org.eclipse.core.databinding.observable.ObservableTracker
 
 * EMF.xtext, with Unit Test this time.. demo: M2M from one Xtext model to another (think JSON <-> XObjects)
 
