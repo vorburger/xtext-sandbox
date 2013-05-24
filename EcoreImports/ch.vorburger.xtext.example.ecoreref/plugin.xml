@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.vorburger.ch/xtext/example/ecoreref/MyDsl" 
+       class = "ch.vorburger.xtext.example.ecoreref.myDsl.MyDslPackage"
+       genModel = "ch/vorburger/xtext/example/ecoreref/MyDsl.genmodel" /> 
+	
+  </extension>
+
+
+
+</plugin>

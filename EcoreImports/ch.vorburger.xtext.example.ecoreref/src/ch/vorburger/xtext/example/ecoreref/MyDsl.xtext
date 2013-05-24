@@ -1,0 +1,41 @@
+grammar ch.vorburger.xtext.example.ecoreref.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.vorburger.ch/xtext/example/ecoreref/MyDsl"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Model:
+	imports += Import*
+	greetings+=Greeting*;
+
+Import:
+	'import' (
+		// importedNamespace=QualifiedNameWithWildcard // this works, e.g. for "import yot.*", but not multi dots (import independent) 
+		importedEPackage=[ecore::EPackage|QualifiedName] '.*'
+		
+//		TODO NS
+// 		| importedType=[ecore::EClass|QualifiedName]
+// 		| importedObject=[ecore::EObject|QualifiedName] ?
+	)
+;
+
+//QualifiedPackageNameWithWildcard:
+//	// {QualifiedPackageNameWithWildcard}
+//	x = 
+//;
+	
+Greeting:
+	'Hello' zeClass=[ecore::EClass|QualifiedName];
+
+//QualifiedPackageNameWithWildcard:
+//	x = {QualifiedPackageNameWithWildcard}
+//	[ecore::EPackage|ValidID] '.*' ;	
+
+QualifiedNameWithWildcard:
+  QualifiedName '.*' ;
+
+QualifiedName:
+  	ValidID (=>'.' ValidID)*;
+  
+ValidID:
+	ID;
