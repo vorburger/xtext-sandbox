@@ -10,26 +10,15 @@ Model:
 
 Import:
 	'import' (
-		// importedNamespace=QualifiedNameWithWildcard // this works, e.g. for "import yot.*", but not multi dots (import independent) 
 		importedEPackage=[ecore::EPackage|QualifiedName] '.*'
-		
-//		TODO NS
-// 		| importedType=[ecore::EClass|QualifiedName]
-// 		| importedObject=[ecore::EObject|QualifiedName] ?
-	)
-;
 
-//QualifiedPackageNameWithWildcard:
-//	// {QualifiedPackageNameWithWildcard}
-//	x = 
-//;
+		// Out of the box it would be like this (but not a reference):
+		// This works, e.g. for "import yot.*", but not multi dots (unrelated to how import is done)
+		// importedNamespace=QualifiedNameWithWildcard 
+	);
 	
 Greeting:
 	'Hello' zeClass=[ecore::EClass|QualifiedName];
-
-//QualifiedPackageNameWithWildcard:
-//	x = {QualifiedPackageNameWithWildcard}
-//	[ecore::EPackage|ValidID] '.*' ;	
 
 QualifiedNameWithWildcard:
   QualifiedName '.*' ;
