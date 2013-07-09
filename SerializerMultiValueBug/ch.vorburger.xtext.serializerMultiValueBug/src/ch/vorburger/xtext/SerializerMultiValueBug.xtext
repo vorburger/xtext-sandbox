@@ -1,0 +1,11 @@
+grammar ch.vorburger.xtext.SerializerMultiValueBug with org.eclipse.xtext.common.Terminals
+
+generate serializerMultiValueBug "http://www.vorburger.ch/xtext/SerializerMultiValueBug"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	('Hello' name=ID)
+	& ('attributes:' attributes += STRING (';' attributes += STRING)* )?
+;
