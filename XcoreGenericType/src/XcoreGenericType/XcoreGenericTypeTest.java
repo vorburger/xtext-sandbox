@@ -58,7 +58,7 @@ public class XcoreGenericTypeTest {
 		EStructuralFeature feature = genFeature.getEcoreFeature();
 		EAttribute attribute = (EAttribute) feature;
 		Assert.assertEquals("age", attribute.getName());
-		Assert.assertEquals("int", attribute.getEType().getName());
+		Assert.assertEquals("EInt", attribute.getEType().getName());
 	}
 
 	private EObject loadModel(final String model, boolean validate) throws IOException, DiagnosticExceptionWithURIAndToString {
