@@ -1,0 +1,5 @@
+package testmodel2
+
+class Thing {
+	int age
+}
