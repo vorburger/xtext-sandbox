@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.vorburger.ch/xtext/XbaseOptionResolveAllConfusion/EL" 
+       class = "ch.vorburger.xtext.XbaseOptionResolveAllConfusion.eL.ELPackage"
+       genModel = "ch/vorburger/xtext/XbaseOptionResolveAllConfusion/EL.genmodel" /> 
+	
+  </extension>
+
+
+
+
+</plugin>

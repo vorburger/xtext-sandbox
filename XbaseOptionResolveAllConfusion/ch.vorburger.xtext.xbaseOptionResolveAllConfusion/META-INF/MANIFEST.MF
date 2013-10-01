@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.vorburger.xtext.xbaseOptionResolveAllConfusion
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: ch.vorburger.xtext.xbaseOptionResolveAllConfusion; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.eclipse.xtext.xbase.lib
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: ch.vorburger.xtext.XbaseOptionResolveAllConfusion,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.services,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.eL,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.eL.impl,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.eL.util,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.serializer,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.parser.antlr,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.parser.antlr.internal,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.validation,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.formatting,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.jvmmodel
+

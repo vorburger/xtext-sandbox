@@ -1,0 +1,23 @@
+grammar ch.vorburger.xtext.XbaseOptionResolveAllConfusion.EL with org.eclipse.xtext.xbase.Xbase
+
+import "http://www.eclipse.org/xtext/xbase/Xbase"
+generate eL "http://www.vorburger.ch/xtext/XbaseOptionResolveAllConfusion/EL"
+
+XExpression returns XExpression :
+	XOrExpression;
+
+XLiteral returns XExpression:
+//	XCollectionLiteral |
+//	XClosure |
+	XBooleanLiteral |
+	XNumberLiteral |
+	XNullLiteral |
+	XStringLiteral |
+//	XTypeLiteral
+	DateLiteral;
+
+DateLiteral:
+	{DateLiteral} value=Date;
+
+Date:
+	INT'.'INT'.'INT;

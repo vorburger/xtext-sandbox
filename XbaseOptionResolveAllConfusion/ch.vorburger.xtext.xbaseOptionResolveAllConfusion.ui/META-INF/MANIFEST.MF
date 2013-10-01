@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.vorburger.xtext.xbaseOptionResolveAllConfusion.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: ch.vorburger.xtext.xbaseOptionResolveAllConfusion.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: ch.vorburger.xtext.xbaseOptionResolveAllConfusion;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.xbase.ui,
+ org.eclipse.ui,
+ org.eclipse.xtext.builder,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: ch.vorburger.xtext.XbaseOptionResolveAllConfusion.ui.quickfix,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.ui.contentassist,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.ui.contentassist.antlr,
+ ch.vorburger.xtext.XbaseOptionResolveAllConfusion.ui.internal
+Bundle-Activator: ch.vorburger.xtext.XbaseOptionResolveAllConfusion.ui.internal.ELActivator
