@@ -1,0 +1,6 @@
+package testmodel3
+
+class TestModel {
+	String name
+	int i
+}

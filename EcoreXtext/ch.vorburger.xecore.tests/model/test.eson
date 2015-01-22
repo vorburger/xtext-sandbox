@@ -1,0 +1,4 @@
+// use testmodel3.*
+testmodel3.TestModel kkkk {
+	i : 1
+}
