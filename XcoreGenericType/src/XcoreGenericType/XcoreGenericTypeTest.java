@@ -39,18 +39,18 @@ public class XcoreGenericTypeTest {
 	@Test
 	public void testXcoreGenericTypeWithValidation() throws Exception {
 		XcoreStandaloneSetup.doSetup();
-		loadModel("src/XcoreGenericType/TestModel2.xcore", true);	
+		loadModel(URI.createURI("classpath:/model/Ecore.ecore"), true);
+		loadModel(URI.createURI("classpath:/model/Ecore.genmodel"), true);
+		loadModelFromFile("src/XcoreGenericType/TestModel2.xcore", true);	
 	}
 
 	@Test
 	public void testXcoreGenericTypeWithoutValidation() throws Exception {
 		XcoreStandaloneSetup.doSetup();
-/*		
-		EcorePackage ecorePackage = EcorePackage.eINSTANCE; 
-		URI eCoreURI = ecorePackage.eResource().getURI();
-		rs.getResource(eCoreURI, true);
-*/		
-		GenModel genModel = (GenModel) loadModel("src/XcoreGenericType/TestModel2.xcore", false);
+		loadModel(URI.createURI("classpath:/model/Ecore.ecore"), true);
+		loadModel(URI.createURI("classpath:/model/Ecore.genmodel"), true);
+		// index 0 has xtext AST model; index 1 has what we want
+		GenModel genModel = (GenModel) loadModelFromFile("src/XcoreGenericType/TestModel2.xcore", false).get(1);
 		final GenPackage genPackage = genModel.getGenPackages().get(0);
 		Assert.assertEquals("testmodel2", genPackage.getNSName());
 		final GenClass genClass = genPackage.getGenClasses().get(0);
@@ -61,13 +61,17 @@ public class XcoreGenericTypeTest {
 		Assert.assertEquals("EInt", attribute.getEType().getName());
 	}
 
-	private EObject loadModel(final String model, boolean validate) throws IOException, DiagnosticExceptionWithURIAndToString {
-		URI uri = URI.createFileURI(new File(model).getAbsolutePath());
+	private EList<EObject> loadModelFromFile(final String modelFileName, boolean validate) throws IOException, DiagnosticExceptionWithURIAndToString {
+		URI uri = URI.createFileURI(new File(modelFileName).getAbsolutePath());
+		return loadModel(uri, validate);
+	}
+	
+	private EList<EObject> loadModel(final URI uri, boolean validate) throws IOException, DiagnosticExceptionWithURIAndToString {
 		Resource resource = rs.getResource(uri, true);
 		final EList<EObject> contents = resource.getContents();
 		
 		if (contents.isEmpty())
-			throw new IOException("Could no load / no content in resource: " + model);
+			throw new IOException("Could no load / no content in resource: " + uri.toString());
 		
 		if (validate) {
 			BasicDiagnostic chain = new BasicDiagnostic();
@@ -80,8 +84,7 @@ public class XcoreGenericTypeTest {
 			}
 		}
 		
-		// index 0 has xtext AST model; index 1 has what we want
-		return contents.get(1);
+		return contents;
 	}
 
 	private void logResourceDiagnostics(Resource resource) {
