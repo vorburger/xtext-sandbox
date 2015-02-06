@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.junit4.InjectWith;
 import org.eclipse.xtext.junit4.XtextRunner;
@@ -19,6 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import testmodel3.TestModel;
+import testmodel3.Testmodel3Factory;
+import testmodel3.Testmodel3Package;
 import ch.vorburger.xecore.xEcore.Greeting;
 
 import com.google.inject.Inject;
