@@ -39,7 +39,15 @@ public class XtextEcoreRefTest {
 		rx.load(null);
 		rx2.load(null);
 		URI xCoreURI = getURI("ch.vorburger.xecore.tests", "model/TestModel3.xcore");
-		@SuppressWarnings("unused") Resource xCoreResoure = rs.getResource(xCoreURI, true);
+		Resource xCoreResoure = rs.getResource(xCoreURI, true);
+		for(EObject o : xCoreResoure.getContents()) {
+			if (o instanceof EPackage) {
+				EPackage pack = (EPackage) o;
+				if (Testmodel3Package.eNS_URI.equals(pack.getNsURI()) ) {
+					pack.setEFactoryInstance(Testmodel3Factory.eINSTANCE);
+				}
+			}
+		}
 		// Validation of Xcore fails with "'A generic type in this context must refer to a classifier or a type parameter' on XGenericType", but it actually loaded succesfully..
 		validationHelper.assertNoErrors(xCoreResoure.getContents().get(0));
 		
