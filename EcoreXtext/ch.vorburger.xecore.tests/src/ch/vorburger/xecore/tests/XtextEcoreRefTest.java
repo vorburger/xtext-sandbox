@@ -34,11 +34,14 @@ public class XtextEcoreRefTest {
 	
 	@Test public void testEClass() throws Exception {
 		XtextResourceSet rs = resourceSetProvider.get();
-		
+		Resource rx = rs.getResource(URI.createURI("classpath:/model/Ecore.ecore"), true);
+		Resource rx2 = rs.getResource(URI.createURI("classpath:/model/Ecore.genmodel"), true);
+		rx.load(null);
+		rx2.load(null);
 		URI xCoreURI = getURI("ch.vorburger.xecore.tests", "model/TestModel3.xcore");
 		@SuppressWarnings("unused") Resource xCoreResoure = rs.getResource(xCoreURI, true);
 		// Validation of Xcore fails with "'A generic type in this context must refer to a classifier or a type parameter' on XGenericType", but it actually loaded succesfully..
-		// validationHelper.assertNoErrors(xCoreResoure.getContents().get(0));
+		validationHelper.assertNoErrors(xCoreResoure.getContents().get(0));
 		
 		Greeting g = parseHelper.parse("Hello testmodel3.TestModel !", rs);
 		validationHelper.assertNoErrors(g);
