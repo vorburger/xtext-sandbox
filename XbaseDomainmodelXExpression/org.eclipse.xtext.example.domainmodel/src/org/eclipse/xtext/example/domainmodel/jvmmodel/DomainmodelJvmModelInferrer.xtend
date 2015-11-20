@@ -5,6 +5,7 @@ import org.eclipse.xtext.example.domainmodel.domainmodel.Entity
 import org.eclipse.xtext.example.domainmodel.domainmodel.Operation
 import org.eclipse.xtext.example.domainmodel.domainmodel.Property
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
@@ -57,8 +58,19 @@ class DomainmodelJvmModelInferrer extends AbstractModelInferrer {
 							// Note that by doing this we set the expression into the context of this method, 
 							// The parameters, 'this' and all the members of this method will be visible for the expression. 
 							body = f.body
+
+							f.body.eAllContents.filter(XFeatureCall).forEach[featureCall |
+								System.out.println('''
+									featureCall = «featureCall»
+										class = «featureCall?.class»
+										concreteSyntaxFeatureName = «featureCall?.concreteSyntaxFeatureName»
+										implicitReceiver = «featureCall?.implicitReceiver»
+										actualReceiver = «featureCall?.actualReceiver»
+										feature = «featureCall?.feature»
+								''')
+							]
 						]
-					}
+ 					}
 				}
 			}
 			
