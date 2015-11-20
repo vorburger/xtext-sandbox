@@ -2,4 +2,4 @@ bin
 target
 src-gen
 xtend-gen
-.antlr-generator-3.2.0.jar
+.antlr-generator-*.jar
