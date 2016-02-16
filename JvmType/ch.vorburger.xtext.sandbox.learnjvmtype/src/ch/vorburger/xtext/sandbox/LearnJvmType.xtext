@@ -1,0 +1,9 @@
+grammar ch.vorburger.xtext.sandbox.LearnJvmType with org.eclipse.xtext.common.Terminals
+
+generate learnJvmType "http://www.vorburger.ch/xtext/sandbox/LearnJvmType"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';

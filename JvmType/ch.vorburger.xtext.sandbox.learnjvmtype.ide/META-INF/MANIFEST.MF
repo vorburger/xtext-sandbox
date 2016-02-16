@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.vorburger.xtext.sandbox.learnjvmtype.ide
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: ch.vorburger.xtext.sandbox.learnjvmtype.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: ch.vorburger.xtext.sandbox.learnjvmtype,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
