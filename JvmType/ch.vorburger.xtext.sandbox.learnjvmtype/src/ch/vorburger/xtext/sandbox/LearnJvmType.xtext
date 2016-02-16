@@ -1,9 +1,14 @@
-grammar ch.vorburger.xtext.sandbox.LearnJvmType with org.eclipse.xtext.common.Terminals
+grammar ch.vorburger.xtext.sandbox.LearnJvmType with org.eclipse.xtext.xbase.Xbase
 
 generate learnJvmType "http://www.vorburger.ch/xtext/sandbox/LearnJvmType"
 
 Model:
-	greetings+=Greeting*;
+    importSection=XImportSection?
+    elements+=AbstractElement*;
+    
+AbstractElement:
+	ServiceCall;
 	
-Greeting:
-	'Hello' name=ID '!';
+ServiceCall:
+	'call' type=JvmTypeReference method=XFeatureCall; // or XMemberFeatureCall?
+

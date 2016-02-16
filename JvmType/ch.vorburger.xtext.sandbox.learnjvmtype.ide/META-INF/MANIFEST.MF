@@ -9,3 +9,6 @@ Require-Bundle: ch.vorburger.xtext.sandbox.learnjvmtype,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: ch.vorburger.xtext.sandbox.ide.contentassist.antlr.internal,
+ ch.vorburger.xtext.sandbox.ide.contentassist.antlr
+
