@@ -1,5 +1,8 @@
 grammar ch.vorburger.xtext.sandbox.LearnJvmType with org.eclipse.xtext.xbase.Xbase
 
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
+import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
+
 generate learnJvmType "http://www.vorburger.ch/xtext/sandbox/LearnJvmType"
 
 Model:
@@ -10,5 +13,20 @@ AbstractElement:
 	ServiceCall;
 	
 ServiceCall:
-	'call' type=JvmTypeReference method=XFeatureCall; // or XMemberFeatureCall?
+	'call' type=JvmTypeReference method=XRestrictedFeatureCall; // NOT XFeatureCall nor XMemberFeatureCall 
+	// NEITHER [jvmTypes::JvmType|QualifiedName] instead of JvmTypeReference? Nah, that doesn't allow generics.. which could be very handy, e.g. for Repository, so allow it, and write a test for that.
 
+
+// https://www.eclipse.org/forums/index.php/m/1723598/#msg_1723598
+XRestrictedFeatureCall returns xbase::XExpression:
+	{xbase::XFeatureCall}
+	('<' typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)* '>')? 
+	feature=[jvmTypes::JvmIdentifiableElement|FeatureCallID /*IdOrSuper*/] 
+  // TODO ok to directly use JvmOperation instead of JvmIdentifiableElement here?
+	(=>explicitOperationCall?='(' 
+		(
+		    featureCallArguments+=XShortClosure
+		  |	featureCallArguments+=XExpression (',' featureCallArguments+=XExpression)*
+		)? 
+	')');
+	
